@@ -63,7 +63,6 @@ dependencies:
   # A Flutter package providing the means to work Invite Only users.
   # See https://github.com/marcus-bornman/invite_only_users
   invite_only_users:
-    git:
       path: ../invite_only_users
 
 dev_dependencies:
