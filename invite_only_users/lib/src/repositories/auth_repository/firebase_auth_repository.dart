@@ -27,16 +27,16 @@ class FirebaseAuthRepository implements AuthRepository<AuthCredential> {
   }
 
   @override
-  Future<void> verifyPhoneNumber(
+  Future<void> verifyPhoneNumber({
     String phoneNumber,
-    Duration timeout,
-    verificationCompleted,
-    verificationFailed,
-    codeSent,
-  ) async {
+    Duration retrievalTimeout,
+    Function(AuthCredential) verificationCompleted,
+    Function(AuthException) verificationFailed,
+    Function(String) codeSent,
+  }) async {
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
-      timeout: timeout,
+      timeout: retrievalTimeout,
       verificationCompleted: verificationCompleted,
       verificationFailed: verificationFailed,
       codeSent: codeSent,

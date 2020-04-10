@@ -42,13 +42,13 @@ abstract class AuthRepository<T> {
   /// [codeSent] will trigger when an SMS has been sent to the users phone, and
   ///   will include a [verificationId] to use with [getAuthCredential] when validating
   ///   an SMS code.
-  Future<void> verifyPhoneNumber(
+  Future<void> verifyPhoneNumber({
     String phoneNumber,
     Duration retrievalTimeout,
     Function(T) verificationCompleted,
     Function(Exception) verificationFailed,
     Function(String) codeSent,
-  );
+  });
 
   /// Returns an authorization credential of type [T]
   ///
