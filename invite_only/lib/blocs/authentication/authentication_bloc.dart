@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:invite_only_users/invite_only_users.dart';
 import './bloc.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
+  AuthRepository _authRepository = AuthRepository.instance;
+
   @override
   AuthenticationState get initialState => AuthInitial();
 
@@ -29,11 +31,9 @@ class AuthenticationBloc
       PhoneSubmitted event) async* {
     yield AuthLoading();
 
-    var _firebaseAuth = FirebaseAuth.instance;
-
-    await _firebaseAuth.verifyPhoneNumber(
+    await _authRepository.verifyPhoneNumber(
       phoneNumber: event.phoneNumber,
-      timeout: Duration(seconds: 60),
+      retrievalTimeout: Duration(seconds: 60),
       verificationCompleted: (authCredential) {
         this.add(PhoneAuthSucceeded(authCredential));
       },
@@ -43,9 +43,6 @@ class AuthenticationBloc
       codeSent: (verificationId, [forceResendingToken]) {
         this.add(
             OtpSent(event.phoneNumber, verificationId, forceResendingToken));
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {
-        // Do nothing
       },
     );
   }
@@ -65,11 +62,9 @@ class AuthenticationBloc
     yield AuthLoading();
 
     try {
-      var _firebaseAuth = FirebaseAuth.instance;
-
-      AuthResult authResult =
-          await _firebaseAuth.signInWithCredential(event.authCredential);
-      yield AuthSuccess(authResult.user);
+      User user =
+          await _authRepository.signInWithCredential(event.authCredential);
+      yield AuthSuccess(user);
     } catch (e) {
       yield AuthFailure();
     }
@@ -82,8 +77,8 @@ class AuthenticationBloc
     var currentState = this.state;
 
     if (currentState is SendOtpSuccess) {
-      AuthCredential authCredential = PhoneAuthProvider.getCredential(
-          verificationId: currentState.verificationId, smsCode: event.otp);
+      var authCredential = _authRepository.getAuthCredential(
+          currentState.verificationId, event.otp);
 
       this.add(PhoneAuthSucceeded(authCredential));
     }

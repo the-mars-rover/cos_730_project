@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:invite_only_users/invite_only_users.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -21,7 +21,7 @@ class AuthFailure extends AuthenticationState {
 }
 
 class AuthSuccess extends AuthenticationState {
-  final FirebaseUser firebaseUser;
+  final User user;
 
-  AuthSuccess(this.firebaseUser);
+  AuthSuccess(this.user);
 }
