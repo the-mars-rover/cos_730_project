@@ -1,0 +1,1 @@
+The root folder for all Invite Only projects.
