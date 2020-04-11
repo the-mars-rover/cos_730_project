@@ -1,4 +1,4 @@
-import 'package:invite_only_users/invite_only_users.dart';
+import 'package:invite_only_auth/invite_only_auth.dart';
 import 'package:meta/meta.dart';
 
 @immutable

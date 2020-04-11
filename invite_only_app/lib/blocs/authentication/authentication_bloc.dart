@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:invite_only_users/invite_only_users.dart';
+import 'package:invite_only_auth/invite_only_auth.dart';
 import './bloc.dart';
 
 class AuthenticationBloc
