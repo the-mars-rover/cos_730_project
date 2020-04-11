@@ -27,20 +27,28 @@ IdDocumentInfo _$IdDocumentInfoFromJson(Map<String, dynamic> json) {
 class _$IdDocumentInfoTearOff {
   const _$IdDocumentInfoTearOff();
 
-  IdBookInfo idBookInfo() {
-    return const IdBookInfo();
+  IdBookInfo idBookInfo({@required String userId}) {
+    return IdBookInfo(
+      userId: userId,
+    );
   }
 
-  IdCardInfo idCardInfo() {
-    return const IdCardInfo();
+  IdCardInfo idCardInfo({@required String userId}) {
+    return IdCardInfo(
+      userId: userId,
+    );
   }
 
-  DriversLicenseInfo driversLicenseInfo() {
-    return const DriversLicenseInfo();
+  DriversLicenseInfo driversLicenseInfo({@required String userId}) {
+    return DriversLicenseInfo(
+      userId: userId,
+    );
   }
 
-  PassportInfo passportInfo() {
-    return const PassportInfo();
+  PassportInfo passportInfo({@required String userId}) {
+    return PassportInfo(
+      userId: userId,
+    );
   }
 }
 
@@ -48,19 +56,21 @@ class _$IdDocumentInfoTearOff {
 const $IdDocumentInfo = _$IdDocumentInfoTearOff();
 
 mixin _$IdDocumentInfo {
+  String get userId;
+
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBookInfo(),
-    @required Result idCardInfo(),
-    @required Result driversLicenseInfo(),
-    @required Result passportInfo(),
+    @required Result idBookInfo(@required String userId),
+    @required Result idCardInfo(@required String userId),
+    @required Result driversLicenseInfo(@required String userId),
+    @required Result passportInfo(@required String userId),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBookInfo(),
-    Result idCardInfo(),
-    Result driversLicenseInfo(),
-    Result passportInfo(),
+    Result idBookInfo(@required String userId),
+    Result idCardInfo(@required String userId),
+    Result driversLicenseInfo(@required String userId),
+    Result passportInfo(@required String userId),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -79,12 +89,14 @@ mixin _$IdDocumentInfo {
     @required Result orElse(),
   });
   Map<String, dynamic> toJson();
+  $IdDocumentInfoCopyWith<IdDocumentInfo> get copyWith;
 }
 
 abstract class $IdDocumentInfoCopyWith<$Res> {
   factory $IdDocumentInfoCopyWith(
           IdDocumentInfo value, $Res Function(IdDocumentInfo) then) =
       _$IdDocumentInfoCopyWithImpl<$Res>;
+  $Res call({String userId});
 }
 
 class _$IdDocumentInfoCopyWithImpl<$Res>
@@ -94,12 +106,24 @@ class _$IdDocumentInfoCopyWithImpl<$Res>
   final IdDocumentInfo _value;
   // ignore: unused_field
   final $Res Function(IdDocumentInfo) _then;
+
+  @override
+  $Res call({
+    Object userId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      userId: userId == freezed ? _value.userId : userId as String,
+    ));
+  }
 }
 
-abstract class $IdBookInfoCopyWith<$Res> {
+abstract class $IdBookInfoCopyWith<$Res>
+    implements $IdDocumentInfoCopyWith<$Res> {
   factory $IdBookInfoCopyWith(
           IdBookInfo value, $Res Function(IdBookInfo) then) =
       _$IdBookInfoCopyWithImpl<$Res>;
+  @override
+  $Res call({String userId});
 }
 
 class _$IdBookInfoCopyWithImpl<$Res> extends _$IdDocumentInfoCopyWithImpl<$Res>
@@ -109,61 +133,83 @@ class _$IdBookInfoCopyWithImpl<$Res> extends _$IdDocumentInfoCopyWithImpl<$Res>
 
   @override
   IdBookInfo get _value => super._value as IdBookInfo;
+
+  @override
+  $Res call({
+    Object userId = freezed,
+  }) {
+    return _then(IdBookInfo(
+      userId: userId == freezed ? _value.userId : userId as String,
+    ));
+  }
 }
 
 @JsonSerializable()
 class _$IdBookInfo with DiagnosticableTreeMixin implements IdBookInfo {
-  const _$IdBookInfo();
+  const _$IdBookInfo({@required this.userId}) : assert(userId != null);
 
   factory _$IdBookInfo.fromJson(Map<String, dynamic> json) =>
       _$_$IdBookInfoFromJson(json);
 
   @override
+  final String userId;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocumentInfo.idBookInfo()';
+    return 'IdDocumentInfo.idBookInfo(userId: $userId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'IdDocumentInfo.idBookInfo'));
+    properties
+      ..add(DiagnosticsProperty('type', 'IdDocumentInfo.idBookInfo'))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is IdBookInfo);
+    return identical(this, other) ||
+        (other is IdBookInfo &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
+
+  @override
+  $IdBookInfoCopyWith<IdBookInfo> get copyWith =>
+      _$IdBookInfoCopyWithImpl<IdBookInfo>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBookInfo(),
-    @required Result idCardInfo(),
-    @required Result driversLicenseInfo(),
-    @required Result passportInfo(),
+    @required Result idBookInfo(@required String userId),
+    @required Result idCardInfo(@required String userId),
+    @required Result driversLicenseInfo(@required String userId),
+    @required Result passportInfo(@required String userId),
   }) {
     assert(idBookInfo != null);
     assert(idCardInfo != null);
     assert(driversLicenseInfo != null);
     assert(passportInfo != null);
-    return idBookInfo();
+    return idBookInfo(userId);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBookInfo(),
-    Result idCardInfo(),
-    Result driversLicenseInfo(),
-    Result passportInfo(),
+    Result idBookInfo(@required String userId),
+    Result idCardInfo(@required String userId),
+    Result driversLicenseInfo(@required String userId),
+    Result passportInfo(@required String userId),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (idBookInfo != null) {
-      return idBookInfo();
+      return idBookInfo(userId);
     }
     return orElse();
   }
@@ -206,16 +252,24 @@ class _$IdBookInfo with DiagnosticableTreeMixin implements IdBookInfo {
 }
 
 abstract class IdBookInfo implements IdDocumentInfo {
-  const factory IdBookInfo() = _$IdBookInfo;
+  const factory IdBookInfo({@required String userId}) = _$IdBookInfo;
 
   factory IdBookInfo.fromJson(Map<String, dynamic> json) =
       _$IdBookInfo.fromJson;
+
+  @override
+  String get userId;
+  @override
+  $IdBookInfoCopyWith<IdBookInfo> get copyWith;
 }
 
-abstract class $IdCardInfoCopyWith<$Res> {
+abstract class $IdCardInfoCopyWith<$Res>
+    implements $IdDocumentInfoCopyWith<$Res> {
   factory $IdCardInfoCopyWith(
           IdCardInfo value, $Res Function(IdCardInfo) then) =
       _$IdCardInfoCopyWithImpl<$Res>;
+  @override
+  $Res call({String userId});
 }
 
 class _$IdCardInfoCopyWithImpl<$Res> extends _$IdDocumentInfoCopyWithImpl<$Res>
@@ -225,61 +279,83 @@ class _$IdCardInfoCopyWithImpl<$Res> extends _$IdDocumentInfoCopyWithImpl<$Res>
 
   @override
   IdCardInfo get _value => super._value as IdCardInfo;
+
+  @override
+  $Res call({
+    Object userId = freezed,
+  }) {
+    return _then(IdCardInfo(
+      userId: userId == freezed ? _value.userId : userId as String,
+    ));
+  }
 }
 
 @JsonSerializable()
 class _$IdCardInfo with DiagnosticableTreeMixin implements IdCardInfo {
-  const _$IdCardInfo();
+  const _$IdCardInfo({@required this.userId}) : assert(userId != null);
 
   factory _$IdCardInfo.fromJson(Map<String, dynamic> json) =>
       _$_$IdCardInfoFromJson(json);
 
   @override
+  final String userId;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocumentInfo.idCardInfo()';
+    return 'IdDocumentInfo.idCardInfo(userId: $userId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'IdDocumentInfo.idCardInfo'));
+    properties
+      ..add(DiagnosticsProperty('type', 'IdDocumentInfo.idCardInfo'))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is IdCardInfo);
+    return identical(this, other) ||
+        (other is IdCardInfo &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
+
+  @override
+  $IdCardInfoCopyWith<IdCardInfo> get copyWith =>
+      _$IdCardInfoCopyWithImpl<IdCardInfo>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBookInfo(),
-    @required Result idCardInfo(),
-    @required Result driversLicenseInfo(),
-    @required Result passportInfo(),
+    @required Result idBookInfo(@required String userId),
+    @required Result idCardInfo(@required String userId),
+    @required Result driversLicenseInfo(@required String userId),
+    @required Result passportInfo(@required String userId),
   }) {
     assert(idBookInfo != null);
     assert(idCardInfo != null);
     assert(driversLicenseInfo != null);
     assert(passportInfo != null);
-    return idCardInfo();
+    return idCardInfo(userId);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBookInfo(),
-    Result idCardInfo(),
-    Result driversLicenseInfo(),
-    Result passportInfo(),
+    Result idBookInfo(@required String userId),
+    Result idCardInfo(@required String userId),
+    Result driversLicenseInfo(@required String userId),
+    Result passportInfo(@required String userId),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (idCardInfo != null) {
-      return idCardInfo();
+      return idCardInfo(userId);
     }
     return orElse();
   }
@@ -322,16 +398,24 @@ class _$IdCardInfo with DiagnosticableTreeMixin implements IdCardInfo {
 }
 
 abstract class IdCardInfo implements IdDocumentInfo {
-  const factory IdCardInfo() = _$IdCardInfo;
+  const factory IdCardInfo({@required String userId}) = _$IdCardInfo;
 
   factory IdCardInfo.fromJson(Map<String, dynamic> json) =
       _$IdCardInfo.fromJson;
+
+  @override
+  String get userId;
+  @override
+  $IdCardInfoCopyWith<IdCardInfo> get copyWith;
 }
 
-abstract class $DriversLicenseInfoCopyWith<$Res> {
+abstract class $DriversLicenseInfoCopyWith<$Res>
+    implements $IdDocumentInfoCopyWith<$Res> {
   factory $DriversLicenseInfoCopyWith(
           DriversLicenseInfo value, $Res Function(DriversLicenseInfo) then) =
       _$DriversLicenseInfoCopyWithImpl<$Res>;
+  @override
+  $Res call({String userId});
 }
 
 class _$DriversLicenseInfoCopyWithImpl<$Res>
@@ -343,64 +427,85 @@ class _$DriversLicenseInfoCopyWithImpl<$Res>
 
   @override
   DriversLicenseInfo get _value => super._value as DriversLicenseInfo;
+
+  @override
+  $Res call({
+    Object userId = freezed,
+  }) {
+    return _then(DriversLicenseInfo(
+      userId: userId == freezed ? _value.userId : userId as String,
+    ));
+  }
 }
 
 @JsonSerializable()
 class _$DriversLicenseInfo
     with DiagnosticableTreeMixin
     implements DriversLicenseInfo {
-  const _$DriversLicenseInfo();
+  const _$DriversLicenseInfo({@required this.userId}) : assert(userId != null);
 
   factory _$DriversLicenseInfo.fromJson(Map<String, dynamic> json) =>
       _$_$DriversLicenseInfoFromJson(json);
 
   @override
+  final String userId;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocumentInfo.driversLicenseInfo()';
+    return 'IdDocumentInfo.driversLicenseInfo(userId: $userId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'IdDocumentInfo.driversLicenseInfo'));
+      ..add(DiagnosticsProperty('type', 'IdDocumentInfo.driversLicenseInfo'))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is DriversLicenseInfo);
+    return identical(this, other) ||
+        (other is DriversLicenseInfo &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
+
+  @override
+  $DriversLicenseInfoCopyWith<DriversLicenseInfo> get copyWith =>
+      _$DriversLicenseInfoCopyWithImpl<DriversLicenseInfo>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBookInfo(),
-    @required Result idCardInfo(),
-    @required Result driversLicenseInfo(),
-    @required Result passportInfo(),
+    @required Result idBookInfo(@required String userId),
+    @required Result idCardInfo(@required String userId),
+    @required Result driversLicenseInfo(@required String userId),
+    @required Result passportInfo(@required String userId),
   }) {
     assert(idBookInfo != null);
     assert(idCardInfo != null);
     assert(driversLicenseInfo != null);
     assert(passportInfo != null);
-    return driversLicenseInfo();
+    return driversLicenseInfo(userId);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBookInfo(),
-    Result idCardInfo(),
-    Result driversLicenseInfo(),
-    Result passportInfo(),
+    Result idBookInfo(@required String userId),
+    Result idCardInfo(@required String userId),
+    Result driversLicenseInfo(@required String userId),
+    Result passportInfo(@required String userId),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (driversLicenseInfo != null) {
-      return driversLicenseInfo();
+      return driversLicenseInfo(userId);
     }
     return orElse();
   }
@@ -444,16 +549,25 @@ class _$DriversLicenseInfo
 }
 
 abstract class DriversLicenseInfo implements IdDocumentInfo {
-  const factory DriversLicenseInfo() = _$DriversLicenseInfo;
+  const factory DriversLicenseInfo({@required String userId}) =
+      _$DriversLicenseInfo;
 
   factory DriversLicenseInfo.fromJson(Map<String, dynamic> json) =
       _$DriversLicenseInfo.fromJson;
+
+  @override
+  String get userId;
+  @override
+  $DriversLicenseInfoCopyWith<DriversLicenseInfo> get copyWith;
 }
 
-abstract class $PassportInfoCopyWith<$Res> {
+abstract class $PassportInfoCopyWith<$Res>
+    implements $IdDocumentInfoCopyWith<$Res> {
   factory $PassportInfoCopyWith(
           PassportInfo value, $Res Function(PassportInfo) then) =
       _$PassportInfoCopyWithImpl<$Res>;
+  @override
+  $Res call({String userId});
 }
 
 class _$PassportInfoCopyWithImpl<$Res>
@@ -465,61 +579,83 @@ class _$PassportInfoCopyWithImpl<$Res>
 
   @override
   PassportInfo get _value => super._value as PassportInfo;
+
+  @override
+  $Res call({
+    Object userId = freezed,
+  }) {
+    return _then(PassportInfo(
+      userId: userId == freezed ? _value.userId : userId as String,
+    ));
+  }
 }
 
 @JsonSerializable()
 class _$PassportInfo with DiagnosticableTreeMixin implements PassportInfo {
-  const _$PassportInfo();
+  const _$PassportInfo({@required this.userId}) : assert(userId != null);
 
   factory _$PassportInfo.fromJson(Map<String, dynamic> json) =>
       _$_$PassportInfoFromJson(json);
 
   @override
+  final String userId;
+
+  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocumentInfo.passportInfo()';
+    return 'IdDocumentInfo.passportInfo(userId: $userId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'IdDocumentInfo.passportInfo'));
+    properties
+      ..add(DiagnosticsProperty('type', 'IdDocumentInfo.passportInfo'))
+      ..add(DiagnosticsProperty('userId', userId));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is PassportInfo);
+    return identical(this, other) ||
+        (other is PassportInfo &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
+
+  @override
+  $PassportInfoCopyWith<PassportInfo> get copyWith =>
+      _$PassportInfoCopyWithImpl<PassportInfo>(this, _$identity);
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBookInfo(),
-    @required Result idCardInfo(),
-    @required Result driversLicenseInfo(),
-    @required Result passportInfo(),
+    @required Result idBookInfo(@required String userId),
+    @required Result idCardInfo(@required String userId),
+    @required Result driversLicenseInfo(@required String userId),
+    @required Result passportInfo(@required String userId),
   }) {
     assert(idBookInfo != null);
     assert(idCardInfo != null);
     assert(driversLicenseInfo != null);
     assert(passportInfo != null);
-    return passportInfo();
+    return passportInfo(userId);
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBookInfo(),
-    Result idCardInfo(),
-    Result driversLicenseInfo(),
-    Result passportInfo(),
+    Result idBookInfo(@required String userId),
+    Result idCardInfo(@required String userId),
+    Result driversLicenseInfo(@required String userId),
+    Result passportInfo(@required String userId),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (passportInfo != null) {
-      return passportInfo();
+      return passportInfo(userId);
     }
     return orElse();
   }
@@ -562,8 +698,13 @@ class _$PassportInfo with DiagnosticableTreeMixin implements PassportInfo {
 }
 
 abstract class PassportInfo implements IdDocumentInfo {
-  const factory PassportInfo() = _$PassportInfo;
+  const factory PassportInfo({@required String userId}) = _$PassportInfo;
 
   factory PassportInfo.fromJson(Map<String, dynamic> json) =
       _$PassportInfo.fromJson;
+
+  @override
+  String get userId;
+  @override
+  $PassportInfoCopyWith<PassportInfo> get copyWith;
 }
