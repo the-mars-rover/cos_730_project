@@ -1,4 +1,4 @@
-name: invite_only_users
+name: invite_only_auth
 description: A Flutter package providing the means to work with users of the Invite Only platform.
 version: 0.0.1
 author: Marcus Bornman
@@ -13,10 +13,6 @@ dependencies:
   # Annotations for freezed. This package does nothing without freezed.
   # See https://pub.dev/packages/freezed_annotation
   freezed_annotation: ^0.7.1
-
-  # Equatable overrides == and hashCode for you so you don't have to waste your time writing lots of boilerplate code.
-  # See https://pub.dev/packages/equatable
-  equatable: ^1.1.1
 
   # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
   # See https://pub.dev/packages/firebase_core
@@ -45,6 +41,10 @@ dev_dependencies:
   # Provides Dart Build System builders for handling JSON.
   # See https://pub.dev/packages/json_serializable
   json_serializable: ^3.3.0
+
+  # Mock library for Dart inspired by Mockito.
+  # See https://pub.dev/packages/mockito
+  mockito: ^4.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,6 +1,6 @@
-import 'package:invite_only_users/src/repositories/auth_repository/firebase_auth_repository.dart';
+import 'package:invite_only_auth/src/repositories/auth_repository/firebase_auth_repository.dart';
 
-import '../../../invite_only_users.dart';
+import '../../../invite_only_auth.dart';
 
 /// Provides means to authenticate users for the Invite Only platform or to
 /// retrieve the currently authenticated user.
