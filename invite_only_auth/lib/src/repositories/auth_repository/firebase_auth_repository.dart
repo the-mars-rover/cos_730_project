@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../../../invite_only_auth.dart';
 
@@ -25,16 +26,16 @@ class FirebaseAuthRepository implements AuthRepository<AuthCredential> {
     }
 
     // only one user will ever be created for each firebaseAuth user.
-    return User(id: firebaseUser.uid, phoneNumber: firebaseUser.phoneNumber);
+    return User.fromFirebaseUser(firebaseUser);
   }
 
   @override
   Future<void> verifyPhoneNumber({
-    String phoneNumber,
-    Duration retrievalTimeout,
-    Function(AuthCredential) verificationCompleted,
-    Function(AuthException) verificationFailed,
-    Function(String) codeSent,
+    @required String phoneNumber,
+    @required Duration retrievalTimeout,
+    @required Function(AuthCredential) verificationCompleted,
+    @required Function(AuthException) verificationFailed,
+    @required Function(String) codeSent,
   }) async {
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -49,27 +50,24 @@ class FirebaseAuthRepository implements AuthRepository<AuthCredential> {
   }
 
   @override
-  Future<User> signInWithCredential(AuthCredential authCredential) async {
-    try {
-      AuthResult authResult =
-          await _firebaseAuth.signInWithCredential(authCredential);
-
-      return User(
-        id: authResult.user.uid,
-        phoneNumber: authResult.user.phoneNumber,
-      );
-    } catch (e) {
-      throw Exception(
-        'The authorization credential could not be used to sign in. Exception: $e',
-      );
-    }
-  }
-
-  @override
   AuthCredential getAuthCredential(String phoneVerificationId, String smsCode) {
     return PhoneAuthProvider.getCredential(
       verificationId: phoneVerificationId,
       smsCode: smsCode,
     );
+  }
+
+  @override
+  Future<User> signInWithCredential(AuthCredential authCredential) async {
+    try {
+      AuthResult authResult =
+          await _firebaseAuth.signInWithCredential(authCredential);
+
+      return User.fromFirebaseUser(authResult.user);
+    } catch (e) {
+      throw Exception(
+        'The authorization credential could not be used to sign in. Exception: $e',
+      );
+    }
   }
 }

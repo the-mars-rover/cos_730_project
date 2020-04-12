@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:invite_only_auth/src/repositories/auth_repository/firebase_auth_repository.dart';
 
 import '../../../invite_only_auth.dart';
@@ -43,11 +44,11 @@ abstract class AuthRepository<T> {
   ///   will include a [verificationId] to use with [getAuthCredential] when validating
   ///   an SMS code.
   Future<void> verifyPhoneNumber({
-    String phoneNumber,
-    Duration retrievalTimeout,
-    Function(T) verificationCompleted,
-    Function(Exception) verificationFailed,
-    Function(String) codeSent,
+    @required String phoneNumber,
+    @required Duration retrievalTimeout,
+    @required Function(T) verificationCompleted,
+    @required Function(Exception) verificationFailed,
+    @required Function(String) codeSent,
   });
 
   /// Returns an authorization credential of type [T]
