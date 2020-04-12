@@ -1,5 +1,5 @@
 name: invite_only_docs
-description: Access and manage identity document information for Invite Only users.
+description: Access and manage identity document information for users.
 version: 0.0.1
 author:
 homepage:
@@ -14,6 +14,14 @@ dependencies:
   # Annotations for freezed. This package does nothing without freezed.
   # See https://pub.dev/packages/freezed_annotation
   freezed_annotation: ^0.7.1
+
+  # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
+  # See https://pub.dev/packages/firebase_core
+  firebase_core: ^0.4.4+3
+
+  # A Flutter plugin to use the Cloud Firestore API.
+  # See https://pub.dev/packages/cloud_firestore
+  cloud_firestore: ^0.13.4+2
 
 dev_dependencies:
   flutter_test:
