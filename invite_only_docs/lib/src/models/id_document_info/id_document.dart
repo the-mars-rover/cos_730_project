@@ -1,32 +1,32 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
-part 'id_document_info.freezed.dart';
+part 'id_document.freezed.dart';
 
-part 'id_document_info.g.dart';
+part 'id_document.g.dart';
 
 @freezed
-abstract class IdDocumentInfo with _$IdDocumentInfo {
-  const factory IdDocumentInfo.idBookInfo({
+abstract class IdDocument with _$IdDocument {
+  const factory IdDocument.idBook({
     /// The string identifying the user to which this ID Book is linked.
     @required String userId,
-  }) = IdBookInfo;
+  }) = IdBook;
 
-  const factory IdDocumentInfo.idCardInfo({
+  const factory IdDocument.idCard({
     /// The string identifying the user to which this ID card is linked.
     @required String userId,
-  }) = IdCardInfo;
+  }) = IdCard;
 
-  const factory IdDocumentInfo.driversLicenseInfo({
+  const factory IdDocument.driversLicense({
     /// The string identifying the user to which this Driver's license is linked.
     @required String userId,
-  }) = DriversLicenseInfo;
+  }) = DriversLicense;
 
-  const factory IdDocumentInfo.passportInfo({
+  const factory IdDocument.passport({
     /// The string identifying the user to which this Passport is linked.
     @required String userId,
-  }) = PassportInfo;
+  }) = Passport;
 
-  factory IdDocumentInfo.fromJson(Map<String, dynamic> json) =>
-      _$IdDocumentInfoFromJson(json);
+  factory IdDocument.fromJson(Map<String, dynamic> json) =>
+      _$IdDocumentFromJson(json);
 }
