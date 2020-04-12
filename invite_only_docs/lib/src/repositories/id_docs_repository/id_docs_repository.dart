@@ -1,8 +1,19 @@
 import 'package:invite_only_docs/invite_only_docs.dart';
 import 'package:invite_only_docs/src/errors/document_rejected.dart';
 import 'package:invite_only_docs/src/models/documented_user/documented_user.dart';
+import 'package:invite_only_docs/src/repositories/id_docs_repository/firebase_id_docs_repository.dart';
 
+/// Retrieve and manage identity documents associated with specific users.
+///
+/// Implementations of this class will use a chosen Data Storage Provider to
+/// implement the necessary functionality for abstract methods. So, to support a
+/// different data storage provider, all that is needed is to write a new implementation
+/// of this interface.
 abstract class IdDocsRepository {
+  /// The singleton instance of [IdDocsRepository]. Currently, [FirebaseIdDocsRepository]
+  /// is being used since Firestore is the preferred Data Storage Provider.
+  static IdDocsRepository get instance => FirebaseIdDocsRepository();
+
   /// Returns a stream of the documented user with the given id.
   ///
   /// If this is the first time a user with the given id is being accessed,
