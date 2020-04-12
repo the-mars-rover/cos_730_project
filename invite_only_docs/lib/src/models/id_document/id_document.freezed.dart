@@ -27,28 +27,20 @@ IdDocument _$IdDocumentFromJson(Map<String, dynamic> json) {
 class _$IdDocumentTearOff {
   const _$IdDocumentTearOff();
 
-  IdBook idBook({@required String userId}) {
-    return IdBook(
-      userId: userId,
-    );
+  IdBook idBook() {
+    return const IdBook();
   }
 
-  IdCard idCard({@required String userId}) {
-    return IdCard(
-      userId: userId,
-    );
+  IdCard idCard() {
+    return const IdCard();
   }
 
-  DriversLicense driversLicense({@required String userId}) {
-    return DriversLicense(
-      userId: userId,
-    );
+  DriversLicense driversLicense() {
+    return const DriversLicense();
   }
 
-  Passport passport({@required String userId}) {
-    return Passport(
-      userId: userId,
-    );
+  Passport passport() {
+    return const Passport();
   }
 }
 
@@ -56,21 +48,19 @@ class _$IdDocumentTearOff {
 const $IdDocument = _$IdDocumentTearOff();
 
 mixin _$IdDocument {
-  String get userId;
-
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBook(@required String userId),
-    @required Result idCard(@required String userId),
-    @required Result driversLicense(@required String userId),
-    @required Result passport(@required String userId),
+    @required Result idBook(),
+    @required Result idCard(),
+    @required Result driversLicense(),
+    @required Result passport(),
   });
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBook(@required String userId),
-    Result idCard(@required String userId),
-    Result driversLicense(@required String userId),
-    Result passport(@required String userId),
+    Result idBook(),
+    Result idCard(),
+    Result driversLicense(),
+    Result passport(),
     @required Result orElse(),
   });
   @optionalTypeArgs
@@ -89,14 +79,12 @@ mixin _$IdDocument {
     @required Result orElse(),
   });
   Map<String, dynamic> toJson();
-  $IdDocumentCopyWith<IdDocument> get copyWith;
 }
 
 abstract class $IdDocumentCopyWith<$Res> {
   factory $IdDocumentCopyWith(
           IdDocument value, $Res Function(IdDocument) then) =
       _$IdDocumentCopyWithImpl<$Res>;
-  $Res call({String userId});
 }
 
 class _$IdDocumentCopyWithImpl<$Res> implements $IdDocumentCopyWith<$Res> {
@@ -105,22 +93,11 @@ class _$IdDocumentCopyWithImpl<$Res> implements $IdDocumentCopyWith<$Res> {
   final IdDocument _value;
   // ignore: unused_field
   final $Res Function(IdDocument) _then;
-
-  @override
-  $Res call({
-    Object userId = freezed,
-  }) {
-    return _then(_value.copyWith(
-      userId: userId == freezed ? _value.userId : userId as String,
-    ));
-  }
 }
 
-abstract class $IdBookCopyWith<$Res> implements $IdDocumentCopyWith<$Res> {
+abstract class $IdBookCopyWith<$Res> {
   factory $IdBookCopyWith(IdBook value, $Res Function(IdBook) then) =
       _$IdBookCopyWithImpl<$Res>;
-  @override
-  $Res call({String userId});
 }
 
 class _$IdBookCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
@@ -130,83 +107,61 @@ class _$IdBookCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 
   @override
   IdBook get _value => super._value as IdBook;
-
-  @override
-  $Res call({
-    Object userId = freezed,
-  }) {
-    return _then(IdBook(
-      userId: userId == freezed ? _value.userId : userId as String,
-    ));
-  }
 }
 
 @JsonSerializable()
 class _$IdBook with DiagnosticableTreeMixin implements IdBook {
-  const _$IdBook({@required this.userId}) : assert(userId != null);
+  const _$IdBook();
 
   factory _$IdBook.fromJson(Map<String, dynamic> json) =>
       _$_$IdBookFromJson(json);
 
   @override
-  final String userId;
-
-  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocument.idBook(userId: $userId)';
+    return 'IdDocument.idBook()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'IdDocument.idBook'))
-      ..add(DiagnosticsProperty('userId', userId));
+    properties..add(DiagnosticsProperty('type', 'IdDocument.idBook'));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is IdBook &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+    return identical(this, other) || (other is IdBook);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
-
-  @override
-  $IdBookCopyWith<IdBook> get copyWith =>
-      _$IdBookCopyWithImpl<IdBook>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBook(@required String userId),
-    @required Result idCard(@required String userId),
-    @required Result driversLicense(@required String userId),
-    @required Result passport(@required String userId),
+    @required Result idBook(),
+    @required Result idCard(),
+    @required Result driversLicense(),
+    @required Result passport(),
   }) {
     assert(idBook != null);
     assert(idCard != null);
     assert(driversLicense != null);
     assert(passport != null);
-    return idBook(userId);
+    return idBook();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBook(@required String userId),
-    Result idCard(@required String userId),
-    Result driversLicense(@required String userId),
-    Result passport(@required String userId),
+    Result idBook(),
+    Result idCard(),
+    Result driversLicense(),
+    Result passport(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (idBook != null) {
-      return idBook(userId);
+      return idBook();
     }
     return orElse();
   }
@@ -249,21 +204,14 @@ class _$IdBook with DiagnosticableTreeMixin implements IdBook {
 }
 
 abstract class IdBook implements IdDocument {
-  const factory IdBook({@required String userId}) = _$IdBook;
+  const factory IdBook() = _$IdBook;
 
   factory IdBook.fromJson(Map<String, dynamic> json) = _$IdBook.fromJson;
-
-  @override
-  String get userId;
-  @override
-  $IdBookCopyWith<IdBook> get copyWith;
 }
 
-abstract class $IdCardCopyWith<$Res> implements $IdDocumentCopyWith<$Res> {
+abstract class $IdCardCopyWith<$Res> {
   factory $IdCardCopyWith(IdCard value, $Res Function(IdCard) then) =
       _$IdCardCopyWithImpl<$Res>;
-  @override
-  $Res call({String userId});
 }
 
 class _$IdCardCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
@@ -273,83 +221,61 @@ class _$IdCardCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 
   @override
   IdCard get _value => super._value as IdCard;
-
-  @override
-  $Res call({
-    Object userId = freezed,
-  }) {
-    return _then(IdCard(
-      userId: userId == freezed ? _value.userId : userId as String,
-    ));
-  }
 }
 
 @JsonSerializable()
 class _$IdCard with DiagnosticableTreeMixin implements IdCard {
-  const _$IdCard({@required this.userId}) : assert(userId != null);
+  const _$IdCard();
 
   factory _$IdCard.fromJson(Map<String, dynamic> json) =>
       _$_$IdCardFromJson(json);
 
   @override
-  final String userId;
-
-  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocument.idCard(userId: $userId)';
+    return 'IdDocument.idCard()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'IdDocument.idCard'))
-      ..add(DiagnosticsProperty('userId', userId));
+    properties..add(DiagnosticsProperty('type', 'IdDocument.idCard'));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is IdCard &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+    return identical(this, other) || (other is IdCard);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
-
-  @override
-  $IdCardCopyWith<IdCard> get copyWith =>
-      _$IdCardCopyWithImpl<IdCard>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBook(@required String userId),
-    @required Result idCard(@required String userId),
-    @required Result driversLicense(@required String userId),
-    @required Result passport(@required String userId),
+    @required Result idBook(),
+    @required Result idCard(),
+    @required Result driversLicense(),
+    @required Result passport(),
   }) {
     assert(idBook != null);
     assert(idCard != null);
     assert(driversLicense != null);
     assert(passport != null);
-    return idCard(userId);
+    return idCard();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBook(@required String userId),
-    Result idCard(@required String userId),
-    Result driversLicense(@required String userId),
-    Result passport(@required String userId),
+    Result idBook(),
+    Result idCard(),
+    Result driversLicense(),
+    Result passport(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (idCard != null) {
-      return idCard(userId);
+      return idCard();
     }
     return orElse();
   }
@@ -392,23 +318,15 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
 }
 
 abstract class IdCard implements IdDocument {
-  const factory IdCard({@required String userId}) = _$IdCard;
+  const factory IdCard() = _$IdCard;
 
   factory IdCard.fromJson(Map<String, dynamic> json) = _$IdCard.fromJson;
-
-  @override
-  String get userId;
-  @override
-  $IdCardCopyWith<IdCard> get copyWith;
 }
 
-abstract class $DriversLicenseCopyWith<$Res>
-    implements $IdDocumentCopyWith<$Res> {
+abstract class $DriversLicenseCopyWith<$Res> {
   factory $DriversLicenseCopyWith(
           DriversLicense value, $Res Function(DriversLicense) then) =
       _$DriversLicenseCopyWithImpl<$Res>;
-  @override
-  $Res call({String userId});
 }
 
 class _$DriversLicenseCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
@@ -419,83 +337,61 @@ class _$DriversLicenseCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 
   @override
   DriversLicense get _value => super._value as DriversLicense;
-
-  @override
-  $Res call({
-    Object userId = freezed,
-  }) {
-    return _then(DriversLicense(
-      userId: userId == freezed ? _value.userId : userId as String,
-    ));
-  }
 }
 
 @JsonSerializable()
 class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
-  const _$DriversLicense({@required this.userId}) : assert(userId != null);
+  const _$DriversLicense();
 
   factory _$DriversLicense.fromJson(Map<String, dynamic> json) =>
       _$_$DriversLicenseFromJson(json);
 
   @override
-  final String userId;
-
-  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocument.driversLicense(userId: $userId)';
+    return 'IdDocument.driversLicense()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'IdDocument.driversLicense'))
-      ..add(DiagnosticsProperty('userId', userId));
+    properties..add(DiagnosticsProperty('type', 'IdDocument.driversLicense'));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is DriversLicense &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+    return identical(this, other) || (other is DriversLicense);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
-
-  @override
-  $DriversLicenseCopyWith<DriversLicense> get copyWith =>
-      _$DriversLicenseCopyWithImpl<DriversLicense>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBook(@required String userId),
-    @required Result idCard(@required String userId),
-    @required Result driversLicense(@required String userId),
-    @required Result passport(@required String userId),
+    @required Result idBook(),
+    @required Result idCard(),
+    @required Result driversLicense(),
+    @required Result passport(),
   }) {
     assert(idBook != null);
     assert(idCard != null);
     assert(driversLicense != null);
     assert(passport != null);
-    return driversLicense(userId);
+    return driversLicense();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBook(@required String userId),
-    Result idCard(@required String userId),
-    Result driversLicense(@required String userId),
-    Result passport(@required String userId),
+    Result idBook(),
+    Result idCard(),
+    Result driversLicense(),
+    Result passport(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (driversLicense != null) {
-      return driversLicense(userId);
+      return driversLicense();
     }
     return orElse();
   }
@@ -538,22 +434,15 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
 }
 
 abstract class DriversLicense implements IdDocument {
-  const factory DriversLicense({@required String userId}) = _$DriversLicense;
+  const factory DriversLicense() = _$DriversLicense;
 
   factory DriversLicense.fromJson(Map<String, dynamic> json) =
       _$DriversLicense.fromJson;
-
-  @override
-  String get userId;
-  @override
-  $DriversLicenseCopyWith<DriversLicense> get copyWith;
 }
 
-abstract class $PassportCopyWith<$Res> implements $IdDocumentCopyWith<$Res> {
+abstract class $PassportCopyWith<$Res> {
   factory $PassportCopyWith(Passport value, $Res Function(Passport) then) =
       _$PassportCopyWithImpl<$Res>;
-  @override
-  $Res call({String userId});
 }
 
 class _$PassportCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
@@ -563,83 +452,61 @@ class _$PassportCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 
   @override
   Passport get _value => super._value as Passport;
-
-  @override
-  $Res call({
-    Object userId = freezed,
-  }) {
-    return _then(Passport(
-      userId: userId == freezed ? _value.userId : userId as String,
-    ));
-  }
 }
 
 @JsonSerializable()
 class _$Passport with DiagnosticableTreeMixin implements Passport {
-  const _$Passport({@required this.userId}) : assert(userId != null);
+  const _$Passport();
 
   factory _$Passport.fromJson(Map<String, dynamic> json) =>
       _$_$PassportFromJson(json);
 
   @override
-  final String userId;
-
-  @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocument.passport(userId: $userId)';
+    return 'IdDocument.passport()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'IdDocument.passport'))
-      ..add(DiagnosticsProperty('userId', userId));
+    properties..add(DiagnosticsProperty('type', 'IdDocument.passport'));
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other is Passport &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+    return identical(this, other) || (other is Passport);
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(userId);
-
-  @override
-  $PassportCopyWith<Passport> get copyWith =>
-      _$PassportCopyWithImpl<Passport>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   Result when<Result extends Object>({
-    @required Result idBook(@required String userId),
-    @required Result idCard(@required String userId),
-    @required Result driversLicense(@required String userId),
-    @required Result passport(@required String userId),
+    @required Result idBook(),
+    @required Result idCard(),
+    @required Result driversLicense(),
+    @required Result passport(),
   }) {
     assert(idBook != null);
     assert(idCard != null);
     assert(driversLicense != null);
     assert(passport != null);
-    return passport(userId);
+    return passport();
   }
 
   @override
   @optionalTypeArgs
   Result maybeWhen<Result extends Object>({
-    Result idBook(@required String userId),
-    Result idCard(@required String userId),
-    Result driversLicense(@required String userId),
-    Result passport(@required String userId),
+    Result idBook(),
+    Result idCard(),
+    Result driversLicense(),
+    Result passport(),
     @required Result orElse(),
   }) {
     assert(orElse != null);
     if (passport != null) {
-      return passport(userId);
+      return passport();
     }
     return orElse();
   }
@@ -682,12 +549,7 @@ class _$Passport with DiagnosticableTreeMixin implements Passport {
 }
 
 abstract class Passport implements IdDocument {
-  const factory Passport({@required String userId}) = _$Passport;
+  const factory Passport() = _$Passport;
 
   factory Passport.fromJson(Map<String, dynamic> json) = _$Passport.fromJson;
-
-  @override
-  String get userId;
-  @override
-  $PassportCopyWith<Passport> get copyWith;
 }
