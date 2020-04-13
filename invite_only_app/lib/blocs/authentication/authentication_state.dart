@@ -4,24 +4,18 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class AuthenticationState {}
 
-class AuthInitial extends AuthenticationState {}
+class InitialAuthenticationState extends AuthenticationState {}
 
-class AuthLoading extends AuthenticationState {}
+class AuthenticationInProgress extends AuthenticationState {}
 
-class SendOtpSuccess extends AuthenticationState {
-  final String phoneNumber;
-  final String verificationId;
-  final int resendToken;
-
-  SendOtpSuccess(this.phoneNumber,this.verificationId, this.resendToken);
-}
-
-class AuthFailure extends AuthenticationState {
-  AuthFailure();
-}
-
-class AuthSuccess extends AuthenticationState {
+class UserAuthenticated extends AuthenticationState {
   final User user;
 
-  AuthSuccess(this.user);
+  UserAuthenticated(this.user);
+}
+
+class AuthenticationFailed extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationFailed(this.errorMessage);
 }

@@ -5,82 +5,44 @@ import './bloc.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  AuthRepository _authRepository = AuthRepository.instance;
+  final _authRepository = AuthRepository.instance;
 
   @override
-  AuthenticationState get initialState => AuthInitial();
+  AuthenticationState get initialState => InitialAuthenticationState();
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is PhoneSubmitted) {
-      yield* _mapPhoneSubmittedToState(event);
-    } else if (event is OtpSent) {
-      yield* _mapOtpSent(event);
-    } else if (event is PhoneAuthFailed) {
-      yield* _mapPhoneAuthFailedToState(event);
-    } else if (event is PhoneAuthSucceeded) {
-      yield* _mapPhoneAuthSucceededToState(event);
-    } else if (event is OtpSubmitted) {
-      yield* _mapOtpSubmittedToState(event);
+    if (event is AuthInit) {
+      yield* _mapAuthInitToState(event);
+    }
+
+    if (event is SignIn) {
+      yield* _mapSignInToState(event);
     }
   }
 
-  Stream<AuthenticationState> _mapPhoneSubmittedToState(
-      PhoneSubmitted event) async* {
-    yield AuthLoading();
+  Stream<AuthenticationState> _mapAuthInitToState(AuthInit event) async* {
+    yield AuthenticationInProgress();
 
-    await _authRepository.verifyPhoneNumber(
-      phoneNumber: event.phoneNumber,
-      retrievalTimeout: Duration(seconds: 60),
-      verificationCompleted: (authCredential) {
-        this.add(PhoneAuthSucceeded(authCredential));
-      },
-      verificationFailed: (authException) {
-        this.add(PhoneAuthFailed(authException));
-      },
-      codeSent: (verificationId, [forceResendingToken]) {
-        this.add(
-            OtpSent(event.phoneNumber, verificationId, forceResendingToken));
-      },
-    );
+    var user = await _authRepository.currentUser();
+    if (user != null) {
+      yield UserAuthenticated(user);
+    } else {
+      yield InitialAuthenticationState();
+    }
   }
 
-  Stream<AuthenticationState> _mapOtpSent(OtpSent event) async* {
-    yield SendOtpSuccess(
-        event.phoneNumber, event.verificationId, event.resendToken);
-  }
-
-  Stream<AuthenticationState> _mapPhoneAuthFailedToState(
-      PhoneAuthFailed event) async* {
-    yield AuthFailure();
-  }
-
-  Stream<AuthenticationState> _mapPhoneAuthSucceededToState(
-      PhoneAuthSucceeded event) async* {
-    yield AuthLoading();
+  Stream<AuthenticationState> _mapSignInToState(SignIn event) async* {
+    yield AuthenticationInProgress();
 
     try {
-      User user =
+      var user =
           await _authRepository.signInWithCredential(event.authCredential);
-      yield AuthSuccess(user);
-    } catch (e) {
-      yield AuthFailure();
-    }
-  }
-
-  Stream<AuthenticationState> _mapOtpSubmittedToState(
-      OtpSubmitted event) async* {
-    yield AuthLoading();
-
-    var currentState = this.state;
-
-    if (currentState is SendOtpSuccess) {
-      var authCredential = _authRepository.getAuthCredential(
-          currentState.verificationId, event.otp);
-
-      this.add(PhoneAuthSucceeded(authCredential));
+      yield UserAuthenticated(user);
+    } on AuthFailure catch (e) {
+      yield AuthenticationFailed(e.reason);
     }
   }
 }
