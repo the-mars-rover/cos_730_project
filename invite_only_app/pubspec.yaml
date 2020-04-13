@@ -44,10 +44,6 @@ dependencies:
   # See https://pub.dev/packages/firebase_core
   firebase_core: ^0.4.4+3
 
-  # A Flutter plugin to use the Firebase Authentication API.
-  # See https://pub.dev/packages/firebase_auth
-  firebase_auth: ^0.15.5+3
-
   # A Flutter plugin to use the Google Analytics for Firebase API.
   # See https://pub.dev/packages/firebase_analytics
   firebase_analytics: ^5.0.11
