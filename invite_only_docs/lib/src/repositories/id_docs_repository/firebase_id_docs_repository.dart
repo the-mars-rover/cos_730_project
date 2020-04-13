@@ -17,15 +17,14 @@ class FirebaseIdDocsRepository implements IdDocsRepository {
 
   @override
   Future<Stream<DocumentedUser>> documentedUser(String userId) async {
-    DocumentSnapshot userSnapshot =
-        await _firestore.collection(COLLECTION_NAME).document(userId).get();
-
-    // if the user does not yet exist, add one.
-    if (!userSnapshot.exists) {
-      await _addDocumentedUser(userId);
-    }
+    // First, ensure that the user exists
+    await _firestore
+        .collection(COLLECTION_NAME)
+        .document(userId)
+        .setData(DocumentedUser(id: userId).toJson(), merge: true);
 
     return _firestore
+        .collection(COLLECTION_NAME)
         .document(userId)
         .snapshots()
         .map<DocumentedUser>((userSnapshot) {
@@ -34,44 +33,20 @@ class FirebaseIdDocsRepository implements IdDocsRepository {
   }
 
   @override
-  Future<void> submitDocument(String userId, IdDocument document) async {
-    final DocumentReference userRef =
-        _firestore.collection(COLLECTION_NAME).document();
-    await _firestore.runTransaction((Transaction tx) async {
-      DocumentSnapshot userSnapshot = await tx.get(userRef);
-
-      if (userSnapshot.exists) {
-        var savedUser = DocumentedUser.fromJson(userSnapshot.data);
-        // TODO: validate that document is valid before adding to user.
-        var updatedUser = _addDocToUser(savedUser, document);
-
-        await tx.update(userRef, updatedUser.toJson());
-      }
-    });
+  Future<void> deleteUser(String userId) async {
+    await _firestore.collection(COLLECTION_NAME).document(userId).delete();
   }
 
   @override
-  Future<void> deleteUser(String userId) async {
-    final DocumentReference userRef =
-        _firestore.collection(COLLECTION_NAME).document();
-    await _firestore.runTransaction((Transaction tx) async {
-      DocumentSnapshot userSnapshot = await tx.get(userRef);
-
-      if (userSnapshot.exists) {
-        await tx.delete(userRef);
-      }
-    });
-  }
-
-  /// A helper method for [documentedUser] to add a documented user with the
-  /// given id when one does not yet exist.
-  Future<void> _addDocumentedUser(String userId) async {
-    var newUser = DocumentedUser(id: userId);
-
+  Future<void> submitDocument(String userId, IdDocument document) async {
+    var userSnapshot =
+        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
+    var updatedUser = _addDocToUser(savedUser, document);
     await _firestore
         .collection(COLLECTION_NAME)
         .document(userId)
-        .setData(newUser.toJson());
+        .updateData(updatedUser.toJson());
   }
 
   /// A helper method for [submitDocument] which returns a new documented user
