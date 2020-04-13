@@ -47,7 +47,7 @@ abstract class AuthRepository<T> {
     @required String phoneNumber,
     @required Duration retrievalTimeout,
     @required Function(T) verificationCompleted,
-    @required Function(Exception) verificationFailed,
+    @required Function(AuthFailure) verificationFailed,
     @required Function(String) codeSent,
   });
 
@@ -61,5 +61,8 @@ abstract class AuthRepository<T> {
 
   /// Sign in the user using the authorization credential of type [T] provided by
   /// the verificationCompleted callback of [verifyPhoneNumber] or [getAuthCredential].
+  ///
+  /// Throws [AuthFailure] if the sign in was unsuccessful. [AuthFailure.reason]
+  /// will contain the reason for the failed sign in.
   Future<User> signInWithCredential(T authCredential);
 }

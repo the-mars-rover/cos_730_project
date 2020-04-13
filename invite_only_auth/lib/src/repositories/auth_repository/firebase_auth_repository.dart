@@ -34,14 +34,14 @@ class FirebaseAuthRepository implements AuthRepository<AuthCredential> {
     @required String phoneNumber,
     @required Duration retrievalTimeout,
     @required Function(AuthCredential) verificationCompleted,
-    @required Function(AuthException) verificationFailed,
+    @required Function(AuthFailure) verificationFailed,
     @required Function(String) codeSent,
   }) async {
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       timeout: retrievalTimeout,
       verificationCompleted: verificationCompleted,
-      verificationFailed: verificationFailed,
+      verificationFailed: (e) => AuthFailure(e.message),
       codeSent: codeSent,
       codeAutoRetrievalTimeout: (verificationId) {
         //do nothing
@@ -65,7 +65,7 @@ class FirebaseAuthRepository implements AuthRepository<AuthCredential> {
 
       return User.fromFirebaseUser(authResult.user);
     } catch (e) {
-      throw Exception(
+      throw AuthFailure(
         'The authorization credential could not be used to sign in. Exception: $e',
       );
     }
