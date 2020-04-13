@@ -9,7 +9,6 @@ void main() {
   group('FirebaseIdDocsRepository', () {
     // Mock and inject dependencies in the instance of FirebaseAuthRepository
     FirestoreMock firestoreMock = FirestoreMock();
-    TransactionMock transactionMock = TransactionMock();
     CollectionReferenceMock collectionReferenceMock = CollectionReferenceMock();
     DocumentReferenceMock documentReferenceMock = DocumentReferenceMock();
     DocumentSnapshotMock documentSnapshotMock = DocumentSnapshotMock();
@@ -149,8 +148,6 @@ void main() {
 }
 
 class FirestoreMock extends Mock implements Firestore {}
-
-class TransactionMock extends Mock implements Transaction {}
 
 class CollectionReferenceMock extends Mock implements CollectionReference {}
 
