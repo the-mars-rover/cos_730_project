@@ -3,6 +3,8 @@ import 'package:invite_only/widgets/widgets.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class UserHomePage extends StatelessWidget {
+  static const ROUTE = '/';
+
   @override
   Widget build(BuildContext context) {
     return ScreenTypeLayout(
