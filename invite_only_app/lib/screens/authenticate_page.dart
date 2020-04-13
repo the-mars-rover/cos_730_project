@@ -43,7 +43,8 @@ class AuthenticatePage extends StatelessWidget {
           }
 
           if (state is UserAuthenticated) {
-            return _buildScaffold(context);
+            // irrelevant due to re-navigation
+            return LoadingScaffold();
           }
 
           if (state is AuthenticationFailed) {

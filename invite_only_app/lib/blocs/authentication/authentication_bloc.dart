@@ -8,7 +8,7 @@ class AuthenticationBloc
   final _authRepository = AuthRepository.instance;
 
   @override
-  AuthenticationState get initialState => InitialAuthenticationState();
+  AuthenticationState get initialState => AuthenticationInProgress();
 
   @override
   Stream<AuthenticationState> mapEventToState(
