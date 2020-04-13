@@ -3,13 +3,60 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:international_phone_input/international_phone_input.dart';
 import 'package:invite_only/blocs/authentication/authentication_bloc.dart';
 import 'package:invite_only/blocs/authentication/authentication_event.dart';
+import 'package:invite_only/blocs/blocs.dart';
+import 'package:invite_only/screens/screens.dart';
+import 'package:invite_only/widgets/error_dialog.dart';
 import 'package:invite_only/widgets/widgets.dart';
 
 class AuthenticatePage extends StatelessWidget {
+  static const String ROUTE = '/authenticate';
+
   final _phoneController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<AuthenticationBloc>(
+      create: (context) => AuthenticationBloc(),//..add(AuthInit()),
+      child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
+        listener: (context, state) {
+          if (state is AuthenticationFailed) {
+            showDialog(
+              context: context,
+              builder: (context) => ErrorDialog(message: state.errorMessage),
+            );
+          }
+
+          if (state is UserAuthenticated) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              UserHomePage.ROUTE,
+              (route) => false,
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is InitialAuthenticationState) {
+            return _buildScaffold(context);
+          }
+
+          if (state is AuthenticationInProgress) {
+            return LoadingScaffold();
+          }
+
+          if (state is UserAuthenticated) {
+            return _buildScaffold(context);
+          }
+
+          if (state is AuthenticationFailed) {
+            return _buildScaffold(context);
+          }
+
+          return null;
+        },
+      ),
+    );
+  }
+
+  Scaffold _buildScaffold(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SizedBox(
@@ -40,15 +87,18 @@ class AuthenticatePage extends StatelessWidget {
                   child: Text("SUBMIT"),
                   color: Theme.of(context).primaryColor,
                   onPressed: () async {
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(PhoneSubmitted(_phoneController.text));
-                    showDialog(
+                    var authCredential = await showDialog(
                       context: context,
-//                      barrierDismissible: false,
-                      builder: (context) => OtpDialog(
+                      barrierDismissible: false,
+                      builder: (context) => PhoneVerificationDialog(
                         phoneNumber: _phoneController.text,
                       ),
                     );
+
+                    if (authCredential != null) {
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(SignIn(authCredential));
+                    }
                   },
                 ),
               ),
