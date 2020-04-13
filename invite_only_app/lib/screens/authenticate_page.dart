@@ -16,7 +16,7 @@ class AuthenticatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
-      create: (context) => AuthenticationBloc(),//..add(AuthInit()),
+      create: (context) => AuthenticationBloc()..add(AuthInit()),
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is AuthenticationFailed) {
