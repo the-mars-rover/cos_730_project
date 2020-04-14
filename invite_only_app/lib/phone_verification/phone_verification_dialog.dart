@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/blocs/blocs.dart';
-import 'package:invite_only/widgets/error_dialog.dart';
-import 'package:invite_only/widgets/widgets.dart';
+import 'package:invite_only/app/app.dart';
+import 'package:invite_only/phone_verification/phone_verification.dart';
 
 class PhoneVerificationDialog extends StatelessWidget {
   final String _phoneNumber;

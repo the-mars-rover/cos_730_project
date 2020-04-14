@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:invite_only/screens/screens.dart';
+
+import 'authentication/authentication.dart';
+import 'home/home.dart';
+import 'profile/profile.dart';
 
 void main() {
   runApp(InviteOnlyApp());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invite_only/screens/screens.dart';
+import 'package:invite_only/space_details/space_details.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class SpaceCard extends StatelessWidget {

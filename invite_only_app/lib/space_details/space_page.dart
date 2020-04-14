@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:invite_only/widgets/widgets.dart';
+import 'package:invite_only/app/app.dart';
+import 'package:invite_only/space_details/space_details.dart';
 
 class SpacePage extends StatelessWidget {
   @override

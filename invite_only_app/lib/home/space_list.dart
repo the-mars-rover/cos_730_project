@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:invite_only/widgets/widgets.dart';
+import 'package:invite_only/home/home.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class SpaceList extends StatelessWidget {

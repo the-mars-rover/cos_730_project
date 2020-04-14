@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:invite_only/widgets/widgets.dart';
-
-import 'screens.dart';
+import 'package:invite_only/authentication/authentication.dart';
+import 'package:invite_only/create_space/create_space.dart';
+import 'package:invite_only/home/home.dart';
+import 'package:invite_only/profile/profile.dart';
 
 class UserHomePage extends StatelessWidget {
   static const ROUTE = '/';

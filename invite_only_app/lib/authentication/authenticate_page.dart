@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:international_phone_input/international_phone_input.dart';
-import 'package:invite_only/blocs/authentication/authentication_bloc.dart';
-import 'package:invite_only/blocs/authentication/authentication_event.dart';
-import 'package:invite_only/blocs/blocs.dart';
-import 'package:invite_only/screens/screens.dart';
-import 'package:invite_only/widgets/error_dialog.dart';
-import 'package:invite_only/widgets/widgets.dart';
+import 'package:invite_only/app/app.dart';
+import 'package:invite_only/home/home.dart';
+import 'package:invite_only/phone_verification/phone_verification.dart';
+
+import 'authentication.dart';
 
 class AuthenticatePage extends StatelessWidget {
   static const String ROUTE = '/authenticate';
