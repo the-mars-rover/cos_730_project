@@ -60,6 +60,10 @@ dependencies:
   # See https://pub.dev/packages/image_picker
   image_picker: ^0.6.5
 
+  # A Flutter plugin to use the ML Kit Vision for Firebase API.
+  # See https://pub.dev/packages/firebase_ml_vision
+  firebase_ml_vision: ^0.9.3+8
+
   # A Flutter package providing the means to work Invite Only users.
   # See https://github.com/marcus-bornman/invite_only_users
   invite_only_auth:
