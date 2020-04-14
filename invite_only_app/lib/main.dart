@@ -19,6 +19,7 @@ class InviteOnlyApp extends StatelessWidget {
       routes: {
         AuthenticatePage.ROUTE: (context) => AuthenticatePage(),
         UserHomePage.ROUTE: (context) => UserHomePage(),
+        UserProfilePage.ROUTE: (context) => UserProfilePage(),
       },
     );
   }

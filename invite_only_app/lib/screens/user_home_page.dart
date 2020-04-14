@@ -25,11 +25,7 @@ class UserHomePage extends StatelessWidget {
                     leading: Icon(Icons.person),
                     title: Text("My Profile"),
                     onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => UserProfilePage(),
-                        ),
-                      );
+                      Navigator.of(context).pushNamed(UserProfilePage.ROUTE);
                     },
                   ),
                   Divider(),
@@ -56,7 +52,7 @@ class UserHomePage extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => AuthenticatePage(),
                         ),
-                            (route) => false,
+                        (route) => false,
                       );
                     },
                   ),
