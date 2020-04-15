@@ -19,3 +19,8 @@ class ProfileDetailsLoaded extends ProfileState {
   @override
   List<Object> get props => [];
 }
+
+class CapturingDocument extends ProfileState {
+  @override
+  List<Object> get props => [];
+}

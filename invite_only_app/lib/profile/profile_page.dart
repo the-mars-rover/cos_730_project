@@ -20,6 +20,10 @@ class UserProfilePage extends StatelessWidget {
           return _buildProfileScaffold(state);
         }
 
+        if (state is CapturingDocument) {
+          return LoadingScaffold();
+        }
+
         return null;
       }),
     );
@@ -54,12 +58,15 @@ class UserProfilePage extends StatelessWidget {
                       documentedUser.idCard == null
                           ? Container()
                           : Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                      ),
+                              Icons.check_circle,
+                              color: Colors.green,
+                            ),
                       IconButton(
                         icon: Icon(Icons.camera_alt),
-                        onPressed: () {},
+                        onPressed: () {
+                          BlocProvider.of<ProfileBloc>(context)
+                              .add(CaptureDocument());
+                        },
                       ),
                     ],
                   ),
@@ -124,9 +131,9 @@ class UserProfilePage extends StatelessWidget {
                       documentedUser.passport == null
                           ? Container()
                           : Icon(
-                        Icons.check_circle,
-                        color: Colors.green,
-                      ),
+                              Icons.check_circle,
+                              color: Colors.green,
+                            ),
                       IconButton(
                         icon: Icon(Icons.camera_alt),
                         onPressed: () {},

@@ -8,3 +8,8 @@ class LoadProfileDetails extends ProfileEvent {
   @override
   List<Object> get props => [];
 }
+
+class CaptureDocument extends ProfileEvent {
+  @override
+  List<Object> get props => [];
+}
