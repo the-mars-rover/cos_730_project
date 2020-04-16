@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:invite_only_auth/invite_only_auth.dart';
 import 'package:invite_only_docs/invite_only_docs.dart';
 
 abstract class ProfileState extends Equatable {
@@ -11,16 +12,16 @@ class LoadingProfileDetails extends ProfileState {
 }
 
 class ProfileDetailsLoaded extends ProfileState {
-  final String phoneNumber;
+  final User user;
   final Stream<DocumentedUser> documentedUserStream;
 
-  ProfileDetailsLoaded(this.phoneNumber, this.documentedUserStream);
+  ProfileDetailsLoaded(this.user, this.documentedUserStream);
 
   @override
   List<Object> get props => [];
 }
 
-class CapturingDocument extends ProfileState {
+class UploadingDocument extends ProfileState {
   @override
   List<Object> get props => [];
 }
