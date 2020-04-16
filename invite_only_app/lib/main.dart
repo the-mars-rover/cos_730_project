@@ -5,6 +5,7 @@ import 'home/home.dart';
 import 'profile/profile.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(InviteOnlyApp());
 }
 
