@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:invite_only_docs/invite_only_docs.dart';
 import 'package:invite_only_docs/src/repositories/id_docs_repository/firebase_id_docs_repository.dart';
 import 'package:mockito/mockito.dart';
@@ -105,7 +104,7 @@ void main() {
                 DocumentedUser(id: 'userId', idBook: kTestIdBook).toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', kTestIdBook);
+        await idDocsRepository.submitIdBook('userId', kTestIdBook);
 
         verify(
           documentReferenceMock.updateData(
@@ -128,7 +127,7 @@ void main() {
                 DocumentedUser(id: 'userId', idCard: kTestIdCard).toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', kTestIdCard);
+        await idDocsRepository.submitIdCard('userId', kTestIdCard);
 
         verify(
           documentReferenceMock.updateData(
@@ -152,7 +151,8 @@ void main() {
                 .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', kTestDriversLicense);
+        await idDocsRepository.submitDriversLicense(
+            'userId', kTestDriversLicense);
 
         verify(
           documentReferenceMock.updateData(
@@ -176,7 +176,7 @@ void main() {
                 DocumentedUser(id: 'userId', passport: Passport()).toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', Passport());
+        await idDocsRepository.submitPassport('userId', Passport());
 
         verify(
           documentReferenceMock.updateData(

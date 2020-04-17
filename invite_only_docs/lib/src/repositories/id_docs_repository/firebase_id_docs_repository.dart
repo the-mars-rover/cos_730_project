@@ -38,30 +38,51 @@ class FirebaseIdDocsRepository implements IdDocsRepository {
   }
 
   @override
-  Future<void> submitDocument(String userId, IdDocument document) async {
+  Future<void> submitIdCard(String userId, IdCard idCard) async {
     var userSnapshot =
         await _firestore.collection(COLLECTION_NAME).document(userId).get();
     var savedUser = DocumentedUser.fromJson(userSnapshot.data);
-    var updatedUser = _addDocToUser(savedUser, document);
+    var updatedUser = savedUser.copyWith(idCard: idCard);
     await _firestore
         .collection(COLLECTION_NAME)
         .document(userId)
         .updateData(updatedUser.toJson());
   }
 
-  /// A helper method for [submitDocument] which returns a new documented user
-  /// with the given document added to the saved user.
-  DocumentedUser _addDocToUser(DocumentedUser savedUser, IdDocument document) {
-    if (document is IdBook) {
-      return savedUser.copyWith(idBook: document);
-    } else if (document is IdCard) {
-      return savedUser.copyWith(idCard: document);
-    } else if (document is DriversLicense) {
-      return savedUser.copyWith(driversLicense: document);
-    } else if (document is Passport) {
-      return savedUser.copyWith(passport: document);
-    }
+  @override
+  Future<void> submitDriversLicense(
+      String userId, DriversLicense driversLicense) async {
+    var userSnapshot =
+        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
+    var updatedUser = savedUser.copyWith(driversLicense: driversLicense);
+    await _firestore
+        .collection(COLLECTION_NAME)
+        .document(userId)
+        .updateData(updatedUser.toJson());
+  }
 
-    return savedUser;
+  @override
+  Future<void> submitIdBook(String userId, IdBook idBook) async {
+    var userSnapshot =
+        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
+    var updatedUser = savedUser.copyWith(idBook: idBook);
+    await _firestore
+        .collection(COLLECTION_NAME)
+        .document(userId)
+        .updateData(updatedUser.toJson());
+  }
+
+  @override
+  Future<void> submitPassport(String userId, Passport passport) async {
+    var userSnapshot =
+        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
+    var updatedUser = savedUser.copyWith(passport: passport);
+    await _firestore
+        .collection(COLLECTION_NAME)
+        .document(userId)
+        .updateData(updatedUser.toJson());
   }
 }

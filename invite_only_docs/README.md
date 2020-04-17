@@ -36,14 +36,14 @@ a user with no attached documents will be created with the given ID:
     Stream<DocumentedUser> documentedUserStream = await idDocsRepository.documentedUser(userId);
 ```
 
-Submit a document for a user:
+Submit an ID Card for a user:
 ```dart
     import import 'package:invite_only_docs/invite_only_docs.dart';
 
     IdDocsRepository idDocsRepository = IdDocsRepository.instance;
     IdBook idBook = IdDocument.idBook(idNumber: '5809155800088', gender: 'M', birthDate: DateTime(1958, 9, 15), citizenshipStatus: 'SA Citizen');
     try {
-      await idDocsRepository.submitDocument(userId, idBook);
+      await idDocsRepository.submitIdCard(userId, idBook);
     } on DocumentedRejected catch (e) {
       print (e.reason);
     } 

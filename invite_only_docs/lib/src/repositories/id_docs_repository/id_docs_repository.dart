@@ -21,12 +21,34 @@ abstract class IdDocsRepository {
   /// method returns a future.
   Future<Stream<DocumentedUser>> documentedUser(String id);
 
-  /// Submit a document for the user with the given id.
+  /// Submit an ID Card for the user with the given id.
   ///
   /// Throws [DocumentedRejected] if the given documented is rejected,
   /// in which case [DocumentedRejected.reason] will contain the reason why the
   /// document was rejected.
-  Future<void> submitDocument(String userId, IdDocument document);
+  Future<void> submitIdCard(String userId, IdCard idCard);
+
+  /// Submit an ID Book for the user with the given id.
+  ///
+  /// Throws [DocumentedRejected] if the given documented is rejected,
+  /// in which case [DocumentedRejected.reason] will contain the reason why the
+  /// document was rejected.
+  Future<void> submitIdBook(String userId, IdBook idBook);
+
+  /// Submit a Drivers License for the user with the given id.
+  ///
+  /// Throws [DocumentedRejected] if the given documented is rejected,
+  /// in which case [DocumentedRejected.reason] will contain the reason why the
+  /// document was rejected.
+  Future<void> submitDriversLicense(
+      String userId, DriversLicense driversLicense);
+
+  /// Submit a Passport for the user with the given id.
+  ///
+  /// Throws [DocumentedRejected] if the given documented is rejected,
+  /// in which case [DocumentedRejected.reason] will contain the reason why the
+  /// document was rejected.
+  Future<void> submitPassport(String userId, Passport passport);
 
   /// Deletes the documented user with the given id.
   ///
