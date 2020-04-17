@@ -27,7 +27,7 @@ flutter run
 ## Software Requirements Specification
 
 The requirements for Invite Only have been documented using Latex. The corresponding Latex files can be 
-found [here](documentation/software_requirements_specification).
+found [here](../documentation/software_requirements_specification).
 
 ## UML Diagrams
 
@@ -35,4 +35,4 @@ Various UML diagrams representing the architecture and different components of I
 [draw.io](https://www.draw.io/). In addition to be included in the 
 [Software Requirements Specification](#Software Requirements Specification) as images, 
 the source for these diagrams is available in 
-[invite_only.drawio](documentation/draw_io_diagrams/invite_only.drawio).
+[invite_only.drawio](../documentation/draw_io_diagrams/invite_only.drawio).
