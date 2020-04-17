@@ -1,7 +1,6 @@
 name: invite_only_docs
 description: Access and manage identity document information for users.
 version: 0.0.1
-author:
 homepage:
 
 environment:
