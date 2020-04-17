@@ -5,6 +5,47 @@ import 'package:invite_only_docs/invite_only_docs.dart';
 import 'package:invite_only_docs/src/repositories/id_docs_repository/firebase_id_docs_repository.dart';
 import 'package:mockito/mockito.dart';
 
+final kTestIdBook = IdDocument.idBook(
+  idNumber: '5809155800088',
+  gender: 'M',
+  birthDate: DateTime(1958, 9, 15),
+  citizenshipStatus: 'SA Citizen',
+);
+
+final kTestIdCard = IdDocument.idCard(
+  idNumber: '5809155800088',
+  firstNames: 'Stefanus Petrus',
+  surname: 'Rautenbach',
+  gender: 'M',
+  birthDate: DateTime(1958, 9, 15),
+  issueDate: DateTime(2015, 5, 20),
+  smartIdNumber: '000000000',
+  nationality: 'ZA',
+  countryOfBirth: 'ZA',
+  citizenshipStatus: 'SA Citizen',
+);
+
+final kTestDriversLicense = IdDocument.driversLicense(
+  idNumber: '5809155800088',
+  firstNames: 'Stefanus Petrus',
+  surname: 'Rautenbach',
+  gender: 'M',
+  birthDate: DateTime(1958, 9, 15),
+  issueDates: DateTime(2015, 5, 20),
+  licenseNumber: '0000000000',
+  vehicleCodes: ['B'],
+  prdpCode: 'prdpCode',
+  idCountryOfIssue: 'ZA',
+  licenseCountryOfIssue: 'ZA',
+  vehicleRestrictions: ['02'],
+  idNumberType: '02',
+  driverRestrictions: '00',
+  prdpExpiry: DateTime(2025, 5, 20),
+  licenseIssueNumber: '00000000',
+  validFrom: DateTime(2015, 5, 20),
+  validTo: DateTime(2025, 5, 20),
+);
+
 void main() {
   group('FirebaseIdDocsRepository', () {
     // Mock and inject dependencies in the instance of FirebaseAuthRepository
@@ -61,14 +102,14 @@ void main() {
         when(documentSnapshotMock.data)
             .thenReturn(DocumentedUser(id: 'userId').toJson());
         when(documentReferenceMock.updateData(
-                DocumentedUser(id: 'userId', idBook: IdBook()).toJson()))
+                DocumentedUser(id: 'userId', idBook: kTestIdBook).toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', IdBook());
+        await idDocsRepository.submitDocument('userId', kTestIdBook);
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', idBook: IdBook()).toJson(),
+            DocumentedUser(id: 'userId', idBook: kTestIdBook).toJson(),
           ),
         ).called(1);
       });
@@ -84,14 +125,14 @@ void main() {
         when(documentSnapshotMock.data)
             .thenReturn(DocumentedUser(id: 'userId').toJson());
         when(documentReferenceMock.updateData(
-                DocumentedUser(id: 'userId', idCard: IdCard()).toJson()))
+                DocumentedUser(id: 'userId', idCard: kTestIdCard).toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', IdCard());
+        await idDocsRepository.submitDocument('userId', kTestIdCard);
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', idCard: IdCard()).toJson(),
+            DocumentedUser(id: 'userId', idCard: kTestIdCard).toJson(),
           ),
         ).called(1);
       });
@@ -106,16 +147,16 @@ void main() {
             .thenAnswer((_) => Future.value(documentSnapshotMock));
         when(documentSnapshotMock.data)
             .thenReturn(DocumentedUser(id: 'userId').toJson());
-        when(documentReferenceMock.updateData(
-                DocumentedUser(id: 'userId', driversLicense: DriversLicense())
-                    .toJson()))
+        when(documentReferenceMock.updateData(DocumentedUser(
+                    id: 'userId', driversLicense: kTestDriversLicense)
+                .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDocument('userId', DriversLicense());
+        await idDocsRepository.submitDocument('userId', kTestDriversLicense);
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', driversLicense: DriversLicense())
+            DocumentedUser(id: 'userId', driversLicense: kTestDriversLicense)
                 .toJson(),
           ),
         ).called(1);
