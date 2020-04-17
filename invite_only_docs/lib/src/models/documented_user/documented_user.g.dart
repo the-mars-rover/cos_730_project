@@ -28,8 +28,8 @@ _$_DocumentedUser _$_$_DocumentedUserFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_DocumentedUserToJson(_$_DocumentedUser instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'idBook': instance.idBook,
-      'idCard': instance.idCard,
-      'driversLicense': instance.driversLicense,
-      'passport': instance.passport,
+      'idBook': instance.idBook?.toJson(),
+      'idCard': instance.idCard?.toJson(),
+      'driversLicense': instance.driversLicense?.toJson(),
+      'passport': instance.passport?.toJson(),
     };
