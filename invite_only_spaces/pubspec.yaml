@@ -1,7 +1,6 @@
 name: invite_only_spaces
 description: Manage or control access to Invite Only access-controlled Spaces
 version: 0.0.1
-author:
 homepage:
 
 environment:
@@ -11,9 +10,37 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Annotations for freezed. This package does nothing without freezed.
+  # See https://pub.dev/packages/freezed_annotation
+  freezed_annotation: ^0.7.1
+
+  # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
+  # See https://pub.dev/packages/firebase_core
+  firebase_core: ^0.4.4+3
+
+  # A Flutter plugin to use the Cloud Firestore API.
+  # See https://pub.dev/packages/cloud_firestore
+  cloud_firestore: ^0.13.4+2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # The build_runner package provides a concrete way of generating files using Dart code, outside of tools like pub.
+  # See https://pub.dev/packages/build_runner
+  build_runner: ^1.8.1
+
+  # Welcome to Freezed, yet another code generator for unions/pattern-matching/copy.
+  # See https://pub.dev/packages/freezed
+  freezed: ^0.10.5
+
+  # Provides Dart Build System builders for handling JSON.
+  # See https://pub.dev/packages/json_serializable
+  json_serializable: ^3.3.0
+
+  # Mock library for Dart inspired by Mockito.
+  # See https://pub.dev/packages/mockito
+  mockito: ^4.1.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
