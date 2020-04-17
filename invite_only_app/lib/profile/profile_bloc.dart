@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:invite_only_auth/invite_only_auth.dart';
 import 'package:invite_only_docs/invite_only_docs.dart';
@@ -24,8 +25,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield* _mapLoadProfileDetailsToState(event);
     }
 
-    if (event is UploadDocument) {
-      yield* _mapUploadDocumentToState(event);
+    if (event is UploadIdCard) {
+      yield* _mapUploadIdCardToState(event);
+    }
+
+    if (event is UploadIdBook) {
+      yield* _mapUploadIdBookToState(event);
     }
   }
 
@@ -38,34 +43,52 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     yield ProfileDetailsLoaded(user, documentedUserStream);
   }
 
-  Stream<ProfileState> _mapUploadDocumentToState(UploadDocument event) async* {
+  Stream<ProfileState> _mapUploadIdCardToState(UploadIdCard event) async* {
     final currentState = state;
     if (currentState is ProfileDetailsLoaded) {
       yield UploadingDocument();
 
-      if (event.scannedIdCard != null) {
-        _idDocsRepository.submitDocument(
+      try {
+        _idDocsRepository.submitIdCard(
           currentState.user.id,
           _convertIdCard(event.scannedIdCard),
         );
-      }
 
-      if (event.scannedIdBook != null) {
-        _idDocsRepository.submitDocument(
-          currentState.user.id,
-          _convertIdBook(event.scannedIdBook),
+        yield ProfileDetailsLoaded(
+          currentState.user,
+          currentState.documentedUserStream,
         );
+      } on DocumentedRejected catch (e) {
+        yield DocumentUploadError(e.reason);
       }
-
-      yield ProfileDetailsLoaded(
-        currentState.user,
-        currentState.documentedUserStream,
-      );
     }
   }
 
-  /// This is a helper method which returns an IdCard (required by the [_idDocsRepository])
-  /// from the given RsaIdCard (scanned using the `rsa_scan` package).
+  Stream<ProfileState> _mapUploadIdBookToState(UploadIdBook event) async* {
+    final currentState = state;
+    if (currentState is ProfileDetailsLoaded) {
+      yield UploadingDocument();
+
+      try {
+        _idDocsRepository.submitIdBook(
+          currentState.user.id,
+          _convertIdBook(event.scannedIdBook),
+        );
+
+        yield ProfileDetailsLoaded(
+          currentState.user,
+          currentState.documentedUserStream,
+        );
+      } on DocumentedRejected catch (e) {
+        yield DocumentUploadError(e.reason);
+      }
+    }
+  }
+
+  /// This is a helper method for [_mapUploadIdCardToState].
+  ///
+  /// Returns an IdCard (required by the [_idDocsRepository]) from the given
+  /// RsaIdCard (scanned using the `rsa_scan` package).
   IdCard _convertIdCard(RsaIdCard scannedIdCard) {
     return IdDocument.idCard(
       idNumber: scannedIdCard.idNumber,
@@ -81,8 +104,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
-  /// This is a helper method which returns an IdCard (required by the [_idDocsRepository])
-  /// from the given RsaIdCard (scanned using the `rsa_scan` package).
+  /// This is a helper method for [_mapUploadIdBookToState].
+  ///
+  /// Returns an IdBook (required by the [_idDocsRepository]) from the given
+  /// RsaIdBook (scanned using the `rsa_scan` package).
   IdBook _convertIdBook(RsaIdBook scannedIdBook) {
     return IdDocument.idBook(
       idNumber: scannedIdBook.idNumber,

@@ -21,6 +21,15 @@ class ProfileDetailsLoaded extends ProfileState {
   List<Object> get props => [];
 }
 
+class DocumentUploadError extends ProfileState {
+  final String errorMessage;
+
+  DocumentUploadError(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}
+
 class UploadingDocument extends ProfileState {
   @override
   List<Object> get props => [];

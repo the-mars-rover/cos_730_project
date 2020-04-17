@@ -70,7 +70,7 @@ class UserProfilePage extends StatelessWidget {
                         if (scannedIdCard == null) return;
 
                         BlocProvider.of<ProfileBloc>(context).add(
-                          UploadDocument(scannedIdCard: scannedIdCard),
+                          UploadIdCard(scannedIdCard: scannedIdCard),
                         );
                       },
                     ),
@@ -100,7 +100,7 @@ class UserProfilePage extends StatelessWidget {
                         if (scannedIdBook == null) return;
 
                         BlocProvider.of<ProfileBloc>(context).add(
-                          UploadDocument(scannedIdBook: scannedIdBook),
+                          UploadIdCard(scannedIdBook: scannedIdBook),
                         );
                       },
                     ),
