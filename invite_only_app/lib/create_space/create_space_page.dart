@@ -11,6 +11,7 @@ import 'package:invite_only/create_space/create_space_state.dart';
 class CreateSpacePage extends StatelessWidget {
   static const String ROUTE = '/space/create';
 
+  final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _minAgeController = TextEditingController();
   final _capacityController = TextEditingController();
@@ -29,6 +30,9 @@ class CreateSpacePage extends StatelessWidget {
         listener: (context, state) {
           if (state is SpaceCreated) {
             Navigator.of(context).pop(state.space);
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('${state.space.title} successfully created'),
+            ));
           }
 
           if (state is ErrorCreatingSpace) {
@@ -71,136 +75,152 @@ class CreateSpacePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Create Space"),
       ),
-      body: ListView(
-        children: <Widget>[
-          TextFormField(
-            controller: _titleController,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.title),
-              labelText: "Add Title",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
-              ),
-            ),
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.edit_location),
-              labelText: "Add Location",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _minAgeController,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.child_care),
-              labelText: "Add Minimum Age",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _capacityController,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.block),
-              labelText: "Add Maximum Capacity",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _managersController,
-            onTap: () async {
-              final contacts = await ContactsSearchDelegate.selectContacts(
-                context,
-                _managerContacts,
-              );
-              if (contacts == null) return;
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          children: <Widget>[
+            TextFormField(
+              controller: _titleController,
+              validator: (text) {
+                if (text.isEmpty) {
+                  return 'You must enter a title';
+                }
 
-              _managerContacts.clear();
-              _managerContacts.addAll(contacts);
-              _managersController.text =
-                  contacts.map((contact) => contact.displayName).join(', ');
-            },
-            readOnly: true,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.people),
-              labelText: "Add Managers",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
-              ),
-            ),
-          ),
-          TextFormField(
-            controller: _guardsController,
-            onTap: () async {
-              final contacts = await ContactsSearchDelegate.selectContacts(
-                context,
-                _guardContacts,
-              );
-              if (contacts == null) return;
+                if (text.length < 3) {
+                  return 'The title must be at least 3 characters long';
+                }
 
-              _guardContacts.clear();
-              _guardContacts.addAll(contacts);
-              _guardsController.text =
-                  contacts.map((contact) => contact.displayName).join(', ');
-            },
-            readOnly: true,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.security),
-              labelText: "Add Guards",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
+                return null;
+              },
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.title),
+                labelText: "Add Title",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
               ),
             ),
-          ),
-          TextFormField(
-            controller: _invitersController,
-            onTap: () async {
-              final contacts = await ContactsSearchDelegate.selectContacts(
-                context,
-                _inviterContacts,
-              );
-              if (contacts == null) return;
+            TextFormField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.edit_location),
+                labelText: "Add Location",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            TextFormField(
+              controller: _minAgeController,
+              inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.child_care),
+                labelText: "Add Minimum Age",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            TextFormField(
+              controller: _capacityController,
+              inputFormatters: <TextInputFormatter>[
+                WhitelistingTextInputFormatter.digitsOnly
+              ],
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.block),
+                labelText: "Add Maximum Capacity",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            TextFormField(
+              controller: _managersController,
+              onTap: () async {
+                final contacts = await ContactsSearchDelegate.selectContacts(
+                  context,
+                  _managerContacts,
+                );
+                if (contacts == null) return;
 
-              _inviterContacts.clear();
-              _inviterContacts.addAll(contacts);
-              _invitersController.text =
-                  contacts.map((contact) => contact.displayName).join(', ');
-            },
-            readOnly: true,
-            decoration: InputDecoration(
-              prefixIcon: Icon(Icons.mail),
-              labelText: "Add Inviters",
-              suffixIcon: IconButton(
-                icon: Icon(Icons.help_outline),
-                onPressed: () {},
+                _managerContacts.clear();
+                _managerContacts.addAll(contacts);
+                _managersController.text =
+                    contacts.map((contact) => contact.displayName).join(', ');
+              },
+              readOnly: true,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.people),
+                labelText: "Add Managers",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
               ),
             ),
-          ),
-        ],
+            TextFormField(
+              controller: _guardsController,
+              onTap: () async {
+                final contacts = await ContactsSearchDelegate.selectContacts(
+                  context,
+                  _guardContacts,
+                );
+                if (contacts == null) return;
+
+                _guardContacts.clear();
+                _guardContacts.addAll(contacts);
+                _guardsController.text =
+                    contacts.map((contact) => contact.displayName).join(', ');
+              },
+              readOnly: true,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.security),
+                labelText: "Add Guards",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            TextFormField(
+              controller: _invitersController,
+              onTap: () async {
+                final contacts = await ContactsSearchDelegate.selectContacts(
+                  context,
+                  _inviterContacts,
+                );
+                if (contacts == null) return;
+
+                _inviterContacts.clear();
+                _inviterContacts.addAll(contacts);
+                _invitersController.text =
+                    contacts.map((contact) => contact.displayName).join(', ');
+              },
+              readOnly: true,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.mail),
+                labelText: "Add Inviters",
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.help_outline),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       persistentFooterButtons: <Widget>[
         RaisedButton(
           child: Text("SAVE"),
           color: Theme.of(context).primaryColor,
           onPressed: () {
+            if (!_formKey.currentState.validate()) return;
+
             BlocProvider.of<CreateSpaceBloc>(context).add(CreateSpace(
               title: _titleController.text,
               imageUrl:
@@ -213,8 +233,8 @@ class CreateSpacePage extends StatelessWidget {
                   _inviterContacts.map((c) => c.phones.first.value).toList(),
               locationLatitude: null,
               locationLongitude: null,
-              minAge: int.parse(_minAgeController.text),
-              maxCapacity: int.parse(_minAgeController.text),
+              minAge: int.tryParse(_minAgeController.text),
+              maxCapacity: int.tryParse(_minAgeController.text),
             ));
           },
         ),
