@@ -25,6 +25,10 @@ class UserProfilePage extends StatelessWidget {
           return LoadingScaffold();
         }
 
+        if (state is DocumentUploadError) {
+          return ErrorDialog(message: state.errorMessage);
+        }
+
         return null;
       }),
     );
