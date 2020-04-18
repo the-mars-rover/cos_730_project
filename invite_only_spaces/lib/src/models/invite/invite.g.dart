@@ -14,6 +14,7 @@ _$_Invite _$_$_InviteFromJson(Map<String, dynamic> json) {
     expiryDate: json['expiryDate'] == null
         ? null
         : DateTime.parse(json['expiryDate'] as String),
+    inviterPhoneNumber: json['inviterPhoneNumber'] as String,
   );
 }
 
@@ -22,4 +23,5 @@ Map<String, dynamic> _$_$_InviteToJson(_$_Invite instance) => <String, dynamic>{
       'code': instance.code,
       'spaceId': instance.spaceId,
       'expiryDate': instance.expiryDate?.toIso8601String(),
+      'inviterPhoneNumber': instance.inviterPhoneNumber,
     };

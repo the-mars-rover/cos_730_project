@@ -18,6 +18,9 @@ abstract class Invite with _$Invite {
 
     /// The date until which this invite may be used.
     @required DateTime expiryDate,
+
+    /// The phone number of the person who generated this invite
+    @required String inviterPhoneNumber,
   }) = _Invite;
 
   factory Invite.fromJson(Map<String, dynamic> json) => _$InviteFromJson(json);
