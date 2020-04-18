@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:invite_only/space_details/space_details.dart';
-import 'package:responsive_builder/responsive_builder.dart';
+import 'package:invite_only_auth/invite_only_auth.dart';
+import 'package:invite_only_spaces/invite_only_spaces.dart';
 
 class SpaceCard extends StatelessWidget {
+  final User currentUser;
+
+  final ControlledSpace space;
+
   const SpaceCard({
     Key key,
+    @required this.currentUser,
+    @required this.space,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ScreenTypeLayout(
-      watch: null,
-      mobile: _mobile(context),
-      tablet: _tablet(context),
-      desktop: _desktop(context),
-    );
-  }
-
-  Widget _mobile(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(
-            "https://www.the-wilds.co.za/templates/glovent/images/logo.jpg",
-          ),
-        ),
-        title: Text("The Wilds Estate"),
-        subtitle: Text("You are an Inviter for this space"),
+        leading: CircleAvatar(backgroundImage: NetworkImage(space.imageUrl)),
+        title: Text(space.title),
+        subtitle: Text(_buildSubtitle()),
         trailing: Icon(Icons.navigate_next),
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
@@ -37,30 +31,25 @@ class SpaceCard extends StatelessWidget {
     );
   }
 
-  Widget _tablet(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: Image.network(
-                "https://www.the-wilds.co.za/templates/glovent/images/logo.jpg",
-                fit: BoxFit.fill,
-              ),
-            ),
-            ListTile(
-              title: Text("The Wilds Estate"),
-              subtitle: Text("You are an Inviter for this space"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  String _buildSubtitle() {
+    if (space.managerPhones
+        .where((p) => p == currentUser.phoneNumber)
+        .isNotEmpty) {
+      return 'You are a manager for this space.';
+    }
 
-  Widget _desktop(BuildContext context) {
-    return null;
+    if (space.guardPhones
+        .where((p) => p == currentUser.phoneNumber)
+        .isNotEmpty) {
+      return 'You are a guard for this space.';
+    }
+
+    if (space.inviterPhones
+        .where((p) => p == currentUser.phoneNumber)
+        .isNotEmpty) {
+      return 'You are an inviter for this space.';
+    }
+
+    return '';
   }
 }
