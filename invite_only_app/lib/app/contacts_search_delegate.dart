@@ -4,13 +4,13 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class PhoneNumbersSearchDelegate extends SearchDelegate<List<String>> {
-  List<Item> phones;
-  StreamController<List<Item>> phonesSC;
+class ContactsSearchDelegate extends SearchDelegate<List<Contact>> {
+  final List<Contact> contacts;
+  StreamController<List<Contact>> contactsSC;
 
-  PhoneNumbersSearchDelegate() {
-    phones = List();
-    phonesSC.add(phones);
+  ContactsSearchDelegate({List<Contact> selectedContacts})
+      : contacts = selectedContacts != null ? selectedContacts : List() {
+    contactsSC.add(contacts);
   }
 
   @override
@@ -47,8 +47,8 @@ class PhoneNumbersSearchDelegate extends SearchDelegate<List<String>> {
         }
 
         var displayedContacts = snapshot.data;
-        return StreamBuilder<List<Item>>(
-          stream: phonesSC.stream,
+        return StreamBuilder<List<Contact>>(
+          stream: contactsSC.stream,
           builder: (context, snapshot) {
             return Scaffold(
               body: ListView.separated(
@@ -60,51 +60,17 @@ class PhoneNumbersSearchDelegate extends SearchDelegate<List<String>> {
                     return Container();
                   }
 
-                  if (contact.phones.length > 1) {
-                    return ExpansionTile(
-                      title: Text(contact.displayName),
-                      subtitle: Text(
-                        contact.phones
-                            .map((phone) => phone.value)
-                            .toList()
-                            .join(', '),
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .subtitle
-                            .copyWith(color: Colors.black45),
-                      ),
-                      children: contact.phones.map((phone) {
-                        return CheckboxListTile(
-                          title: Text(phone.label),
-                          subtitle: Text(phone.value),
-                          value: phones.where((p) => p == phone).isNotEmpty,
-                          onChanged: (selected) {
-                            if (selected) {
-                              phones.add(phone);
-                            } else {
-                              phones.remove(phone);
-                            }
-                            phonesSC.add(phones);
-                          },
-                        );
-                      }).toList(),
-                    );
-                  }
-
-                  Item phone = contact.phones.first;
                   return CheckboxListTile(
                     title: Text(contact.displayName),
-                    subtitle: Text(phone.value),
-                    value: phones.where((p) => p == phone).isNotEmpty,
+                    subtitle: Text(contact.phones.first.value),
+                    value: contacts.where((c) => c == contact).isNotEmpty,
                     onChanged: (selected) {
                       if (selected) {
-                        phones.add(phone);
+                        contacts.add(contact);
                       } else {
-                        phones.remove(phone);
+                        contacts.remove(contact);
                       }
-
-                      phonesSC.add(phones);
+                      contactsSC.add(contacts);
                     },
                   );
                 },
@@ -112,8 +78,8 @@ class PhoneNumbersSearchDelegate extends SearchDelegate<List<String>> {
               persistentFooterButtons: <Widget>[
                 FlatButton(
                   onPressed: () {
-                    phonesSC.close();
-                    close(context, phones.map((phone) => phone.value).toList());
+                    contactsSC.close();
+                    close(context, contacts);
                   },
                   child: Text('Save'),
                 )
@@ -133,7 +99,8 @@ class PhoneNumbersSearchDelegate extends SearchDelegate<List<String>> {
   @override
   String get searchFieldLabel => 'Search Contacts';
 
-  static Future<List<String>> selectPhoneNumber(BuildContext context) async {
+  static Future<List<Contact>> selectContacts(BuildContext context,
+      [List<Contact> selectedContacts]) async {
     // First ensure that contacts permission is granted
     var permissionStatus = await Permission.contacts.status;
     if (!permissionStatus.isGranted) {
@@ -164,9 +131,9 @@ class PhoneNumbersSearchDelegate extends SearchDelegate<List<String>> {
     }
 
     // Select and return contacts through a search using ContactsSearchDelegate
-    return await showSearch<List<String>>(
+    return await showSearch<List<Contact>>(
       context: context,
-      delegate: PhoneNumbersSearchDelegate(),
+      delegate: ContactsSearchDelegate(selectedContacts: selectedContacts),
     );
   }
 }
