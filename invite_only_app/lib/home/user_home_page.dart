@@ -1,14 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:invite_only/authentication/authentication.dart';
-import 'package:invite_only/create_space/create_space.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:invite_only/app/loading_scaffold.dart';
 import 'package:invite_only/home/home.dart';
+import 'package:invite_only/home/home_bloc.dart';
+import 'package:invite_only/home/home_event.dart';
+import 'package:invite_only/home/home_state.dart';
 import 'package:invite_only/profile/profile.dart';
+import 'package:invite_only_spaces/invite_only_spaces.dart';
 
 class UserHomePage extends StatelessWidget {
   static const ROUTE = '/';
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider<HomeBloc>(
+      create: (context) => HomeBloc()..add(InitializeHome()),
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is HomeLoading) {
+            return LoadingScaffold();
+          }
+
+          if (state is HomeReady) {
+            return _buildHomeScaffold(context, state);
+          }
+
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildHomeScaffold(BuildContext context, HomeReady state) {
     return Scaffold(
       drawer: Drawer(
         child: SafeArea(
@@ -33,11 +56,7 @@ class UserHomePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.add_location),
                     title: Text("Create Space"),
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateSpacePage(),
-                      ));
-                    },
+                    onTap: () {},
                   ),
                   Divider(),
                   ListTile(
@@ -48,14 +67,7 @@ class UserHomePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.exit_to_app),
                     title: Text("Sign Out"),
-                    onTap: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => AuthenticatePage(),
-                        ),
-                        (route) => false,
-                      );
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -66,7 +78,46 @@ class UserHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Invite Only"),
       ),
-      body: SpaceList(),
+      body: StreamBuilder(
+        stream: state.managedSpacesStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          final managedSpaces = snapshot.data;
+          return StreamBuilder(
+            stream: state.guardingSpacesStream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              final guardingSpaces = snapshot.data;
+              return StreamBuilder(
+                stream: state.invitingSpacesStream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  final invitingSpaces = snapshot.data;
+                  final allSpaces = List<ControlledSpace>()
+                    ..addAll(managedSpaces)
+                    ..addAll(guardingSpaces)
+                    ..addAll(invitingSpaces)
+                    ..sort((a, b) => a.title.compareTo(b.title));
+
+                  return SpaceList(
+                    currentUser: state.currentUser,
+                    list: allSpaces,
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
