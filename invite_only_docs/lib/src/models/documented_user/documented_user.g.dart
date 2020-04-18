@@ -8,7 +8,7 @@ part of 'documented_user.dart';
 
 _$_DocumentedUser _$_$_DocumentedUserFromJson(Map<String, dynamic> json) {
   return _$_DocumentedUser(
-    id: json['id'] as String,
+    phoneNumber: json['phoneNumber'] as String,
     idBook: json['idBook'] == null
         ? null
         : IdBook.fromJson(json['idBook'] as Map<String, dynamic>),
@@ -27,7 +27,7 @@ _$_DocumentedUser _$_$_DocumentedUserFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_DocumentedUserToJson(_$_DocumentedUser instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'phoneNumber': instance.phoneNumber,
       'idBook': instance.idBook?.toJson(),
       'idCard': instance.idCard?.toJson(),
       'driversLicense': instance.driversLicense?.toJson(),

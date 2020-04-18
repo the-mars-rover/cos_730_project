@@ -16,16 +16,15 @@ class FirebaseIdDocsRepository implements IdDocsRepository {
       : _firestore = firestore ?? Firestore.instance;
 
   @override
-  Future<Stream<DocumentedUser>> documentedUser(String userId) async {
+  Future<Stream<DocumentedUser>> documentedUser(String phoneNumber) async {
     // First, ensure that the user exists
-    await _firestore
-        .collection(COLLECTION_NAME)
-        .document(userId)
-        .setData(DocumentedUser(id: userId).toJson(), merge: true);
+    await _firestore.collection(COLLECTION_NAME).document(phoneNumber).setData(
+        DocumentedUser(phoneNumber: phoneNumber).toJson(),
+        merge: true);
 
     return _firestore
         .collection(COLLECTION_NAME)
-        .document(userId)
+        .document(phoneNumber)
         .snapshots()
         .map<DocumentedUser>((userSnapshot) {
       return DocumentedUser.fromJson(userSnapshot.data);
@@ -33,56 +32,64 @@ class FirebaseIdDocsRepository implements IdDocsRepository {
   }
 
   @override
-  Future<void> deleteUser(String userId) async {
-    await _firestore.collection(COLLECTION_NAME).document(userId).delete();
+  Future<void> deleteUser(String phoneNumber) async {
+    await _firestore.collection(COLLECTION_NAME).document(phoneNumber).delete();
   }
 
   @override
-  Future<void> submitIdCard(String userId, IdCard idCard) async {
-    var userSnapshot =
-        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+  Future<void> submitIdCard(String phoneNumber, IdCard idCard) async {
+    var userSnapshot = await _firestore
+        .collection(COLLECTION_NAME)
+        .document(phoneNumber)
+        .get();
     var savedUser = DocumentedUser.fromJson(userSnapshot.data);
     var updatedUser = savedUser.copyWith(idCard: idCard);
     await _firestore
         .collection(COLLECTION_NAME)
-        .document(userId)
+        .document(phoneNumber)
         .updateData(updatedUser.toJson());
   }
 
   @override
   Future<void> submitDriversLicense(
-      String userId, DriversLicense driversLicense) async {
-    var userSnapshot =
-        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+      String phoneNumber, DriversLicense driversLicense) async {
+    var userSnapshot = await _firestore
+        .collection(COLLECTION_NAME)
+        .document(phoneNumber)
+        .get();
     var savedUser = DocumentedUser.fromJson(userSnapshot.data);
     var updatedUser = savedUser.copyWith(driversLicense: driversLicense);
     await _firestore
         .collection(COLLECTION_NAME)
-        .document(userId)
+        .document(phoneNumber)
         .updateData(updatedUser.toJson());
   }
 
   @override
-  Future<void> submitIdBook(String userId, IdBook idBook) async {
-    var userSnapshot =
-        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+  Future<void> submitIdBook(String phoneNumber, IdBook idBook) async {
+    var userSnapshot = await _firestore
+        .collection(COLLECTION_NAME)
+        .document(phoneNumber)
+        .get();
     var savedUser = DocumentedUser.fromJson(userSnapshot.data);
     var updatedUser = savedUser.copyWith(idBook: idBook);
     await _firestore
         .collection(COLLECTION_NAME)
-        .document(userId)
+        .document(phoneNumber)
         .updateData(updatedUser.toJson());
   }
 
   @override
-  Future<void> submitPassport(String userId, Passport passport) async {
-    var userSnapshot =
-        await _firestore.collection(COLLECTION_NAME).document(userId).get();
+  Future<void> submitPassport(String phoneNumber, Passport passport) async {
+    var userSnapshot = await _firestore
+        .collection(COLLECTION_NAME)
+        .document(phoneNumber)
+        .get();
     var savedUser = DocumentedUser.fromJson(userSnapshot.data);
     var updatedUser = savedUser.copyWith(passport: passport);
     await _firestore
         .collection(COLLECTION_NAME)
-        .document(userId)
+        .document(phoneNumber)
         .updateData(updatedUser.toJson());
   }
 }

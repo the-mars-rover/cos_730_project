@@ -8,8 +8,8 @@ part 'documented_user.g.dart';
 @freezed
 abstract class DocumentedUser with _$DocumentedUser {
   const factory DocumentedUser({
-    /// The identifier for the user - can be anything as long as it is unique.
-    @required String id,
+    /// The phone number for the user - serves as a unique identifier.
+    @required String phoneNumber,
 
     /// The Id book stored for this user, null if no ID book is stored.
     IdBook idBook,

@@ -61,16 +61,19 @@ void main() {
         // Mock the necessary method calls
         when(firestoreMock.collection(FirebaseIdDocsRepository.COLLECTION_NAME))
             .thenReturn(collectionReferenceMock);
-        when(collectionReferenceMock.document('userId'))
+        when(collectionReferenceMock.document('phoneNumber'))
             .thenReturn(documentReferenceMock);
         when(documentReferenceMock.setData(argThat(anything)))
             .thenAnswer((_) => Future.value());
         when(documentReferenceMock.snapshots()).thenAnswer(
             (_) => Stream<DocumentSnapshot>.value(documentSnapshotMock));
-        when(documentSnapshotMock.data).thenReturn({'id': 'userId'});
+        when(documentSnapshotMock.data)
+            .thenReturn({'phoneNumber': 'phoneNumber'});
 
-        var documentedUser = await idDocsRepository.documentedUser('userId');
-        expectLater(documentedUser, emits(DocumentedUser(id: 'userId')));
+        var documentedUser =
+            await idDocsRepository.documentedUser('phoneNumber');
+        expectLater(
+            documentedUser, emits(DocumentedUser(phoneNumber: 'phoneNumber')));
       });
     });
 
@@ -79,11 +82,11 @@ void main() {
         // Mock the necessary method calls
         when(firestoreMock.collection(FirebaseIdDocsRepository.COLLECTION_NAME))
             .thenReturn(collectionReferenceMock);
-        when(collectionReferenceMock.document('userId'))
+        when(collectionReferenceMock.document('phoneNumber'))
             .thenReturn(documentReferenceMock);
         when(documentReferenceMock.delete()).thenAnswer((_) => Future.value());
 
-        await idDocsRepository.deleteUser('userId');
+        await idDocsRepository.deleteUser('phoneNumber');
 
         verify(documentReferenceMock.delete()).called(1);
       });
@@ -94,21 +97,23 @@ void main() {
         // Mock the necessary method calls
         when(firestoreMock.collection(FirebaseIdDocsRepository.COLLECTION_NAME))
             .thenReturn(collectionReferenceMock);
-        when(collectionReferenceMock.document('userId'))
+        when(collectionReferenceMock.document('phoneNumber'))
             .thenReturn(documentReferenceMock);
         when(documentReferenceMock.get())
             .thenAnswer((_) => Future.value(documentSnapshotMock));
         when(documentSnapshotMock.data)
-            .thenReturn(DocumentedUser(id: 'userId').toJson());
+            .thenReturn(DocumentedUser(phoneNumber: 'phoneNumber').toJson());
         when(documentReferenceMock.updateData(
-                DocumentedUser(id: 'userId', idBook: kTestIdBook).toJson()))
+                DocumentedUser(phoneNumber: 'phoneNumber', idBook: kTestIdBook)
+                    .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitIdBook('userId', kTestIdBook);
+        await idDocsRepository.submitIdBook('phoneNumber', kTestIdBook);
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', idBook: kTestIdBook).toJson(),
+            DocumentedUser(phoneNumber: 'phoneNumber', idBook: kTestIdBook)
+                .toJson(),
           ),
         ).called(1);
       });
@@ -117,21 +122,23 @@ void main() {
         // Mock the necessary method calls
         when(firestoreMock.collection(FirebaseIdDocsRepository.COLLECTION_NAME))
             .thenReturn(collectionReferenceMock);
-        when(collectionReferenceMock.document('userId'))
+        when(collectionReferenceMock.document('phoneNumber'))
             .thenReturn(documentReferenceMock);
         when(documentReferenceMock.get())
             .thenAnswer((_) => Future.value(documentSnapshotMock));
         when(documentSnapshotMock.data)
-            .thenReturn(DocumentedUser(id: 'userId').toJson());
+            .thenReturn(DocumentedUser(phoneNumber: 'phoneNumber').toJson());
         when(documentReferenceMock.updateData(
-                DocumentedUser(id: 'userId', idCard: kTestIdCard).toJson()))
+                DocumentedUser(phoneNumber: 'phoneNumber', idCard: kTestIdCard)
+                    .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitIdCard('userId', kTestIdCard);
+        await idDocsRepository.submitIdCard('phoneNumber', kTestIdCard);
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', idCard: kTestIdCard).toJson(),
+            DocumentedUser(phoneNumber: 'phoneNumber', idCard: kTestIdCard)
+                .toJson(),
           ),
         ).called(1);
       });
@@ -140,23 +147,26 @@ void main() {
         // Mock the necessary method calls
         when(firestoreMock.collection(FirebaseIdDocsRepository.COLLECTION_NAME))
             .thenReturn(collectionReferenceMock);
-        when(collectionReferenceMock.document('userId'))
+        when(collectionReferenceMock.document('phoneNumber'))
             .thenReturn(documentReferenceMock);
         when(documentReferenceMock.get())
             .thenAnswer((_) => Future.value(documentSnapshotMock));
         when(documentSnapshotMock.data)
-            .thenReturn(DocumentedUser(id: 'userId').toJson());
+            .thenReturn(DocumentedUser(phoneNumber: 'phoneNumber').toJson());
         when(documentReferenceMock.updateData(DocumentedUser(
-                    id: 'userId', driversLicense: kTestDriversLicense)
+                    phoneNumber: 'phoneNumber',
+                    driversLicense: kTestDriversLicense)
                 .toJson()))
             .thenAnswer((_) => Future.value());
 
         await idDocsRepository.submitDriversLicense(
-            'userId', kTestDriversLicense);
+            'phoneNumber', kTestDriversLicense);
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', driversLicense: kTestDriversLicense)
+            DocumentedUser(
+                    phoneNumber: 'phoneNumber',
+                    driversLicense: kTestDriversLicense)
                 .toJson(),
           ),
         ).called(1);
@@ -166,21 +176,23 @@ void main() {
         // Mock the necessary method calls
         when(firestoreMock.collection(FirebaseIdDocsRepository.COLLECTION_NAME))
             .thenReturn(collectionReferenceMock);
-        when(collectionReferenceMock.document('userId'))
+        when(collectionReferenceMock.document('phoneNumber'))
             .thenReturn(documentReferenceMock);
         when(documentReferenceMock.get())
             .thenAnswer((_) => Future.value(documentSnapshotMock));
         when(documentSnapshotMock.data)
-            .thenReturn(DocumentedUser(id: 'userId').toJson());
+            .thenReturn(DocumentedUser(phoneNumber: 'phoneNumber').toJson());
         when(documentReferenceMock.updateData(
-                DocumentedUser(id: 'userId', passport: Passport()).toJson()))
+                DocumentedUser(phoneNumber: 'phoneNumber', passport: Passport())
+                    .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitPassport('userId', Passport());
+        await idDocsRepository.submitPassport('phoneNumber', Passport());
 
         verify(
           documentReferenceMock.updateData(
-            DocumentedUser(id: 'userId', passport: Passport()).toJson(),
+            DocumentedUser(phoneNumber: 'phoneNumber', passport: Passport())
+                .toJson(),
           ),
         ).called(1);
       });

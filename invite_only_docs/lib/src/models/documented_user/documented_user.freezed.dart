@@ -16,13 +16,13 @@ class _$DocumentedUserTearOff {
   const _$DocumentedUserTearOff();
 
   _DocumentedUser call(
-      {@required String id,
+      {@required String phoneNumber,
       IdBook idBook,
       IdCard idCard,
       DriversLicense driversLicense,
       Passport passport}) {
     return _DocumentedUser(
-      id: id,
+      phoneNumber: phoneNumber,
       idBook: idBook,
       idCard: idCard,
       driversLicense: driversLicense,
@@ -35,7 +35,7 @@ class _$DocumentedUserTearOff {
 const $DocumentedUser = _$DocumentedUserTearOff();
 
 mixin _$DocumentedUser {
-  String get id;
+  String get phoneNumber;
   IdBook get idBook;
   IdCard get idCard;
   DriversLicense get driversLicense;
@@ -50,7 +50,7 @@ abstract class $DocumentedUserCopyWith<$Res> {
           DocumentedUser value, $Res Function(DocumentedUser) then) =
       _$DocumentedUserCopyWithImpl<$Res>;
   $Res call(
-      {String id,
+      {String phoneNumber,
       IdBook idBook,
       IdCard idCard,
       DriversLicense driversLicense,
@@ -67,14 +67,15 @@ class _$DocumentedUserCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
+    Object phoneNumber = freezed,
     Object idBook = freezed,
     Object idCard = freezed,
     Object driversLicense = freezed,
     Object passport = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as String,
+      phoneNumber:
+          phoneNumber == freezed ? _value.phoneNumber : phoneNumber as String,
       idBook: idBook == freezed ? _value.idBook : idBook as IdBook,
       idCard: idCard == freezed ? _value.idCard : idCard as IdCard,
       driversLicense: driversLicense == freezed
@@ -92,7 +93,7 @@ abstract class _$DocumentedUserCopyWith<$Res>
       __$DocumentedUserCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
+      {String phoneNumber,
       IdBook idBook,
       IdCard idCard,
       DriversLicense driversLicense,
@@ -111,14 +112,15 @@ class __$DocumentedUserCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object id = freezed,
+    Object phoneNumber = freezed,
     Object idBook = freezed,
     Object idCard = freezed,
     Object driversLicense = freezed,
     Object passport = freezed,
   }) {
     return _then(_DocumentedUser(
-      id: id == freezed ? _value.id : id as String,
+      phoneNumber:
+          phoneNumber == freezed ? _value.phoneNumber : phoneNumber as String,
       idBook: idBook == freezed ? _value.idBook : idBook as IdBook,
       idCard: idCard == freezed ? _value.idCard : idCard as IdCard,
       driversLicense: driversLicense == freezed
@@ -134,18 +136,18 @@ class _$_DocumentedUser
     with DiagnosticableTreeMixin
     implements _DocumentedUser {
   const _$_DocumentedUser(
-      {@required this.id,
+      {@required this.phoneNumber,
       this.idBook,
       this.idCard,
       this.driversLicense,
       this.passport})
-      : assert(id != null);
+      : assert(phoneNumber != null);
 
   factory _$_DocumentedUser.fromJson(Map<String, dynamic> json) =>
       _$_$_DocumentedUserFromJson(json);
 
   @override
-  final String id;
+  final String phoneNumber;
   @override
   final IdBook idBook;
   @override
@@ -157,7 +159,7 @@ class _$_DocumentedUser
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'DocumentedUser(id: $id, idBook: $idBook, idCard: $idCard, driversLicense: $driversLicense, passport: $passport)';
+    return 'DocumentedUser(phoneNumber: $phoneNumber, idBook: $idBook, idCard: $idCard, driversLicense: $driversLicense, passport: $passport)';
   }
 
   @override
@@ -165,7 +167,7 @@ class _$_DocumentedUser
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'DocumentedUser'))
-      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('idBook', idBook))
       ..add(DiagnosticsProperty('idCard', idCard))
       ..add(DiagnosticsProperty('driversLicense', driversLicense))
@@ -176,8 +178,9 @@ class _$_DocumentedUser
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _DocumentedUser &&
-            (identical(other.id, id) ||
-                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                const DeepCollectionEquality()
+                    .equals(other.phoneNumber, phoneNumber)) &&
             (identical(other.idBook, idBook) ||
                 const DeepCollectionEquality().equals(other.idBook, idBook)) &&
             (identical(other.idCard, idCard) ||
@@ -193,7 +196,7 @@ class _$_DocumentedUser
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(phoneNumber) ^
       const DeepCollectionEquality().hash(idBook) ^
       const DeepCollectionEquality().hash(idCard) ^
       const DeepCollectionEquality().hash(driversLicense) ^
@@ -211,7 +214,7 @@ class _$_DocumentedUser
 
 abstract class _DocumentedUser implements DocumentedUser {
   const factory _DocumentedUser(
-      {@required String id,
+      {@required String phoneNumber,
       IdBook idBook,
       IdCard idCard,
       DriversLicense driversLicense,
@@ -221,7 +224,7 @@ abstract class _DocumentedUser implements DocumentedUser {
       _$_DocumentedUser.fromJson;
 
   @override
-  String get id;
+  String get phoneNumber;
   @override
   IdBook get idBook;
   @override
