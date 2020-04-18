@@ -10,6 +10,7 @@ _$_ControlledSpace _$_$_ControlledSpaceFromJson(Map<String, dynamic> json) {
   return _$_ControlledSpace(
     id: json['id'] as String,
     title: json['title'] as String,
+    imageUrl: json['imageUrl'] as String,
     managerPhones:
         (json['managerPhones'] as List)?.map((e) => e as String)?.toList(),
     guardPhones:
@@ -27,6 +28,7 @@ Map<String, dynamic> _$_$_ControlledSpaceToJson(_$_ControlledSpace instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
+      'imageUrl': instance.imageUrl,
       'managerPhones': instance.managerPhones,
       'guardPhones': instance.guardPhones,
       'inviterPhones': instance.inviterPhones,

@@ -14,6 +14,9 @@ abstract class ControlledSpace with _$ControlledSpace {
     /// The title for the space - describes the space briefly
     @required String title,
 
+    /// The url to the image for this space.
+    @required String imageUrl,
+
     /// A list of phone numbers identifying managers of this space
     ///
     /// Managers have the authority to:

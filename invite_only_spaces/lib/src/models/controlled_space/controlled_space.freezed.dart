@@ -18,6 +18,7 @@ class _$ControlledSpaceTearOff {
   _ControlledSpace call(
       {@required String id,
       @required String title,
+      @required String imageUrl,
       @required List<String> managerPhones,
       @required List<String> guardPhones,
       @required List<String> inviterPhones,
@@ -28,6 +29,7 @@ class _$ControlledSpaceTearOff {
     return _ControlledSpace(
       id: id,
       title: title,
+      imageUrl: imageUrl,
       managerPhones: managerPhones,
       guardPhones: guardPhones,
       inviterPhones: inviterPhones,
@@ -45,6 +47,7 @@ const $ControlledSpace = _$ControlledSpaceTearOff();
 mixin _$ControlledSpace {
   String get id;
   String get title;
+  String get imageUrl;
   List<String> get managerPhones;
   List<String> get guardPhones;
   List<String> get inviterPhones;
@@ -64,6 +67,7 @@ abstract class $ControlledSpaceCopyWith<$Res> {
   $Res call(
       {String id,
       String title,
+      String imageUrl,
       List<String> managerPhones,
       List<String> guardPhones,
       List<String> inviterPhones,
@@ -85,6 +89,7 @@ class _$ControlledSpaceCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object title = freezed,
+    Object imageUrl = freezed,
     Object managerPhones = freezed,
     Object guardPhones = freezed,
     Object inviterPhones = freezed,
@@ -96,6 +101,7 @@ class _$ControlledSpaceCopyWithImpl<$Res>
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
       title: title == freezed ? _value.title : title as String,
+      imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       managerPhones: managerPhones == freezed
           ? _value.managerPhones
           : managerPhones as List<String>,
@@ -127,6 +133,7 @@ abstract class _$ControlledSpaceCopyWith<$Res>
   $Res call(
       {String id,
       String title,
+      String imageUrl,
       List<String> managerPhones,
       List<String> guardPhones,
       List<String> inviterPhones,
@@ -150,6 +157,7 @@ class __$ControlledSpaceCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object title = freezed,
+    Object imageUrl = freezed,
     Object managerPhones = freezed,
     Object guardPhones = freezed,
     Object inviterPhones = freezed,
@@ -161,6 +169,7 @@ class __$ControlledSpaceCopyWithImpl<$Res>
     return _then(_ControlledSpace(
       id: id == freezed ? _value.id : id as String,
       title: title == freezed ? _value.title : title as String,
+      imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       managerPhones: managerPhones == freezed
           ? _value.managerPhones
           : managerPhones as List<String>,
@@ -190,6 +199,7 @@ class _$_ControlledSpace
   const _$_ControlledSpace(
       {@required this.id,
       @required this.title,
+      @required this.imageUrl,
       @required this.managerPhones,
       @required this.guardPhones,
       @required this.inviterPhones,
@@ -199,6 +209,7 @@ class _$_ControlledSpace
       this.maxCapacity})
       : assert(id != null),
         assert(title != null),
+        assert(imageUrl != null),
         assert(managerPhones != null),
         assert(guardPhones != null),
         assert(inviterPhones != null);
@@ -210,6 +221,8 @@ class _$_ControlledSpace
   final String id;
   @override
   final String title;
+  @override
+  final String imageUrl;
   @override
   final List<String> managerPhones;
   @override
@@ -227,7 +240,7 @@ class _$_ControlledSpace
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ControlledSpace(id: $id, title: $title, managerPhones: $managerPhones, guardPhones: $guardPhones, inviterPhones: $inviterPhones, locationLatitude: $locationLatitude, locationLongitude: $locationLongitude, minAge: $minAge, maxCapacity: $maxCapacity)';
+    return 'ControlledSpace(id: $id, title: $title, imageUrl: $imageUrl, managerPhones: $managerPhones, guardPhones: $guardPhones, inviterPhones: $inviterPhones, locationLatitude: $locationLatitude, locationLongitude: $locationLongitude, minAge: $minAge, maxCapacity: $maxCapacity)';
   }
 
   @override
@@ -237,6 +250,7 @@ class _$_ControlledSpace
       ..add(DiagnosticsProperty('type', 'ControlledSpace'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
+      ..add(DiagnosticsProperty('imageUrl', imageUrl))
       ..add(DiagnosticsProperty('managerPhones', managerPhones))
       ..add(DiagnosticsProperty('guardPhones', guardPhones))
       ..add(DiagnosticsProperty('inviterPhones', inviterPhones))
@@ -254,6 +268,9 @@ class _$_ControlledSpace
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
+            (identical(other.imageUrl, imageUrl) ||
+                const DeepCollectionEquality()
+                    .equals(other.imageUrl, imageUrl)) &&
             (identical(other.managerPhones, managerPhones) ||
                 const DeepCollectionEquality()
                     .equals(other.managerPhones, managerPhones)) &&
@@ -281,6 +298,7 @@ class _$_ControlledSpace
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
+      const DeepCollectionEquality().hash(imageUrl) ^
       const DeepCollectionEquality().hash(managerPhones) ^
       const DeepCollectionEquality().hash(guardPhones) ^
       const DeepCollectionEquality().hash(inviterPhones) ^
@@ -303,6 +321,7 @@ abstract class _ControlledSpace implements ControlledSpace {
   const factory _ControlledSpace(
       {@required String id,
       @required String title,
+      @required String imageUrl,
       @required List<String> managerPhones,
       @required List<String> guardPhones,
       @required List<String> inviterPhones,
@@ -318,6 +337,8 @@ abstract class _ControlledSpace implements ControlledSpace {
   String get id;
   @override
   String get title;
+  @override
+  String get imageUrl;
   @override
   List<String> get managerPhones;
   @override
