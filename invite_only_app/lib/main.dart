@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:invite_only/create_space/create_space.dart';
 
 import 'authentication/authentication.dart';
 import 'home/home.dart';
@@ -24,6 +25,7 @@ class InviteOnlyApp extends StatelessWidget {
         AuthenticatePage.ROUTE: (context) => AuthenticatePage(),
         UserHomePage.ROUTE: (context) => UserHomePage(),
         UserProfilePage.ROUTE: (context) => UserProfilePage(),
+        CreateSpacePage.ROUTE: (context) => CreateSpacePage(),
       },
     );
   }
