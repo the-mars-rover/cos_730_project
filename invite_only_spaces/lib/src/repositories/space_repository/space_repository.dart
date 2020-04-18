@@ -1,6 +1,15 @@
+import 'package:invite_only_spaces/src/repositories/space_repository/firebase_space_repository.dart';
+
 import '../../../invite_only_spaces.dart';
 
 abstract class SpaceRepository {
+  /// The singleton instance of [SpaceRepository]. Currently, [FirebaseSpaceRepository]
+  /// is being used since Firestore is the preferred Data Storage Provider.
+  static final _instance = FirebaseSpaceRepository();
+
+  /// The getter for the singleton instance of this class.
+  static SpaceRepository get instance => _instance;
+
   /// Returns a stream of access controlled spaces for which the person with
   /// the given phone number is a manager.
   Stream<List<ControlledSpace>> managerSpaces(String phoneNumber);

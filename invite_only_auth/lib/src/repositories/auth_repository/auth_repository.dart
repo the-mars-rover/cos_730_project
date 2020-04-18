@@ -16,7 +16,10 @@ import '../../../invite_only_auth.dart';
 abstract class AuthRepository<T> {
   /// The singleton instance of [AuthRepository]. Currently, [FirebaseAuthRepository]
   /// is being used since FirebaseAuth is the preferred Authentication Provider.
-  static final AuthRepository instance = FirebaseAuthRepository();
+  static final _instance = FirebaseAuthRepository();
+
+  /// The getter for the singleton instance of this class.
+  static AuthRepository get instance => _instance;
 
   /// Return the user that is currently signed in, or null if no user is signed in.
   Future<User> currentUser();

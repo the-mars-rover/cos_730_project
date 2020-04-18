@@ -12,6 +12,9 @@ import 'package:invite_only_docs/src/repositories/id_docs_repository/firebase_id
 abstract class IdDocsRepository {
   /// The singleton instance of [IdDocsRepository]. Currently, [FirebaseIdDocsRepository]
   /// is being used since Firestore is the preferred Data Storage Provider.
+  static final _instance = FirebaseIdDocsRepository();
+
+  /// The getter for the singleton instance of this class.
   static IdDocsRepository get instance => FirebaseIdDocsRepository();
 
   /// Returns a stream of the documented user with the given id.
