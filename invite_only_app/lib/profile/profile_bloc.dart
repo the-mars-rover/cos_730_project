@@ -59,7 +59,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           currentState.documentedUserStream,
         );
       } on DocumentedRejected catch (e) {
-        yield DocumentUploadError(e.reason);
+        yield DocumentUploadError(
+          e.reason,
+          currentState.user,
+          currentState.documentedUserStream,
+        );
       }
     }
   }
@@ -80,7 +84,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           currentState.documentedUserStream,
         );
       } on DocumentedRejected catch (e) {
-        yield DocumentUploadError(e.reason);
+        yield DocumentUploadError(
+          e.reason,
+          currentState.user,
+          currentState.documentedUserStream,
+        );
       }
     }
   }

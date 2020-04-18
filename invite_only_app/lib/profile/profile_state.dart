@@ -22,12 +22,14 @@ class ProfileDetailsLoaded extends ProfileState {
 }
 
 class DocumentUploadError extends ProfileState {
+  final User user;
+  final Stream<DocumentedUser> documentedUserStream;
   final String errorMessage;
 
-  DocumentUploadError(this.errorMessage);
+  DocumentUploadError(this.errorMessage, this.user, this.documentedUserStream);
 
   @override
-  List<Object> get props => [errorMessage];
+  List<Object> get props => [errorMessage, user, documentedUserStream];
 }
 
 class UploadingDocument extends ProfileState {

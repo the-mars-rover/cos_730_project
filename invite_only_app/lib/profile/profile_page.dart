@@ -12,29 +12,39 @@ class UserProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<ProfileBloc>(
       create: (context) => ProfileBloc()..add(LoadProfileDetails()),
-      child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-        if (state is LoadingProfileDetails) {
-          return LoadingScaffold();
-        }
+      child: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (context, state) async {
+          if (state is DocumentUploadError) {
+            showDialog(
+              context: context,
+              builder: (context) => ErrorDialog(message: state.errorMessage),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is LoadingProfileDetails) {
+            return LoadingScaffold();
+          }
 
-        if (state is ProfileDetailsLoaded) {
-          return _buildProfileScaffold(state);
-        }
+          if (state is ProfileDetailsLoaded) {
+            return _buildProfileScaffold(state);
+          }
 
-        if (state is UploadingDocument) {
-          return LoadingScaffold();
-        }
+          if (state is UploadingDocument) {
+            return LoadingScaffold();
+          }
 
-        if (state is DocumentUploadError) {
-          return ErrorDialog(message: state.errorMessage);
-        }
+          if (state is DocumentUploadError) {
+            return _buildProfileScaffold(state);
+          }
 
-        return null;
-      }),
+          return null;
+        },
+      ),
     );
   }
 
-  Scaffold _buildProfileScaffold(ProfileDetailsLoaded state) {
+  Scaffold _buildProfileScaffold(state) {
     return Scaffold(
       appBar: AppBar(title: Text("My Profile")),
       body: StreamBuilder<DocumentedUser>(
