@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/loading_scaffold.dart';
+import 'package:invite_only/create_space/create_space.dart';
 import 'package:invite_only/home/home.dart';
 import 'package:invite_only/home/home_bloc.dart';
 import 'package:invite_only/home/home_event.dart';
@@ -67,7 +68,9 @@ class UserHomePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.exit_to_app),
                     title: Text("Sign Out"),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed(CreateSpacePage.ROUTE);
+                    },
                   ),
                 ],
               ),
