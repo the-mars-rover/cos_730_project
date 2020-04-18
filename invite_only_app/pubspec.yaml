@@ -65,10 +65,15 @@ dependencies:
   invite_only_auth:
       path: ../invite_only_auth
 
-  # A Flutter package providing the means to work Invite Only users.
-  # See https://github.com/marcus-bornman/invite_only_users
+  # Access and manage identity document information for Invite Only users.
+  # See https://github.com/marcus-bornman/invite_only_docs
   invite_only_docs:
     path: ../invite_only_docs
+
+  # Manage or control access to Invite Only access-controlled Spaces
+  # See https://github.com/marcus-bornman/invite_only_spaces
+  invite_only_spaces:
+    path: ../invite_only_spaces
 
 dev_dependencies:
   flutter_test:
