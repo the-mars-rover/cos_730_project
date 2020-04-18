@@ -14,6 +14,26 @@ abstract class ControlledSpace with _$ControlledSpace {
     /// The title for the space - describes the space briefly
     @required String title,
 
+    /// A list of phone numbers identifying managers of this space
+    ///
+    /// Managers have the authority to:
+    /// * Edit the properties of the [ControlledSpace]
+    /// * Grant/Deny an [Access] to the [ControlledSpace]
+    /// * Generate [Invite]'s for the [ControlledSpace]
+    @required List<String> managerPhones,
+
+    /// A list of phone numbers identifying guards of this space
+    ///
+    /// Guards have the authority to:
+    /// * Grant/Deny an [Access] to the [ControlledSpace]
+    @required List<String> guardPhones,
+
+    /// A list of phone numbers identifying inviters of this space
+    ///
+    /// Inviters have the authority to:
+    /// * Generate [Invite]'s for the [ControlledSpace]
+    @required List<String> inviterPhones,
+
     /// The location latitude of the space
     double locationLatitude,
 
@@ -25,26 +45,6 @@ abstract class ControlledSpace with _$ControlledSpace {
 
     /// The maximum people allowed inside the space at one time
     int maxCapacity,
-
-    /// A list of phone numbers identifying managers of this space
-    ///
-    /// Managers have the authority to:
-    /// * Edit the properties of the [ControlledSpace]
-    /// * Grant/Deny an [Access] to the [ControlledSpace]
-    /// * Generate [Invite]'s for the [ControlledSpace]
-    List<String> managerPhones,
-
-    /// A list of phone numbers identifying guards of this space
-    ///
-    /// Guards have the authority to:
-    /// * Grant/Deny an [Access] to the [ControlledSpace]
-    List<String> guardPhones,
-
-    /// A list of phone numbers identifying inviters of this space
-    ///
-    /// Inviters have the authority to:
-    /// * Generate [Invite]'s for the [ControlledSpace]
-    List<String> inviterPhones,
   }) = _ControlledSpace;
 
   factory ControlledSpace.fromJson(Map<String, dynamic> json) =>
