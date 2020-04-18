@@ -60,6 +60,10 @@ dependencies:
   # See https://pub.dev/packages/rsa_scan
   rsa_scan: ^0.0.1
 
+  # Simple, fast generation of RFC4122 UUIDs.
+  # See https://pub.dev/packages/uuid
+  uuid: ^2.0.4
+
   # A Flutter package providing the means to work Invite Only users.
   # See https://github.com/marcus-bornman/invite_only_users
   invite_only_auth:
