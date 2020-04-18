@@ -38,7 +38,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       LoadProfileDetails event) async* {
     final user = await _authRepository.currentUser();
     final documentedUserStream =
-        await _idDocsRepository.documentedUser(user.id);
+        await _idDocsRepository.documentedUser(user.phoneNumber);
 
     yield ProfileDetailsLoaded(user, documentedUserStream);
   }
@@ -50,7 +50,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       try {
         _idDocsRepository.submitIdCard(
-          currentState.user.id,
+          currentState.user.phoneNumber,
           _convertIdCard(event.scannedIdCard),
         );
 
@@ -71,7 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       try {
         _idDocsRepository.submitIdBook(
-          currentState.user.id,
+          currentState.user.phoneNumber,
           _convertIdBook(event.scannedIdBook),
         );
 
