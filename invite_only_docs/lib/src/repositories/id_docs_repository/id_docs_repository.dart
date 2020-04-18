@@ -15,7 +15,7 @@ abstract class IdDocsRepository {
   static final _instance = FirebaseIdDocsRepository();
 
   /// The getter for the singleton instance of this class.
-  static IdDocsRepository get instance => FirebaseIdDocsRepository();
+  static IdDocsRepository get instance => _instance;
 
   /// Returns a stream of the documented user with the given id.
   ///
