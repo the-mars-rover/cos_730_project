@@ -17,6 +17,14 @@ class FirebaseSpaceRepository implements SpaceRepository {
       : _firestore = firestore ?? Firestore.instance;
 
   @override
+  Future<void> createSpace(ControlledSpace space) async {
+    await _firestore
+        .collection(SPACE_COLLECTION)
+        .document(space.id)
+        .setData(space.toJson());
+  }
+
+  @override
   Stream<List<ControlledSpace>> managerSpaces(String phoneNumber) {
     return _firestore
         .collection(SPACE_COLLECTION)

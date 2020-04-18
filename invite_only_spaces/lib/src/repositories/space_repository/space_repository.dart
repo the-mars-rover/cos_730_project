@@ -30,11 +30,15 @@ abstract class SpaceRepository {
   /// which may be seen by the inviter with the given phone number.
   Stream<List<Access>> inviterAccesses(String spaceId, String phoneNumber);
 
-  /// Updates the properties of the given space. If no space exists with the
-  /// [space.id] then a new space will be created.
+  /// Updates the properties of the given space.
   ///
   /// [phoneNumber] is the phone number of the manager making the update to the space.
   Future<void> updateSpace(ControlledSpace space, String phoneNumber);
+
+  /// Creates the given space.
+  ///
+  /// [phoneNumber] is the phone number of the manager making the update to the space.
+  Future<void> createSpace(ControlledSpace space);
 
   /// Delete the space with the given id.
   ///
