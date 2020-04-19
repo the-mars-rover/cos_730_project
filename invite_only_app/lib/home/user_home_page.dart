@@ -57,7 +57,9 @@ class UserHomePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.add_location),
                     title: Text("Create Space"),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).pushNamed(CreateSpacePage.ROUTE);
+                    },
                   ),
                   Divider(),
                   ListTile(
@@ -68,9 +70,7 @@ class UserHomePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.exit_to_app),
                     title: Text("Sign Out"),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(CreateSpacePage.ROUTE);
-                    },
+                    onTap: () {},
                   ),
                 ],
               ),
