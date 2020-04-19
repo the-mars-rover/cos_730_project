@@ -231,7 +231,7 @@ class CreateSpacePage extends StatelessWidget {
               locationLatitude: null,
               locationLongitude: null,
               minAge: int.tryParse(_minAgeController.text),
-              maxCapacity: int.tryParse(_minAgeController.text),
+              maxCapacity: int.tryParse(_capacityController.text),
             ));
           },
         ),
