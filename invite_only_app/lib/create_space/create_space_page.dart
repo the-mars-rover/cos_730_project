@@ -26,7 +26,7 @@ class CreateSpacePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CreateSpaceBloc>(
       create: (context) => CreateSpaceBloc()..add(InitializeCreateSpace()),
-      child: BlocConsumer(
+      child: BlocConsumer<CreateSpaceBloc, CreateSpaceState>(
         listener: (context, state) {
           if (state is SpaceCreated) {
             Navigator.of(context).pop(state.space);
@@ -144,14 +144,13 @@ class CreateSpacePage extends StatelessWidget {
               onTap: () async {
                 final contacts = await ContactsSearchDelegate.selectContacts(
                   context,
-                  _managerContacts,
+                  List()..addAll(_managerContacts),
                 );
                 if (contacts == null) return;
 
                 _managerContacts.clear();
                 _managerContacts.addAll(contacts);
-                _managersController.text =
-                    contacts.map((contact) => contact.displayName).join(', ');
+                _managersController.text = '${contacts.length} managers added';
               },
               readOnly: true,
               decoration: InputDecoration(
@@ -168,14 +167,13 @@ class CreateSpacePage extends StatelessWidget {
               onTap: () async {
                 final contacts = await ContactsSearchDelegate.selectContacts(
                   context,
-                  _guardContacts,
+                  List()..addAll(_guardContacts),
                 );
                 if (contacts == null) return;
 
                 _guardContacts.clear();
                 _guardContacts.addAll(contacts);
-                _guardsController.text =
-                    contacts.map((contact) => contact.displayName).join(', ');
+                _guardsController.text = '${contacts.length} guards added';
               },
               readOnly: true,
               decoration: InputDecoration(
@@ -192,14 +190,13 @@ class CreateSpacePage extends StatelessWidget {
               onTap: () async {
                 final contacts = await ContactsSearchDelegate.selectContacts(
                   context,
-                  _inviterContacts,
+                  List()..addAll(_inviterContacts),
                 );
                 if (contacts == null) return;
 
                 _inviterContacts.clear();
                 _inviterContacts.addAll(contacts);
-                _invitersController.text =
-                    contacts.map((contact) => contact.displayName).join(', ');
+                _invitersController.text = '${contacts.length} inviters added';
               },
               readOnly: true,
               decoration: InputDecoration(

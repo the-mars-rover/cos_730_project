@@ -43,6 +43,8 @@ class CreateSpaceBloc extends Bloc<CreateSpaceEvent, CreateSpaceState> {
     if (currentState is CreateSpaceInitialized) {
       yield CreatingSpace();
 
+      final managerPhones = event.managerPhones;
+      managerPhones.add(currentState.currentUser.phoneNumber);
       final newSpace = ControlledSpace(
         id: Uuid().v4(),
         title: event.title,
@@ -58,6 +60,7 @@ class CreateSpaceBloc extends Bloc<CreateSpaceEvent, CreateSpaceState> {
 
       try {
         await _spaceRepository.createSpace(newSpace);
+        yield SpaceCreated(newSpace);
       } catch (e) {
         yield ErrorCreatingSpace(
             'Something went wrong while trying to create the space.');
