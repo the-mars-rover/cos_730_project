@@ -5,12 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ContactsSearchDelegate extends SearchDelegate<List<Contact>> {
-  final List<Contact> contacts;
+  List<Contact> contacts;
   StreamController<List<Contact>> contactsSC;
 
   ContactsSearchDelegate({List<Contact> selectedContacts})
       : contacts = selectedContacts != null ? selectedContacts : List() {
+    contactsSC = StreamController.broadcast();
     contactsSC.add(contacts);
+  }
+
+  @override
+  void close(BuildContext context, List<Contact> result) {
+    contactsSC.close();
+    super.close(context, result);
   }
 
   @override
@@ -63,7 +70,9 @@ class ContactsSearchDelegate extends SearchDelegate<List<Contact>> {
                   return CheckboxListTile(
                     title: Text(contact.displayName),
                     subtitle: Text(contact.phones.first.value),
-                    value: contacts.where((c) => c == contact).isNotEmpty,
+                    value: contacts.where((c) {
+                      return c.identifier == contact.identifier;
+                    }).isNotEmpty,
                     onChanged: (selected) {
                       if (selected) {
                         contacts.add(contact);
@@ -78,7 +87,6 @@ class ContactsSearchDelegate extends SearchDelegate<List<Contact>> {
               persistentFooterButtons: <Widget>[
                 FlatButton(
                   onPressed: () {
-                    contactsSC.close();
                     close(context, contacts);
                   },
                   child: Text('Save'),
