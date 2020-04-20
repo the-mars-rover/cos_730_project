@@ -33,7 +33,7 @@ abstract class Access with _$Access {
     /// then this will be their own phone number.
     ///
     /// If the person accessing the space has received an invite to enter the space,
-    /// then this will me the phone number of the manager or inviter who sent the invite.
+    /// then this will be the phone number of the manager or inviter who sent the invite.
     @required String granterPhoneNumber,
 
     /// The phone number of the guard who scanned the [idDocument] on exit.
