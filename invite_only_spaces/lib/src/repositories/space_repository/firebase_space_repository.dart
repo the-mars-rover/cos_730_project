@@ -64,10 +64,9 @@ class FirebaseSpaceRepository implements SpaceRepository {
   }
 
   @override
-  Stream<List<Access>> managerAccesses(String spaceId, String phoneNumber) {
+  Stream<List<Access>> accesses(String spaceId) {
     return _firestore
         .collection(SPACE_COLLECTION)
-        .where('managerPhones', arrayContains: phoneNumber)
         .reference()
         .document(spaceId)
         .collection(ACCESS_COLLECTION)
@@ -80,37 +79,17 @@ class FirebaseSpaceRepository implements SpaceRepository {
   }
 
   @override
-  Stream<List<Access>> inviterAccesses(String spaceId, String phoneNumber) {
-    return _firestore
-        .collection(SPACE_COLLECTION)
-        .where('inviterPhones', arrayContains: phoneNumber)
-        .reference()
-        .document(spaceId)
-        .collection(ACCESS_COLLECTION)
-        .where('granterPhoneNumber', isEqualTo: phoneNumber)
-        .snapshots()
-        .map<List<Access>>((querySnapshot) {
-      return querySnapshot.documents.map((documentSnapshot) {
-        return Access.fromJson(documentSnapshot.data);
-      }).toList();
-    });
-  }
-
-  @override
-  Future<void> updateSpace(ControlledSpace space, String phoneNumber) async {
+  Future<void> updateSpace(ControlledSpace space) async {
     await _firestore
         .collection(SPACE_COLLECTION)
-        .where('managerPhones', arrayContains: phoneNumber)
-        .reference()
         .document(space.id)
         .updateData(space.toJson());
   }
 
   @override
-  Future<void> deleteSpace(String spaceId, String phoneNumber) async {
+  Future<void> deleteSpace(String spaceId) async {
     await _firestore
         .collection(SPACE_COLLECTION)
-        .where('managerPhones', arrayContains: phoneNumber)
         .reference()
         .document(spaceId)
         .delete();

@@ -10,6 +10,9 @@ abstract class SpaceRepository {
   /// The getter for the singleton instance of this class.
   static SpaceRepository get instance => _instance;
 
+  /// Creates the given space.
+  Future<void> createSpace(ControlledSpace space);
+
   /// Returns a stream of access controlled spaces for which the person with
   /// the given phone number is a manager.
   Stream<List<ControlledSpace>> managerSpaces(String phoneNumber);
@@ -22,28 +25,16 @@ abstract class SpaceRepository {
   /// the given phone number is an inviter.
   Stream<List<ControlledSpace>> inviterSpaces(String phoneNumber);
 
-  /// Returns a streamed list of accesses for the space with the given id,
-  /// which may be seen by the manager with the given phone number.
-  Stream<List<Access>> managerAccesses(String spaceId, String phoneNumber);
-
-  /// Returns a streamed list of accesses for the space with the given id,
-  /// which may be seen by the inviter with the given phone number.
-  Stream<List<Access>> inviterAccesses(String spaceId, String phoneNumber);
+  /// Returns a streamed list of accesses for the space with the given id.
+  Stream<List<Access>> accesses(String spaceId);
 
   /// Updates the properties of the given space.
   ///
-  /// [phoneNumber] is the phone number of the manager making the update to the space.
-  Future<void> updateSpace(ControlledSpace space, String phoneNumber);
-
-  /// Creates the given space.
-  ///
-  /// [phoneNumber] is the phone number of the manager making the update to the space.
-  Future<void> createSpace(ControlledSpace space);
+  /// If no space exists yet, the update will fail.
+  Future<void> updateSpace(ControlledSpace space);
 
   /// Delete the space with the given id.
-  ///
-  /// [phoneNumber] is the phone number of the manager deleting the space.
-  Future<void> deleteSpace(String spaceId, String phoneNumber);
+  Future<void> deleteSpace(String spaceId);
 
   /// Grant access to the manager, guard or resident of this space with the given phone number.
   Future<void> grantEntry(String spaceId, String phoneNumber);
