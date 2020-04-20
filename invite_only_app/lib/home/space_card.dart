@@ -23,9 +23,10 @@ class SpaceCard extends StatelessWidget {
         subtitle: Text(_buildSubtitle()),
         trailing: Icon(Icons.navigate_next),
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SpacePage(),
-          ));
+          Navigator.of(context).pushNamed(
+            SpacePage.ROUTE,
+            arguments: {'space': space},
+          );
         },
       ),
     );

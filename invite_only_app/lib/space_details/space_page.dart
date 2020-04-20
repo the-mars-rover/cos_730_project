@@ -10,6 +10,8 @@ import 'package:invite_only_spaces/invite_only_spaces.dart';
 import 'access_info_card.dart';
 
 class SpacePage extends StatelessWidget {
+  static const ROUTE = '/space/details';
+
   final ControlledSpace space;
 
   const SpacePage({Key key, @required this.space}) : super(key: key);
@@ -56,11 +58,14 @@ class SpacePage extends StatelessWidget {
           StreamBuilder<List<Access>>(
               stream: state.accessesStream,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return LinearProgressIndicator();
+                if (!snapshot.hasData)
+                  return SliverFillRemaining(child: LinearProgressIndicator());
 
                 List<Access> accesses = snapshot.data;
                 if (accesses.isEmpty) {
-                  return Center(child: Text('No Accesses'));
+                  return SliverFillRemaining(
+                    child: Center(child: Text('No Accesses')),
+                  );
                 }
 
                 return SliverList(
@@ -104,10 +109,6 @@ class SpacePage extends StatelessWidget {
                   space.inviterPhones.contains(state.currentUser.phoneNumber),
           child: OutlineButton.icon(
             onPressed: () async {
-              String phoneNumber =
-                  await PhoneNumberSearchDelegate.selectPhoneNumber(context);
-              if (phoneNumber == null) return;
-
               showDialog(
                 context: context,
                 barrierDismissible: false,

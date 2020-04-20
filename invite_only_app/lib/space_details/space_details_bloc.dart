@@ -24,7 +24,8 @@ class SpaceDetailsBloc extends Bloc<SpaceDetailsEvent, SpaceDetailsState> {
     }
   }
 
-  _mapLoadSpaceDetailsToState(LoadSpaceDetails event) async* {
+  Stream<SpaceDetailsState> _mapLoadSpaceDetailsToState(
+      LoadSpaceDetails event) async* {
     yield SpaceDetailsLoading();
 
     User currentUser = await _authRepository.currentUser();
