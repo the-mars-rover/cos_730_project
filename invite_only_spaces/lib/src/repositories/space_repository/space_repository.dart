@@ -42,8 +42,8 @@ abstract class SpaceRepository {
   /// Grant access to the manager, guard or resident of this space with the given phone number.
   Future<void> grantExit(String spaceId, String phoneNumber);
 
-  /// Creates and returns the invite code for a new invite to the given space.
+  /// Creates and returns an invite for a new invite to the given space.
   ///
   /// [phoneNumber] is the phone number of the manager or inviter creating the invite.
-  Future<String> invite(String spaceId, String phoneNumber);
+  Future<Invite> invite(String spaceId, String phoneNumber);
 }

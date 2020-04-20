@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../invite_only_spaces.dart';
 
@@ -95,10 +96,35 @@ class FirebaseSpaceRepository implements SpaceRepository {
         .delete();
   }
 
+  /// Please see the following page about Keeping a Count of Documents in a Collection:
+  /// https://fireship.io/snippets/firestore-increment-tips/
   @override
-  Future<String> invite(String spaceId, String phoneNumber) {
-    // TODO: implement invite
-    return null;
+  Future<Invite> invite(String spaceId, String phoneNumber) async {
+    final invitesRef = _firestore
+        .collection(SPACE_COLLECTION)
+        .document(spaceId)
+        .collection(INVITE_COLLECTION);
+    final metadataRef = invitesRef.document('--metadata--');
+
+    Invite invite;
+    await Firestore.instance.runTransaction((Transaction tx) async {
+      await tx.set(metadataRef, {'numInvites': FieldValue.increment(1)});
+      final metadataSnapshot = await metadataRef.get();
+      final invitesMetadata = InvitesMetadata.fromJson(metadataSnapshot.data);
+
+      invite = Invite(
+        id: Uuid().v4(),
+        code: invitesMetadata.numInvites.toString().padLeft(6, '0'),
+        spaceId: spaceId,
+        expiryDate: DateTime.now().add(Duration(hours: 48)),
+        inviterPhoneNumber: phoneNumber,
+      );
+
+      final inviteRef = invitesRef.document(invite.id);
+      await tx.set(inviteRef, invite.toJson());
+    });
+
+    return invite;
   }
 
   @override
