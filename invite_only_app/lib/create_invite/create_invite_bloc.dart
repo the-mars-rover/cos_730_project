@@ -24,14 +24,16 @@ class CreateInviteBloc extends Bloc<CreateInviteEvent, CreateInviteState> {
   }
 
   Stream<CreateInviteState> _mapCreateInviteToState(CreateInvite event) async* {
-    yield CreatingInvite();
-
-    final currentUser = await _authRepository.currentUser();
-    final invite = await _spaceRepository.invite(
-      event.space.id,
-      currentUser.phoneNumber,
-    );
-
-    yield InviteCreated(invite);
+    try {
+      yield CreatingInvite();
+      final currentUser = await _authRepository.currentUser();
+      final invite = await _spaceRepository.invite(
+        event.space.id,
+        currentUser.phoneNumber,
+      );
+      yield InviteCreated(invite);
+    } catch (e) {
+      yield InviteCreationError('Invite could not be created.');
+    }
   }
 }

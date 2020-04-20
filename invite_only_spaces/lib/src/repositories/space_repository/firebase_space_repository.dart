@@ -108,9 +108,10 @@ class FirebaseSpaceRepository implements SpaceRepository {
 
     Invite invite;
     await Firestore.instance.runTransaction((Transaction tx) async {
-      await tx.set(metadataRef, {'numInvites': FieldValue.increment(1)});
-      final metadataSnapshot = await metadataRef.get();
-      final invitesMetadata = InvitesMetadata.fromJson(metadataSnapshot.data);
+      final metadataSnapshot = await tx.get(metadataRef);
+      final invitesMetadata = metadataSnapshot.exists
+          ? InvitesMetadata.fromJson(metadataSnapshot.data)
+          : InvitesMetadata(numInvites: 0);
 
       invite = Invite(
         id: Uuid().v4(),
@@ -119,9 +120,14 @@ class FirebaseSpaceRepository implements SpaceRepository {
         expiryDate: DateTime.now().add(Duration(hours: 48)),
         inviterPhoneNumber: phoneNumber,
       );
-
       final inviteRef = invitesRef.document(invite.id);
       await tx.set(inviteRef, invite.toJson());
+
+      if (metadataSnapshot.exists) {
+        await tx.update(metadataRef, {'numInvites': FieldValue.increment(1)});
+      } else {
+        await tx.set(metadataRef, {'numInvites': FieldValue.increment(1)});
+      }
     });
 
     return invite;

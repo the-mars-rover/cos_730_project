@@ -11,9 +11,9 @@ class CreateInviteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<CreateInviteBloc>(
       create: (context) => CreateInviteBloc()..add(CreateInvite(space)),
-      child: BlocBuilder(
+      child: BlocBuilder<CreateInviteBloc, CreateInviteState>(
         builder: (context, state) {
           if (state is CreatingInvite) {
             return Center(child: CircularProgressIndicator());
@@ -44,13 +44,13 @@ class CreateInviteDialog extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
-        FlatButton(
+        OutlineButton(
           child: Text('Close'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton.icon(
+        OutlineButton.icon(
           icon: Icon(Icons.share),
           label: Text('Share'),
           onPressed: () {
