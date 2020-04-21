@@ -40,6 +40,6 @@ class AccessInfoCard extends StatelessWidget {
   }
 
   String _formattedEntryDate() {
-    return formatDate(access.entryDate, [D, mm, M, '@', HH, ':', nn]);
+    return formatDate(access.entryDate, [D, ' ', mm, ' ', M, ' @ ', HH, ':', nn]);
   }
 }
