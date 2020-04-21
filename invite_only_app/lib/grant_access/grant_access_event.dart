@@ -20,12 +20,12 @@ class GrantAccess extends GrantAccessEvent {
 class GrantVisitorAccess extends GrantAccessEvent {
   final ControlledSpace space;
 
-  final String code;
-
   final RsaIdDocument scannedIdDocument;
 
-  GrantVisitorAccess(this.space, this.code, this.scannedIdDocument);
+  final String code;
+
+  GrantVisitorAccess(this.space, this.scannedIdDocument, this.code);
 
   @override
-  List<Object> get props => [space, code, scannedIdDocument];
+  List<Object> get props => [space, scannedIdDocument, code];
 }

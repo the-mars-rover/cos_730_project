@@ -19,7 +19,7 @@ class GrantAccessBloc extends Bloc<GrantAccessEvent, GrantAccessState> {
       IdDocsRepository.instance;
 
   @override
-  GrantAccessState get initialState => InitialGrantAccessState();
+  GrantAccessState get initialState => GrantingAccess();
 
   @override
   Stream<GrantAccessState> mapEventToState(

@@ -4,12 +4,12 @@ abstract class GrantAccessState extends Equatable {
   const GrantAccessState();
 }
 
-class InitialGrantAccessState extends GrantAccessState {
+class GrantingAccess extends GrantAccessState {
   @override
   List<Object> get props => [];
 }
 
-class GrantingAccess extends GrantAccessState {
+class RequireCode extends GrantAccessState {
   @override
   List<Object> get props => [];
 }
