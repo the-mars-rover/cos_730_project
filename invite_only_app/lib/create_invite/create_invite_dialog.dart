@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
-import 'package:invite_only/create_invite/bloc.dart';
 import 'package:invite_only_spaces/invite_only_spaces.dart';
+
+import 'create_invite_bloc.dart';
+import 'create_invite_event.dart';
+import 'create_invite_state.dart';
 
 class CreateInviteDialog extends StatelessWidget {
   final ControlledSpace space;

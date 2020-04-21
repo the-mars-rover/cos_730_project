@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:invite_only_auth/invite_only_auth.dart';
-import './phone_verification.dart';
+
+import 'phone_verification_event.dart';
+import 'phone_verification_state.dart';
 
 class PhoneVerificationBloc
     extends Bloc<PhoneVerificationEvent, PhoneVerificationState> {

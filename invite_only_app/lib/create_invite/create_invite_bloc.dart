@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:invite_only_auth/invite_only_auth.dart';
 import 'package:invite_only_spaces/invite_only_spaces.dart';
 
-import './bloc.dart';
+import 'create_invite_event.dart';
+import 'create_invite_state.dart';
+
 
 class CreateInviteBloc extends Bloc<CreateInviteEvent, CreateInviteState> {
   final AuthRepository _authRepository = AuthRepository.instance;

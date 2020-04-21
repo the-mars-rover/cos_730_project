@@ -9,8 +9,6 @@ import 'package:invite_only/create_space/create_space_event.dart';
 import 'package:invite_only/create_space/create_space_state.dart';
 
 class CreateSpacePage extends StatelessWidget {
-  static const String ROUTE = '/space/create';
-
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _minAgeController = TextEditingController();

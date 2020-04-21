@@ -5,11 +5,11 @@ import 'package:invite_only/app/app.dart';
 import 'package:invite_only/home/home.dart';
 import 'package:invite_only/phone_verification/phone_verification.dart';
 
-import 'authentication.dart';
+import 'authentication_bloc.dart';
+import 'authentication_event.dart';
+import 'authentication_state.dart';
 
 class AuthenticatePage extends StatelessWidget {
-  static const String ROUTE = '/authenticate';
-
   final _phoneController = TextEditingController();
 
   @override
@@ -26,10 +26,7 @@ class AuthenticatePage extends StatelessWidget {
           }
 
           if (state is UserAuthenticated) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              UserHomePage.ROUTE,
-              (route) => false,
-            );
+            openHomePage(context);
           }
         },
         builder: (context, state) {
@@ -87,12 +84,9 @@ class AuthenticatePage extends StatelessWidget {
                   child: Text("SUBMIT"),
                   color: Theme.of(context).primaryColor,
                   onPressed: () async {
-                    var authCredential = await showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => PhoneVerificationDialog(
-                        phoneNumber: _phoneController.text,
-                      ),
+                    var authCredential = await verifyPhoneNumber(
+                      context,
+                      _phoneController.text,
                     );
 
                     if (authCredential != null) {

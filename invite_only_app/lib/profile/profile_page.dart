@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
-import 'package:invite_only/profile/profile.dart';
 import 'package:invite_only_docs/invite_only_docs.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
-class UserProfilePage extends StatelessWidget {
-  static const ROUTE = '/profile';
+import 'profile_bloc.dart';
+import 'profile_event.dart';
+import 'profile_state.dart';
 
+class UserProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ProfileBloc>(

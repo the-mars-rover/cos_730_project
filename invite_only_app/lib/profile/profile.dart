@@ -1,4 +1,10 @@
-export 'profile_bloc.dart';
-export 'profile_event.dart';
-export 'profile_page.dart';
-export 'profile_state.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:invite_only/profile/profile_page.dart';
+
+/// Show the user their profile details.
+Future<void> showProfilePage(BuildContext context) async {
+  await Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => UserProfilePage()),
+  );
+}

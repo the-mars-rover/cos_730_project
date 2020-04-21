@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:invite_only_auth/invite_only_auth.dart';
-import './authentication.dart';
+import 'authentication_event.dart';
+import 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {

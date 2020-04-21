@@ -5,7 +5,8 @@ import 'package:invite_only/app/id_doc_converter.dart';
 import 'package:invite_only_auth/invite_only_auth.dart';
 import 'package:invite_only_docs/invite_only_docs.dart';
 
-import 'profile.dart';
+import 'profile_event.dart';
+import 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   /// The repository for retrieving authentication details

@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/loading_scaffold.dart';
 import 'package:invite_only/create_space/create_space.dart';
-import 'package:invite_only/home/home.dart';
 import 'package:invite_only/home/home_bloc.dart';
 import 'package:invite_only/home/home_event.dart';
 import 'package:invite_only/home/home_state.dart';
 import 'package:invite_only/profile/profile.dart';
 import 'package:invite_only_spaces/invite_only_spaces.dart';
 
-class UserHomePage extends StatelessWidget {
-  static const ROUTE = '/';
+import 'space_list.dart';
 
+class UserHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<HomeBloc>(
@@ -49,17 +48,13 @@ class UserHomePage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.person),
                     title: Text("My Profile"),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(UserProfilePage.ROUTE);
-                    },
+                    onTap: () => showProfilePage(context),
                   ),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.add_location),
                     title: Text("Create Space"),
-                    onTap: () {
-                      Navigator.of(context).pushNamed(CreateSpacePage.ROUTE);
-                    },
+                    onTap: () => createSpace(context),
                   ),
                   Divider(),
                   ListTile(

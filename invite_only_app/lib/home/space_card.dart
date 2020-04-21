@@ -22,12 +22,7 @@ class SpaceCard extends StatelessWidget {
         title: Text(space.title),
         subtitle: Text(_buildSubtitle()),
         trailing: Icon(Icons.navigate_next),
-        onTap: () {
-          Navigator.of(context).pushNamed(
-            SpacePage.ROUTE,
-            arguments: {'space': space},
-          );
-        },
+        onTap: () => showSpaceDetails(context, space),
       ),
     );
   }

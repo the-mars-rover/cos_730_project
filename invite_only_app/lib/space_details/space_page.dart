@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
-import 'package:invite_only/create_invite/create_invite_dialog.dart';
+import 'package:invite_only/create_invite/create_invite.dart';
 import 'package:invite_only/space_details/space_details_bloc.dart';
 import 'package:invite_only/space_details/space_details_event.dart';
 import 'package:invite_only/space_details/space_details_state.dart';
@@ -10,8 +10,6 @@ import 'package:invite_only_spaces/invite_only_spaces.dart';
 import 'access_info_card.dart';
 
 class SpacePage extends StatelessWidget {
-  static const ROUTE = '/space/details';
-
   final ControlledSpace space;
 
   const SpacePage({Key key, @required this.space}) : super(key: key);
@@ -108,13 +106,7 @@ class SpacePage extends StatelessWidget {
               space.managerPhones.contains(state.currentUser.phoneNumber) ||
                   space.inviterPhones.contains(state.currentUser.phoneNumber),
           child: OutlineButton.icon(
-            onPressed: () async {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => CreateInviteDialog(space: space),
-              );
-            },
+            onPressed: () => createInvite(context, space),
             icon: Icon(Icons.mail),
             label: Text('Invite'),
           ),
