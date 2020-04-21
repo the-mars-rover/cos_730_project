@@ -27,7 +27,7 @@ class CreateInviteBloc extends Bloc<CreateInviteEvent, CreateInviteState> {
     try {
       yield CreatingInvite();
       final currentUser = await _authRepository.currentUser();
-      final invite = await _spaceRepository.invite(
+      final invite = await _spaceRepository.createInvite(
         event.space.id,
         currentUser.phoneNumber,
       );
