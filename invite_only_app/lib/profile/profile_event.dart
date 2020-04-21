@@ -10,20 +10,11 @@ class LoadProfileDetails extends ProfileEvent {
   List<Object> get props => [];
 }
 
-class UploadIdCard extends ProfileEvent {
-  final RsaIdCard scannedIdCard;
+class UploadDocument extends ProfileEvent {
+  final RsaIdDocument scannedDocument;
 
-  UploadIdCard(this.scannedIdCard);
-
-  @override
-  List<Object> get props => [scannedIdCard];
-}
-
-class UploadIdBook extends ProfileEvent {
-  final RsaIdBook scannedIdBook;
-
-  UploadIdBook(this.scannedIdBook);
+  UploadDocument(this.scannedDocument);
 
   @override
-  List<Object> get props => [scannedIdBook];
+  List<Object> get props => [scannedDocument];
 }
