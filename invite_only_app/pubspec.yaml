@@ -58,7 +58,7 @@ dependencies:
 
   # Scan identity documents such as South African ID Cards, ID Books and Driver's Licenses.
   # See https://pub.dev/packages/rsa_scan
-  rsa_scan: ^0.0.1
+  rsa_scan: ^0.0.2
 
   # Simple, fast generation of RFC4122 UUIDs.
   # See https://pub.dev/packages/uuid
