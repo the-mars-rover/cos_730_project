@@ -42,7 +42,7 @@ class GrantAccessBloc extends Bloc<GrantAccessEvent, GrantAccessState> {
       IdDocConverter.rsaToDocs(event.scannedIdDocument),
     );
     try {
-      _spaceRepository.grantEntry(
+      await _spaceRepository.grantEntry(
         event.space.id,
         enteringUser.phoneNumber,
         IdDocConverter.rsaToSpaces(event.scannedIdDocument),
@@ -51,7 +51,7 @@ class GrantAccessBloc extends Bloc<GrantAccessEvent, GrantAccessState> {
 
       yield AccessGranted();
     } catch (e) {
-      yield AccessDenied();
+      yield RequireCode();
     }
   }
 
@@ -61,7 +61,7 @@ class GrantAccessBloc extends Bloc<GrantAccessEvent, GrantAccessState> {
 
     final currentUser = await _authRepository.currentUser();
     try {
-      _spaceRepository.grantVisitorEntry(
+      await _spaceRepository.grantVisitorEntry(
         event.space.id,
         IdDocConverter.rsaToSpaces(event.scannedIdDocument),
         event.code,
