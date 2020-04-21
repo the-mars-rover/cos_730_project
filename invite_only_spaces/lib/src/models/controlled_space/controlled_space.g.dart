@@ -20,7 +20,6 @@ _$_ControlledSpace _$_$_ControlledSpaceFromJson(Map<String, dynamic> json) {
     locationLatitude: (json['locationLatitude'] as num)?.toDouble(),
     locationLongitude: (json['locationLongitude'] as num)?.toDouble(),
     minAge: json['minAge'] as int,
-    maxCapacity: json['maxCapacity'] as int,
   );
 }
 
@@ -35,5 +34,4 @@ Map<String, dynamic> _$_$_ControlledSpaceToJson(_$_ControlledSpace instance) =>
       'locationLatitude': instance.locationLatitude,
       'locationLongitude': instance.locationLongitude,
       'minAge': instance.minAge,
-      'maxCapacity': instance.maxCapacity,
     };

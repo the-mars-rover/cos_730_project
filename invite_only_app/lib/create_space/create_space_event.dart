@@ -19,7 +19,6 @@ class CreateSpace extends CreateSpaceEvent {
   final double locationLatitude;
   final double locationLongitude;
   final int minAge;
-  final int maxCapacity;
 
   CreateSpace({
     @required this.title,
@@ -30,7 +29,6 @@ class CreateSpace extends CreateSpaceEvent {
     @required this.locationLatitude,
     @required this.locationLongitude,
     @required this.minAge,
-    @required this.maxCapacity,
   });
 
   @override

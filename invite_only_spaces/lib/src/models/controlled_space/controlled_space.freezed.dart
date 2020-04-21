@@ -24,8 +24,7 @@ class _$ControlledSpaceTearOff {
       @required List<String> inviterPhones,
       double locationLatitude,
       double locationLongitude,
-      int minAge,
-      int maxCapacity}) {
+      int minAge}) {
     return _ControlledSpace(
       id: id,
       title: title,
@@ -36,7 +35,6 @@ class _$ControlledSpaceTearOff {
       locationLatitude: locationLatitude,
       locationLongitude: locationLongitude,
       minAge: minAge,
-      maxCapacity: maxCapacity,
     );
   }
 }
@@ -54,7 +52,6 @@ mixin _$ControlledSpace {
   double get locationLatitude;
   double get locationLongitude;
   int get minAge;
-  int get maxCapacity;
 
   Map<String, dynamic> toJson();
   $ControlledSpaceCopyWith<ControlledSpace> get copyWith;
@@ -73,8 +70,7 @@ abstract class $ControlledSpaceCopyWith<$Res> {
       List<String> inviterPhones,
       double locationLatitude,
       double locationLongitude,
-      int minAge,
-      int maxCapacity});
+      int minAge});
 }
 
 class _$ControlledSpaceCopyWithImpl<$Res>
@@ -96,7 +92,6 @@ class _$ControlledSpaceCopyWithImpl<$Res>
     Object locationLatitude = freezed,
     Object locationLongitude = freezed,
     Object minAge = freezed,
-    Object maxCapacity = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
@@ -118,8 +113,6 @@ class _$ControlledSpaceCopyWithImpl<$Res>
           ? _value.locationLongitude
           : locationLongitude as double,
       minAge: minAge == freezed ? _value.minAge : minAge as int,
-      maxCapacity:
-          maxCapacity == freezed ? _value.maxCapacity : maxCapacity as int,
     ));
   }
 }
@@ -139,8 +132,7 @@ abstract class _$ControlledSpaceCopyWith<$Res>
       List<String> inviterPhones,
       double locationLatitude,
       double locationLongitude,
-      int minAge,
-      int maxCapacity});
+      int minAge});
 }
 
 class __$ControlledSpaceCopyWithImpl<$Res>
@@ -164,7 +156,6 @@ class __$ControlledSpaceCopyWithImpl<$Res>
     Object locationLatitude = freezed,
     Object locationLongitude = freezed,
     Object minAge = freezed,
-    Object maxCapacity = freezed,
   }) {
     return _then(_ControlledSpace(
       id: id == freezed ? _value.id : id as String,
@@ -186,8 +177,6 @@ class __$ControlledSpaceCopyWithImpl<$Res>
           ? _value.locationLongitude
           : locationLongitude as double,
       minAge: minAge == freezed ? _value.minAge : minAge as int,
-      maxCapacity:
-          maxCapacity == freezed ? _value.maxCapacity : maxCapacity as int,
     ));
   }
 }
@@ -205,8 +194,7 @@ class _$_ControlledSpace
       @required this.inviterPhones,
       this.locationLatitude,
       this.locationLongitude,
-      this.minAge,
-      this.maxCapacity})
+      this.minAge})
       : assert(id != null),
         assert(title != null),
         assert(imageUrl != null),
@@ -235,12 +223,10 @@ class _$_ControlledSpace
   final double locationLongitude;
   @override
   final int minAge;
-  @override
-  final int maxCapacity;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ControlledSpace(id: $id, title: $title, imageUrl: $imageUrl, managerPhones: $managerPhones, guardPhones: $guardPhones, inviterPhones: $inviterPhones, locationLatitude: $locationLatitude, locationLongitude: $locationLongitude, minAge: $minAge, maxCapacity: $maxCapacity)';
+    return 'ControlledSpace(id: $id, title: $title, imageUrl: $imageUrl, managerPhones: $managerPhones, guardPhones: $guardPhones, inviterPhones: $inviterPhones, locationLatitude: $locationLatitude, locationLongitude: $locationLongitude, minAge: $minAge)';
   }
 
   @override
@@ -256,8 +242,7 @@ class _$_ControlledSpace
       ..add(DiagnosticsProperty('inviterPhones', inviterPhones))
       ..add(DiagnosticsProperty('locationLatitude', locationLatitude))
       ..add(DiagnosticsProperty('locationLongitude', locationLongitude))
-      ..add(DiagnosticsProperty('minAge', minAge))
-      ..add(DiagnosticsProperty('maxCapacity', maxCapacity));
+      ..add(DiagnosticsProperty('minAge', minAge));
   }
 
   @override
@@ -287,10 +272,7 @@ class _$_ControlledSpace
                 const DeepCollectionEquality()
                     .equals(other.locationLongitude, locationLongitude)) &&
             (identical(other.minAge, minAge) ||
-                const DeepCollectionEquality().equals(other.minAge, minAge)) &&
-            (identical(other.maxCapacity, maxCapacity) ||
-                const DeepCollectionEquality()
-                    .equals(other.maxCapacity, maxCapacity)));
+                const DeepCollectionEquality().equals(other.minAge, minAge)));
   }
 
   @override
@@ -304,8 +286,7 @@ class _$_ControlledSpace
       const DeepCollectionEquality().hash(inviterPhones) ^
       const DeepCollectionEquality().hash(locationLatitude) ^
       const DeepCollectionEquality().hash(locationLongitude) ^
-      const DeepCollectionEquality().hash(minAge) ^
-      const DeepCollectionEquality().hash(maxCapacity);
+      const DeepCollectionEquality().hash(minAge);
 
   @override
   _$ControlledSpaceCopyWith<_ControlledSpace> get copyWith =>
@@ -327,8 +308,7 @@ abstract class _ControlledSpace implements ControlledSpace {
       @required List<String> inviterPhones,
       double locationLatitude,
       double locationLongitude,
-      int minAge,
-      int maxCapacity}) = _$_ControlledSpace;
+      int minAge}) = _$_ControlledSpace;
 
   factory _ControlledSpace.fromJson(Map<String, dynamic> json) =
       _$_ControlledSpace.fromJson;
@@ -351,8 +331,6 @@ abstract class _ControlledSpace implements ControlledSpace {
   double get locationLongitude;
   @override
   int get minAge;
-  @override
-  int get maxCapacity;
   @override
   _$ControlledSpaceCopyWith<_ControlledSpace> get copyWith;
 }

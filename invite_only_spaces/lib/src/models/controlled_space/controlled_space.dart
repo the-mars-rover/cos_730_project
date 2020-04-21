@@ -45,9 +45,6 @@ abstract class ControlledSpace with _$ControlledSpace {
 
     /// The minimum age of people allowed into the location
     int minAge,
-
-    /// The maximum people allowed inside the space at one time
-    int maxCapacity,
   }) = _ControlledSpace;
 
   factory ControlledSpace.fromJson(Map<String, dynamic> json) =>

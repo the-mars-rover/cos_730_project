@@ -14,7 +14,6 @@ class CreateSpacePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _minAgeController = TextEditingController();
-  final _capacityController = TextEditingController();
   final _managerContacts = List<Contact>();
   final _managersController = TextEditingController();
   final _guardContacts = List<Contact>();
@@ -126,20 +125,6 @@ class CreateSpacePage extends StatelessWidget {
               ),
             ),
             TextFormField(
-              controller: _capacityController,
-              inputFormatters: <TextInputFormatter>[
-                WhitelistingTextInputFormatter.digitsOnly
-              ],
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.block),
-                labelText: "Add Maximum Capacity",
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.help_outline),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-            TextFormField(
               controller: _managersController,
               onTap: () async {
                 final contacts = await ContactsSearchDelegate.selectContacts(
@@ -231,7 +216,6 @@ class CreateSpacePage extends StatelessWidget {
               locationLatitude: null,
               locationLongitude: null,
               minAge: int.tryParse(_minAgeController.text),
-              maxCapacity: int.tryParse(_capacityController.text),
             ));
           },
         ),

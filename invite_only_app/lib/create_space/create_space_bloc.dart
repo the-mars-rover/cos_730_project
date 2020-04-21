@@ -54,7 +54,6 @@ class CreateSpaceBloc extends Bloc<CreateSpaceEvent, CreateSpaceState> {
         inviterPhones: event.inviterPhones,
         locationLatitude: event.locationLatitude,
         locationLongitude: event.locationLongitude,
-        maxCapacity: event.maxCapacity,
         minAge: event.minAge,
       );
 
