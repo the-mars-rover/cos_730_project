@@ -166,7 +166,7 @@ class FirebaseSpaceRepository implements SpaceRepository {
     final inviteQuerySnapshot = await spaceRef
         .collection(INVITE_COLLECTION)
         .where('code', isEqualTo: entryCode)
-        .where('expiryDate', isGreaterThan: DateTime.now().millisecondsSinceEpoch)
+        .where('expiryDate', isGreaterThan: DateTime.now().toString())
         .limit(1)
         .getDocuments();
     if (inviteQuerySnapshot.documents.isEmpty) {
