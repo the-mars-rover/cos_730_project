@@ -109,12 +109,15 @@ class GrantAccessDialog extends StatelessWidget {
         child: Icon(
           Icons.verified_user,
           color: Colors.green,
-          size: 48.0,
+          size: 96.0,
         ),
       ),
       content: Text(
         'Access Granted',
-        style: Theme.of(context).primaryTextTheme.caption,
+        style: Theme.of(context)
+            .primaryTextTheme
+            .headline
+            .copyWith(color: Colors.black),
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
@@ -134,12 +137,15 @@ class GrantAccessDialog extends StatelessWidget {
         child: Icon(
           Icons.block,
           color: Colors.red,
-          size: 48.0,
+          size: 96.0,
         ),
       ),
       content: Text(
         'Access Denied',
-        style: Theme.of(context).primaryTextTheme.caption,
+        style: Theme.of(context)
+            .primaryTextTheme
+            .headline
+            .copyWith(color: Colors.black),
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
