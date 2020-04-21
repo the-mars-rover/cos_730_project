@@ -85,7 +85,7 @@ abstract class IdDocument with _$IdDocument {
 
     /// The issue date for each license code. Normally contains a date for each
     /// vehicleCode in [vehicleCodes].
-    @required DateTime issueDates,
+    @required List<DateTime> issueDates,
 
     /// The license number of this license.
     @required String licenseNumber,

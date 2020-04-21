@@ -71,7 +71,7 @@ class _$IdDocumentTearOff {
       @required String surname,
       @required String gender,
       @required DateTime birthDate,
-      @required DateTime issueDates,
+      @required List<DateTime> issueDates,
       @required String licenseNumber,
       @required List<String> vehicleCodes,
       @required String prdpCode,
@@ -139,7 +139,7 @@ mixin _$IdDocument {
             @required String surname,
             @required String gender,
             @required DateTime birthDate,
-            @required DateTime issueDates,
+            @required List<DateTime> issueDates,
             @required String licenseNumber,
             @required List<String> vehicleCodes,
             @required String prdpCode,
@@ -175,7 +175,7 @@ mixin _$IdDocument {
         @required String surname,
         @required String gender,
         @required DateTime birthDate,
-        @required DateTime issueDates,
+        @required List<DateTime> issueDates,
         @required String licenseNumber,
         @required List<String> vehicleCodes,
         @required String prdpCode,
@@ -354,7 +354,7 @@ class _$IdBook with DiagnosticableTreeMixin implements IdBook {
             @required String surname,
             @required String gender,
             @required DateTime birthDate,
-            @required DateTime issueDates,
+            @required List<DateTime> issueDates,
             @required String licenseNumber,
             @required List<String> vehicleCodes,
             @required String prdpCode,
@@ -398,7 +398,7 @@ class _$IdBook with DiagnosticableTreeMixin implements IdBook {
         @required String surname,
         @required String gender,
         @required DateTime birthDate,
-        @required DateTime issueDates,
+        @required List<DateTime> issueDates,
         @required String licenseNumber,
         @required List<String> vehicleCodes,
         @required String prdpCode,
@@ -684,7 +684,7 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
             @required String surname,
             @required String gender,
             @required DateTime birthDate,
-            @required DateTime issueDates,
+            @required List<DateTime> issueDates,
             @required String licenseNumber,
             @required List<String> vehicleCodes,
             @required String prdpCode,
@@ -729,7 +729,7 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
         @required String surname,
         @required String gender,
         @required DateTime birthDate,
-        @required DateTime issueDates,
+        @required List<DateTime> issueDates,
         @required String licenseNumber,
         @required List<String> vehicleCodes,
         @required String prdpCode,
@@ -828,7 +828,7 @@ abstract class $DriversLicenseCopyWith<$Res> {
       String surname,
       String gender,
       DateTime birthDate,
-      DateTime issueDates,
+      List<DateTime> issueDates,
       String licenseNumber,
       List<String> vehicleCodes,
       String prdpCode,
@@ -881,8 +881,9 @@ class _$DriversLicenseCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
       gender: gender == freezed ? _value.gender : gender as String,
       birthDate:
           birthDate == freezed ? _value.birthDate : birthDate as DateTime,
-      issueDates:
-          issueDates == freezed ? _value.issueDates : issueDates as DateTime,
+      issueDates: issueDates == freezed
+          ? _value.issueDates
+          : issueDates as List<DateTime>,
       licenseNumber: licenseNumber == freezed
           ? _value.licenseNumber
           : licenseNumber as String,
@@ -971,7 +972,7 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
   @override
   final DateTime birthDate;
   @override
-  final DateTime issueDates;
+  final List<DateTime> issueDates;
   @override
   final String licenseNumber;
   @override
@@ -1136,7 +1137,7 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
             @required String surname,
             @required String gender,
             @required DateTime birthDate,
-            @required DateTime issueDates,
+            @required List<DateTime> issueDates,
             @required String licenseNumber,
             @required List<String> vehicleCodes,
             @required String prdpCode,
@@ -1198,7 +1199,7 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
         @required String surname,
         @required String gender,
         @required DateTime birthDate,
-        @required DateTime issueDates,
+        @required List<DateTime> issueDates,
         @required String licenseNumber,
         @required List<String> vehicleCodes,
         @required String prdpCode,
@@ -1283,7 +1284,7 @@ abstract class DriversLicense implements IdDocument {
       @required String surname,
       @required String gender,
       @required DateTime birthDate,
-      @required DateTime issueDates,
+      @required List<DateTime> issueDates,
       @required String licenseNumber,
       @required List<String> vehicleCodes,
       @required String prdpCode,
@@ -1305,7 +1306,7 @@ abstract class DriversLicense implements IdDocument {
   String get surname;
   String get gender;
   DateTime get birthDate;
-  DateTime get issueDates;
+  List<DateTime> get issueDates;
   String get licenseNumber;
   List<String> get vehicleCodes;
   String get prdpCode;
@@ -1386,7 +1387,7 @@ class _$Passport with DiagnosticableTreeMixin implements Passport {
             @required String surname,
             @required String gender,
             @required DateTime birthDate,
-            @required DateTime issueDates,
+            @required List<DateTime> issueDates,
             @required String licenseNumber,
             @required List<String> vehicleCodes,
             @required String prdpCode,
@@ -1430,7 +1431,7 @@ class _$Passport with DiagnosticableTreeMixin implements Passport {
         @required String surname,
         @required String gender,
         @required DateTime birthDate,
-        @required DateTime issueDates,
+        @required List<DateTime> issueDates,
         @required String licenseNumber,
         @required List<String> vehicleCodes,
         @required String prdpCode,

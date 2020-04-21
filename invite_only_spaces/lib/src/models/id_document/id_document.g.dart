@@ -65,9 +65,9 @@ _$DriversLicense _$_$DriversLicenseFromJson(Map<String, dynamic> json) {
     birthDate: json['birthDate'] == null
         ? null
         : DateTime.parse(json['birthDate'] as String),
-    issueDates: json['issueDates'] == null
-        ? null
-        : DateTime.parse(json['issueDates'] as String),
+    issueDates: (json['issueDates'] as List)
+        ?.map((e) => e == null ? null : DateTime.parse(e as String))
+        ?.toList(),
     licenseNumber: json['licenseNumber'] as String,
     vehicleCodes:
         (json['vehicleCodes'] as List)?.map((e) => e as String)?.toList(),
@@ -99,7 +99,8 @@ Map<String, dynamic> _$_$DriversLicenseToJson(_$DriversLicense instance) =>
       'surname': instance.surname,
       'gender': instance.gender,
       'birthDate': instance.birthDate?.toIso8601String(),
-      'issueDates': instance.issueDates?.toIso8601String(),
+      'issueDates':
+          instance.issueDates?.map((e) => e?.toIso8601String())?.toList(),
       'licenseNumber': instance.licenseNumber,
       'vehicleCodes': instance.vehicleCodes,
       'prdpCode': instance.prdpCode,

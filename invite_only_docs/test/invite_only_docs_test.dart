@@ -30,7 +30,7 @@ final kTestDriversLicense = IdDocument.driversLicense(
   surname: 'Rautenbach',
   gender: 'M',
   birthDate: DateTime(1958, 9, 15),
-  issueDates: DateTime(2015, 5, 20),
+  issueDates: [DateTime(2015, 5, 20)],
   licenseNumber: '0000000000',
   vehicleCodes: ['B'],
   prdpCode: 'prdpCode',
@@ -108,7 +108,7 @@ void main() {
                     .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitIdBook('phoneNumber', kTestIdBook);
+        await idDocsRepository.submitDocument('phoneNumber', kTestIdBook);
 
         verify(
           documentReferenceMock.updateData(
@@ -133,7 +133,7 @@ void main() {
                     .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitIdCard('phoneNumber', kTestIdCard);
+        await idDocsRepository.submitDocument('phoneNumber', kTestIdCard);
 
         verify(
           documentReferenceMock.updateData(
@@ -159,7 +159,7 @@ void main() {
                 .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitDriversLicense(
+        await idDocsRepository.submitDocument(
             'phoneNumber', kTestDriversLicense);
 
         verify(
@@ -187,7 +187,7 @@ void main() {
                     .toJson()))
             .thenAnswer((_) => Future.value());
 
-        await idDocsRepository.submitPassport('phoneNumber', Passport());
+        await idDocsRepository.submitDocument('phoneNumber', Passport());
 
         verify(
           documentReferenceMock.updateData(
