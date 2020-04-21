@@ -21,9 +21,7 @@ class _$AccessTearOff {
       @required String entryGuardPhone,
       @required DateTime entryDate,
       @required IdDocument idDocument,
-      @required String granterPhoneNumber,
-      String exitGuardPhone,
-      DateTime exitDate}) {
+      @required String granterPhoneNumber}) {
     return _Access(
       id: id,
       spaceId: spaceId,
@@ -31,8 +29,6 @@ class _$AccessTearOff {
       entryDate: entryDate,
       idDocument: idDocument,
       granterPhoneNumber: granterPhoneNumber,
-      exitGuardPhone: exitGuardPhone,
-      exitDate: exitDate,
     );
   }
 }
@@ -47,8 +43,6 @@ mixin _$Access {
   DateTime get entryDate;
   IdDocument get idDocument;
   String get granterPhoneNumber;
-  String get exitGuardPhone;
-  DateTime get exitDate;
 
   Map<String, dynamic> toJson();
   $AccessCopyWith<Access> get copyWith;
@@ -63,9 +57,7 @@ abstract class $AccessCopyWith<$Res> {
       String entryGuardPhone,
       DateTime entryDate,
       IdDocument idDocument,
-      String granterPhoneNumber,
-      String exitGuardPhone,
-      DateTime exitDate});
+      String granterPhoneNumber});
 
   $IdDocumentCopyWith<$Res> get idDocument;
 }
@@ -85,8 +77,6 @@ class _$AccessCopyWithImpl<$Res> implements $AccessCopyWith<$Res> {
     Object entryDate = freezed,
     Object idDocument = freezed,
     Object granterPhoneNumber = freezed,
-    Object exitGuardPhone = freezed,
-    Object exitDate = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
@@ -101,10 +91,6 @@ class _$AccessCopyWithImpl<$Res> implements $AccessCopyWith<$Res> {
       granterPhoneNumber: granterPhoneNumber == freezed
           ? _value.granterPhoneNumber
           : granterPhoneNumber as String,
-      exitGuardPhone: exitGuardPhone == freezed
-          ? _value.exitGuardPhone
-          : exitGuardPhone as String,
-      exitDate: exitDate == freezed ? _value.exitDate : exitDate as DateTime,
     ));
   }
 
@@ -129,9 +115,7 @@ abstract class _$AccessCopyWith<$Res> implements $AccessCopyWith<$Res> {
       String entryGuardPhone,
       DateTime entryDate,
       IdDocument idDocument,
-      String granterPhoneNumber,
-      String exitGuardPhone,
-      DateTime exitDate});
+      String granterPhoneNumber});
 
   @override
   $IdDocumentCopyWith<$Res> get idDocument;
@@ -153,8 +137,6 @@ class __$AccessCopyWithImpl<$Res> extends _$AccessCopyWithImpl<$Res>
     Object entryDate = freezed,
     Object idDocument = freezed,
     Object granterPhoneNumber = freezed,
-    Object exitGuardPhone = freezed,
-    Object exitDate = freezed,
   }) {
     return _then(_Access(
       id: id == freezed ? _value.id : id as String,
@@ -169,10 +151,6 @@ class __$AccessCopyWithImpl<$Res> extends _$AccessCopyWithImpl<$Res>
       granterPhoneNumber: granterPhoneNumber == freezed
           ? _value.granterPhoneNumber
           : granterPhoneNumber as String,
-      exitGuardPhone: exitGuardPhone == freezed
-          ? _value.exitGuardPhone
-          : exitGuardPhone as String,
-      exitDate: exitDate == freezed ? _value.exitDate : exitDate as DateTime,
     ));
   }
 }
@@ -185,9 +163,7 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
       @required this.entryGuardPhone,
       @required this.entryDate,
       @required this.idDocument,
-      @required this.granterPhoneNumber,
-      this.exitGuardPhone,
-      this.exitDate})
+      @required this.granterPhoneNumber})
       : assert(id != null),
         assert(spaceId != null),
         assert(entryGuardPhone != null),
@@ -210,14 +186,10 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
   final IdDocument idDocument;
   @override
   final String granterPhoneNumber;
-  @override
-  final String exitGuardPhone;
-  @override
-  final DateTime exitDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Access(id: $id, spaceId: $spaceId, entryGuardPhone: $entryGuardPhone, entryDate: $entryDate, idDocument: $idDocument, granterPhoneNumber: $granterPhoneNumber, exitGuardPhone: $exitGuardPhone, exitDate: $exitDate)';
+    return 'Access(id: $id, spaceId: $spaceId, entryGuardPhone: $entryGuardPhone, entryDate: $entryDate, idDocument: $idDocument, granterPhoneNumber: $granterPhoneNumber)';
   }
 
   @override
@@ -230,9 +202,7 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
       ..add(DiagnosticsProperty('entryGuardPhone', entryGuardPhone))
       ..add(DiagnosticsProperty('entryDate', entryDate))
       ..add(DiagnosticsProperty('idDocument', idDocument))
-      ..add(DiagnosticsProperty('granterPhoneNumber', granterPhoneNumber))
-      ..add(DiagnosticsProperty('exitGuardPhone', exitGuardPhone))
-      ..add(DiagnosticsProperty('exitDate', exitDate));
+      ..add(DiagnosticsProperty('granterPhoneNumber', granterPhoneNumber));
   }
 
   @override
@@ -255,13 +225,7 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
                     .equals(other.idDocument, idDocument)) &&
             (identical(other.granterPhoneNumber, granterPhoneNumber) ||
                 const DeepCollectionEquality()
-                    .equals(other.granterPhoneNumber, granterPhoneNumber)) &&
-            (identical(other.exitGuardPhone, exitGuardPhone) ||
-                const DeepCollectionEquality()
-                    .equals(other.exitGuardPhone, exitGuardPhone)) &&
-            (identical(other.exitDate, exitDate) ||
-                const DeepCollectionEquality()
-                    .equals(other.exitDate, exitDate)));
+                    .equals(other.granterPhoneNumber, granterPhoneNumber)));
   }
 
   @override
@@ -272,9 +236,7 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
       const DeepCollectionEquality().hash(entryGuardPhone) ^
       const DeepCollectionEquality().hash(entryDate) ^
       const DeepCollectionEquality().hash(idDocument) ^
-      const DeepCollectionEquality().hash(granterPhoneNumber) ^
-      const DeepCollectionEquality().hash(exitGuardPhone) ^
-      const DeepCollectionEquality().hash(exitDate);
+      const DeepCollectionEquality().hash(granterPhoneNumber);
 
   @override
   _$AccessCopyWith<_Access> get copyWith =>
@@ -293,9 +255,7 @@ abstract class _Access implements Access {
       @required String entryGuardPhone,
       @required DateTime entryDate,
       @required IdDocument idDocument,
-      @required String granterPhoneNumber,
-      String exitGuardPhone,
-      DateTime exitDate}) = _$_Access;
+      @required String granterPhoneNumber}) = _$_Access;
 
   factory _Access.fromJson(Map<String, dynamic> json) = _$_Access.fromJson;
 
@@ -311,10 +271,6 @@ abstract class _Access implements Access {
   IdDocument get idDocument;
   @override
   String get granterPhoneNumber;
-  @override
-  String get exitGuardPhone;
-  @override
-  DateTime get exitDate;
   @override
   _$AccessCopyWith<_Access> get copyWith;
 }

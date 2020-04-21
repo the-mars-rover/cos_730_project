@@ -6,7 +6,7 @@ import '../models.dart';
 part 'access.freezed.dart';
 part 'access.g.dart';
 
-/// Stores the access details for a particular access to a [Access].
+/// Stores the access details for a particular access to a [ControlledSpace].
 @freezed
 abstract class Access with _$Access {
   const factory Access({
@@ -33,16 +33,8 @@ abstract class Access with _$Access {
     /// then this will be their own phone number.
     ///
     /// If the person accessing the space has received an invite to enter the space,
-    /// then this will be the phone number of the manager or inviter who sent the invite.
+    /// then this will me the phone number of the manager or inviter who sent the invite.
     @required String granterPhoneNumber,
-
-    /// The phone number of the guard who scanned the [idDocument] on exit.
-    /// Null if access has not yet ended.
-    String exitGuardPhone,
-
-    /// The [DateTime] representing the exit time of the access.
-    /// Null if access has not yet ended.
-    DateTime exitDate,
   }) = _Access;
 
   factory Access.fromJson(Map<String, dynamic> json) => _$AccessFromJson(json);
