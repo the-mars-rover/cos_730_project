@@ -10,15 +10,9 @@ class AccessInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      isThreeLine: true,
       leading: Icon(Icons.arrow_forward, color: Colors.green),
       title: _buildTitle(),
-      subtitle: Column(
-        children: <Widget>[
-          Text('Entry: ${_formattedEntryDate()}'),
-          Text('Exit: ${_formattedExitDate()}'),
-        ],
-      ),
+      subtitle: Text('Entered on ${_formattedEntryDate()}'),
     );
   }
 
@@ -47,11 +41,5 @@ class AccessInfoCard extends StatelessWidget {
 
   String _formattedEntryDate() {
     return formatDate(access.entryDate, [D, mm, M, '@', HH, ':', nn]);
-  }
-
-  String _formattedExitDate() {
-    return access.exitDate == null
-        ? 'Person has not left'
-        : formatDate(access.exitDate, [D, mm, M, '@', HH, ':', nn]);
   }
 }
