@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
 import 'package:invite_only/create_invite/create_invite.dart';
+import 'package:invite_only/grant_access/grant_access.dart';
 import 'package:invite_only/space_details/space_details_bloc.dart';
 import 'package:invite_only/space_details/space_details_event.dart';
 import 'package:invite_only/space_details/space_details_state.dart';
 import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:rsa_scan/rsa_scan.dart';
 
 import 'access_info_card.dart';
 
@@ -96,7 +98,12 @@ class SpacePage extends StatelessWidget {
               space.managerPhones.contains(state.currentUser.phoneNumber) ||
                   space.guardPhones.contains(state.currentUser.phoneNumber),
           child: OutlineButton.icon(
-            onPressed: () {},
+            onPressed: () async {
+              final scannedIdDocument = await scanIdBook(context);
+              if (scannedIdDocument == null) return;
+
+              grantAccess(context, space, scannedIdDocument);
+            },
             icon: Icon(Icons.security),
             label: Text('Guard'),
           ),
