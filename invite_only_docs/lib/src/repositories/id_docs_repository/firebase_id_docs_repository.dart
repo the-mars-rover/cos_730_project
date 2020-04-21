@@ -32,61 +32,65 @@ class FirebaseIdDocsRepository implements IdDocsRepository {
   }
 
   @override
+  Future<DocumentedUser> userWithDocument(IdDocument idDocument) async {
+    QuerySnapshot querySnapshot;
+    if (idDocument is IdBook) {
+      querySnapshot = await _firestore
+          .collection(COLLECTION_NAME)
+          .where('idBook', isEqualTo: idDocument.toJson())
+          .limit(1)
+          .getDocuments();
+    }
+    if (idDocument is IdCard) {
+      querySnapshot = await _firestore
+          .collection(COLLECTION_NAME)
+          .where('idCard', isEqualTo: idDocument.toJson())
+          .limit(1)
+          .getDocuments();
+    }
+    if (idDocument is DriversLicense) {
+      querySnapshot = await _firestore
+          .collection(COLLECTION_NAME)
+          .where('driversLicense', isEqualTo: idDocument.toJson())
+          .limit(1)
+          .getDocuments();
+    }
+    if (idDocument is Passport) {
+      querySnapshot = await _firestore
+          .collection(COLLECTION_NAME)
+          .where('passport', isEqualTo: idDocument.toJson())
+          .limit(1)
+          .getDocuments();
+    }
+
+    if (querySnapshot.documents.isEmpty) return null;
+    return DocumentedUser.fromJson(querySnapshot.documents.first.data);
+  }
+
+  @override
   Future<void> deleteUser(String phoneNumber) async {
     await _firestore.collection(COLLECTION_NAME).document(phoneNumber).delete();
   }
 
   @override
-  Future<void> submitIdCard(String phoneNumber, IdCard idCard) async {
+  Future<void> submitDocument(String phoneNumber, IdDocument idDocument) async {
     var userSnapshot = await _firestore
         .collection(COLLECTION_NAME)
         .document(phoneNumber)
         .get();
     var savedUser = DocumentedUser.fromJson(userSnapshot.data);
-    var updatedUser = savedUser.copyWith(idCard: idCard);
-    await _firestore
-        .collection(COLLECTION_NAME)
-        .document(phoneNumber)
-        .updateData(updatedUser.toJson());
-  }
 
-  @override
-  Future<void> submitDriversLicense(
-      String phoneNumber, DriversLicense driversLicense) async {
-    var userSnapshot = await _firestore
-        .collection(COLLECTION_NAME)
-        .document(phoneNumber)
-        .get();
-    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
-    var updatedUser = savedUser.copyWith(driversLicense: driversLicense);
-    await _firestore
-        .collection(COLLECTION_NAME)
-        .document(phoneNumber)
-        .updateData(updatedUser.toJson());
-  }
+    DocumentedUser updatedUser;
+    if (idDocument is IdCard) {
+      updatedUser = savedUser.copyWith(idCard: idDocument);
+    } else if (idDocument is IdBook) {
+      updatedUser = savedUser.copyWith(idBook: idDocument);
+    } else if (idDocument is DriversLicense) {
+      updatedUser = savedUser.copyWith(driversLicense: idDocument);
+    } else if (idDocument is Passport) {
+      updatedUser = savedUser.copyWith(passport: idDocument);
+    }
 
-  @override
-  Future<void> submitIdBook(String phoneNumber, IdBook idBook) async {
-    var userSnapshot = await _firestore
-        .collection(COLLECTION_NAME)
-        .document(phoneNumber)
-        .get();
-    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
-    var updatedUser = savedUser.copyWith(idBook: idBook);
-    await _firestore
-        .collection(COLLECTION_NAME)
-        .document(phoneNumber)
-        .updateData(updatedUser.toJson());
-  }
-
-  @override
-  Future<void> submitPassport(String phoneNumber, Passport passport) async {
-    var userSnapshot = await _firestore
-        .collection(COLLECTION_NAME)
-        .document(phoneNumber)
-        .get();
-    var savedUser = DocumentedUser.fromJson(userSnapshot.data);
-    var updatedUser = savedUser.copyWith(passport: passport);
     await _firestore
         .collection(COLLECTION_NAME)
         .document(phoneNumber)
