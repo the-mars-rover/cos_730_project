@@ -36,14 +36,27 @@ abstract class SpaceRepository {
   /// Delete the space with the given id.
   Future<void> deleteSpace(String spaceId);
 
-  /// Grant access to the manager, guard or resident of this space with the given phone number.
-  Future<void> grantEntry(String spaceId, String phoneNumber);
-
-  /// Grant access to the manager, guard or resident of this space with the given phone number.
-  Future<void> grantExit(String spaceId, String phoneNumber);
-
   /// Creates and returns an invite for a new invite to the given space.
   ///
   /// [phoneNumber] is the phone number of the manager or inviter creating the invite.
-  Future<Invite> invite(String spaceId, String phoneNumber);
+  Future<Invite> createInvite(String spaceId, String phoneNumber);
+
+  /// Grant access to a manager, inviter or guard to the space with the given ID.
+  ///
+  /// [phoneNumber] is the phone number of the person being granted entry.
+  /// [idDocument] is the ID document of the person to whom entry is being granted.
+  /// [guardPhone] is the phone number of the person who is granting entry.
+  ///
+  /// Throws an exception if [phoneNumber] is not the phone number of a manager,
+  /// guard or inviter for the given space.
+  Future<void> grantEntry(String spaceId, String phoneNumber,
+      IdDocument idDocument, String guardPhone);
+
+  /// Grant access to a visitor to the space with the given ID.
+  ///
+  /// [guardPhone] is the phone number of the manager or guard who is granting entry.
+  /// [idDocument] is the ID document of the person to whom entry is being granted.
+  /// [entryCode] is the invite code presented (generated using [createInvite]).
+  Future<void> grantVisitorEntry(String spaceId, IdDocument idDocument,
+      String entryCode, String guardPhone);
 }

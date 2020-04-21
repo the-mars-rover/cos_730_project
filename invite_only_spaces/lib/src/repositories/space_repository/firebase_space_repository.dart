@@ -99,7 +99,7 @@ class FirebaseSpaceRepository implements SpaceRepository {
   /// Please see the following page about Keeping a Count of Documents in a Collection:
   /// https://fireship.io/snippets/firestore-increment-tips/
   @override
-  Future<Invite> invite(String spaceId, String phoneNumber) async {
+  Future<Invite> createInvite(String spaceId, String phoneNumber) async {
     final invitesRef = _firestore
         .collection(SPACE_COLLECTION)
         .document(spaceId)
@@ -134,14 +134,57 @@ class FirebaseSpaceRepository implements SpaceRepository {
   }
 
   @override
-  Future<void> grantEntry(String spaceId, String phoneNumber) {
-    // TODO: implement grantEntry
-    return null;
+  Future<void> grantEntry(String spaceId, String phoneNumber,
+      IdDocument idDocument, String guardPhone) async {
+    final spaceRef = _firestore.collection(SPACE_COLLECTION).document(spaceId);
+    final spaceSnapshot = await spaceRef.get();
+    final space = ControlledSpace.fromJson(spaceSnapshot.data);
+    if (!(space.managerPhones.contains(phoneNumber) ||
+        space.guardPhones.contains(phoneNumber) ||
+        space.inviterPhones.contains(phoneNumber))) {
+      throw Exception('Access not allowed');
+    }
+
+    Access newAccess = Access(
+      id: Uuid().v4(),
+      spaceId: spaceId,
+      entryGuardPhone: guardPhone,
+      entryDate: DateTime.now(),
+      idDocument: idDocument,
+      granterPhoneNumber: phoneNumber,
+    );
+    spaceRef
+        .collection(ACCESS_COLLECTION)
+        .document(newAccess.id)
+        .setData(newAccess.toJson());
   }
 
   @override
-  Future<void> grantExit(String spaceId, String phoneNumber) {
-    // TODO: implement grantExit
-    return null;
+  Future<void> grantVisitorEntry(String spaceId, IdDocument idDocument,
+      String entryCode, String guardPhone) async {
+    final spaceRef = _firestore.collection(SPACE_COLLECTION).document(spaceId);
+    final inviteQuerySnapshot = await spaceRef
+        .collection(INVITE_COLLECTION)
+        .where('code', isEqualTo: entryCode)
+        .where('expiryDate', isLessThan: DateTime.now())
+        .limit(1)
+        .getDocuments();
+    if (inviteQuerySnapshot.documents.isEmpty) {
+      throw Exception('$entryCode is an invalid invite code');
+    }
+    final invite = Invite.fromJson(inviteQuerySnapshot.documents.first.data);
+
+    final Access newAccess = Access(
+      id: Uuid().v4(),
+      spaceId: spaceId,
+      entryGuardPhone: guardPhone,
+      entryDate: DateTime.now(),
+      idDocument: idDocument,
+      granterPhoneNumber: invite.inviterPhoneNumber,
+    );
+    await spaceRef
+        .collection(ACCESS_COLLECTION)
+        .document(newAccess.id)
+        .setData(newAccess.toJson());
   }
 }
