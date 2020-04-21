@@ -153,7 +153,7 @@ class FirebaseSpaceRepository implements SpaceRepository {
       idDocument: idDocument,
       granterPhoneNumber: phoneNumber,
     );
-    spaceRef
+    await spaceRef
         .collection(ACCESS_COLLECTION)
         .document(newAccess.id)
         .setData(newAccess.toJson());
@@ -166,7 +166,7 @@ class FirebaseSpaceRepository implements SpaceRepository {
     final inviteQuerySnapshot = await spaceRef
         .collection(INVITE_COLLECTION)
         .where('code', isEqualTo: entryCode)
-        .where('expiryDate', isLessThan: DateTime.now())
+        .where('expiryDate', isGreaterThan: DateTime.now().millisecondsSinceEpoch)
         .limit(1)
         .getDocuments();
     if (inviteQuerySnapshot.documents.isEmpty) {
