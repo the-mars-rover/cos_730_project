@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/grant_access/grant_access_bloc.dart';
-import 'package:invite_only/grant_access/grant_access_event.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
+import 'grant_access_bloc.dart';
+import 'grant_access_event.dart';
 import 'grant_access_state.dart';
 
 class GrantAccessDialog extends StatelessWidget {
-  final ControlledSpace space;
+  final Space space;
 
   final RsaIdDocument scannedIdDocument;
 

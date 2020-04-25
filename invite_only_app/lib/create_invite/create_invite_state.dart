@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
 
 abstract class CreateInviteState extends Equatable {
   const CreateInviteState();
@@ -11,12 +10,12 @@ class CreatingInvite extends CreateInviteState {
 }
 
 class InviteCreated extends CreateInviteState {
-  final Invite invite;
+  final String inviteCode;
 
-  InviteCreated(this.invite);
+  InviteCreated(this.inviteCode);
 
   @override
-  List<Object> get props => [invite];
+  List<Object> get props => [inviteCode];
 }
 
 class InviteCreationError extends CreateInviteState {

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 abstract class HomeState extends Equatable {
   const HomeState();
@@ -12,23 +11,11 @@ class HomeLoading extends HomeState {
 }
 
 class HomeReady extends HomeState {
-  final User currentUser;
-  final Stream<List<ControlledSpace>> managedSpacesStream;
-  final Stream<List<ControlledSpace>> guardingSpacesStream;
-  final Stream<List<ControlledSpace>> invitingSpacesStream;
+  final Stream<User> userStream;
+  final Stream<List<Space>> spacesStream;
 
-  HomeReady(
-    this.currentUser,
-    this.managedSpacesStream,
-    this.guardingSpacesStream,
-    this.invitingSpacesStream,
-  );
+  HomeReady(this.userStream, this.spacesStream);
 
   @override
-  List<Object> get props => [
-        currentUser,
-        managedSpacesStream,
-        guardingSpacesStream,
-        invitingSpacesStream,
-      ];
+  List<Object> get props => [userStream, spacesStream];
 }

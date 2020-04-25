@@ -1,4 +1,3 @@
-import 'package:invite_only_auth/invite_only_auth.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -9,9 +8,7 @@ class InitialAuthenticationState extends AuthenticationState {}
 class AuthenticationInProgress extends AuthenticationState {}
 
 class UserAuthenticated extends AuthenticationState {
-  final User user;
-
-  UserAuthenticated(this.user);
+  UserAuthenticated();
 }
 
 class AuthenticationFailed extends AuthenticationState {

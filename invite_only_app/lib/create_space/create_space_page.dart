@@ -22,29 +22,27 @@ class CreateSpacePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateSpaceBloc>(
-      create: (context) => CreateSpaceBloc()..add(InitializeCreateSpace()),
+      create: (context) => CreateSpaceBloc(),
       child: BlocConsumer<CreateSpaceBloc, CreateSpaceState>(
         listener: (context, state) {
           if (state is SpaceCreated) {
-            Navigator.of(context).pop(state.space);
+            Navigator.of(context).pop();
             Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('${state.space.title} successfully created'),
+              content: Text('${_titleController.text} successfully created'),
             ));
           }
 
           if (state is ErrorCreatingSpace) {
             showDialog(
               context: context,
-              builder: (context) => ErrorDialog(message: state.errorMessage),
+              builder: (context) => ErrorDialog(
+                message: 'Something went wrong whilst creating the space',
+              ),
             );
           }
         },
         builder: (context, state) {
-          if (state is CreateSpaceInitializing) {
-            return LoadingScaffold();
-          }
-
-          if (state is CreateSpaceInitialized) {
+          if (state is CreateSpaceInitial) {
             return _buildForm(context, state);
           }
 

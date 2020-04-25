@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 abstract class PhoneVerificationEvent extends Equatable {
   const PhoneVerificationEvent();

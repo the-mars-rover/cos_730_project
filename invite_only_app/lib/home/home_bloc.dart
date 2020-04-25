@@ -1,18 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  /// The repository to use for getting the current user.
-  final _authRepository = AuthRepository.instance;
-
-  /// The repository to use for getting the stream of spaces
-  final _spaceRepository = SpaceRepository.instance;
+  final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
   HomeState get initialState => HomeLoading();
@@ -29,19 +24,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapInitializeHomeToState(InitializeHome event) async* {
     yield HomeLoading();
 
-    final currentUser = await _authRepository.currentUser();
-    final managedSpacesStream =
-        _spaceRepository.managerSpaces(currentUser.phoneNumber);
-    final guardingSpacesStream =
-        _spaceRepository.guardSpaces(currentUser.phoneNumber);
-    final invitingSpacesStream =
-        _spaceRepository.inviterSpaces(currentUser.phoneNumber);
+    final userStream = await _inviteOnlyRepo.currentUser();
+    final spacesStream = await _inviteOnlyRepo.spaces();
 
-    yield HomeReady(
-      currentUser,
-      managedSpacesStream,
-      guardingSpacesStream,
-      invitingSpacesStream,
-    );
+    yield HomeReady(userStream, spacesStream);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
 abstract class GrantAccessEvent extends Equatable {
@@ -7,7 +7,7 @@ abstract class GrantAccessEvent extends Equatable {
 }
 
 class GrantAccess extends GrantAccessEvent {
-  final ControlledSpace space;
+  final Space space;
 
   final RsaIdDocument scannedIdDocument;
 
@@ -18,7 +18,7 @@ class GrantAccess extends GrantAccessEvent {
 }
 
 class GrantVisitorAccess extends GrantAccessEvent {
-  final ControlledSpace space;
+  final Space space;
 
   final RsaIdDocument scannedIdDocument;
 

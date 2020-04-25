@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
-import 'package:invite_only_docs/invite_only_docs.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
 import 'profile_bloc.dart';
@@ -18,7 +18,8 @@ class UserProfilePage extends StatelessWidget {
           if (state is DocumentUploadError) {
             showDialog(
               context: context,
-              builder: (context) => ErrorDialog(message: state.errorMessage),
+              builder: (context) =>
+                  ErrorDialog(message: 'The scanned document is not valid'),
             );
           }
         },
@@ -48,30 +49,30 @@ class UserProfilePage extends StatelessWidget {
   Scaffold _buildProfileScaffold(state) {
     return Scaffold(
       appBar: AppBar(title: Text("My Profile")),
-      body: StreamBuilder<DocumentedUser>(
-        stream: state.documentedUserStream,
+      body: StreamBuilder<User>(
+        stream: state.userStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
 
-          final documentedUser = snapshot.data;
+          final user = snapshot.data;
           return ListView(
             children: <Widget>[
               ListTile(
-                title: Text(state.user.phoneNumber),
+                title: Text(user.phoneNumber),
                 subtitle: Text("Phone Number"),
               ),
               Divider(),
               ListTile(
                 title: Text("South African ID Card"),
                 subtitle: Text(
-                  documentedUser.idCard == null ? "Not Uploaded" : "Uploaded",
+                  user.idCard == null ? "Not Uploaded" : "Uploaded",
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    documentedUser.idCard == null
+                    user.idCard == null
                         ? Container()
                         : Icon(
                             Icons.check_circle,
@@ -96,12 +97,12 @@ class UserProfilePage extends StatelessWidget {
               ListTile(
                 title: Text("South African ID Book"),
                 subtitle: Text(
-                  documentedUser.idBook == null ? "Not Uploaded" : "Uploaded",
+                  user.idBook == null ? "Not Uploaded" : "Uploaded",
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    documentedUser.idBook == null
+                    user.idBook == null
                         ? Container()
                         : Icon(
                             Icons.check_circle,
@@ -126,14 +127,12 @@ class UserProfilePage extends StatelessWidget {
               ListTile(
                 title: Text("South African Driver's License"),
                 subtitle: Text(
-                  documentedUser.driversLicense == null
-                      ? "Not Uploaded"
-                      : "Uploaded",
+                  user.driversLicense == null ? "Not Uploaded" : "Uploaded",
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    documentedUser.driversLicense == null
+                    user.driversLicense == null
                         ? Container()
                         : Icon(
                             Icons.check_circle,
@@ -150,12 +149,12 @@ class UserProfilePage extends StatelessWidget {
               ListTile(
                 title: Text("Passport"),
                 subtitle: Text(
-                  documentedUser.passport == null ? "Not Uploaded" : "Uploaded",
+                  user.passport == null ? "Not Uploaded" : "Uploaded",
                 ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    documentedUser.passport == null
+                    user.passport == null
                         ? Container()
                         : Icon(
                             Icons.check_circle,

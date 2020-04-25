@@ -1,12 +1,14 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
+
 import 'authentication_event.dart';
 import 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final _authRepository = AuthRepository.instance;
+  final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
   AuthenticationState get initialState => AuthenticationInProgress();
@@ -27,9 +29,9 @@ class AuthenticationBloc
   Stream<AuthenticationState> _mapAuthInitToState(AuthInit event) async* {
     yield AuthenticationInProgress();
 
-    var user = await _authRepository.currentUser();
-    if (user != null) {
-      yield UserAuthenticated(user);
+    var currentUser = await _inviteOnlyRepo.currentUser();
+    if (currentUser != null) {
+      yield UserAuthenticated();
     } else {
       yield InitialAuthenticationState();
     }
@@ -39,11 +41,10 @@ class AuthenticationBloc
     yield AuthenticationInProgress();
 
     try {
-      var user =
-          await _authRepository.signInWithCredential(event.authCredential);
-      yield UserAuthenticated(user);
-    } on AuthFailure catch (e) {
-      yield AuthenticationFailed(e.reason);
+      await _inviteOnlyRepo.signInWithCredential(event.authCredential);
+      yield UserAuthenticated();
+    } on AuthFailure {
+      yield AuthenticationFailed('Sign in failed. Please try again.');
     }
   }
 }

@@ -5,11 +5,6 @@ abstract class CreateSpaceEvent extends Equatable {
   const CreateSpaceEvent();
 }
 
-class InitializeCreateSpace extends CreateSpaceEvent {
-  @override
-  List<Object> get props => [];
-}
-
 class CreateSpace extends CreateSpaceEvent {
   final String title;
   final String imageUrl;

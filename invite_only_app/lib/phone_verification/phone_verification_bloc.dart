@@ -1,13 +1,14 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'phone_verification_event.dart';
 import 'phone_verification_state.dart';
 
 class PhoneVerificationBloc
     extends Bloc<PhoneVerificationEvent, PhoneVerificationState> {
-  final _authRepository = AuthRepository.instance;
+  final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
   PhoneVerificationState get initialState => SendingSmsCode();
@@ -41,7 +42,7 @@ class PhoneVerificationBloc
       SendSmsCode event) async* {
     yield SendingSmsCode();
 
-    await _authRepository.verifyPhoneNumber(
+    await _inviteOnlyRepo.verifyPhoneNumber(
       phoneNumber: event.phoneNumber,
       retrievalTimeout: Duration(seconds: 60),
       verificationCompleted: (authCredential) {
@@ -60,7 +61,7 @@ class PhoneVerificationBloc
       SubmitSmsCode event) async* {
     var currentState = state;
     if (currentState is SmsCodeSent) {
-      var authCredential = await _authRepository.getAuthCredential(
+      var authCredential = _inviteOnlyRepo.getAuthCredential(
         currentState.verificationId,
         event.smsCode,
       );

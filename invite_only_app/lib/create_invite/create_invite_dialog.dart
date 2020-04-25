@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'create_invite_bloc.dart';
 import 'create_invite_event.dart';
 import 'create_invite_state.dart';
 
 class CreateInviteDialog extends StatelessWidget {
-  final ControlledSpace space;
+  final Space space;
 
   const CreateInviteDialog({Key key, @required this.space}) : super(key: key);
 
@@ -38,10 +38,7 @@ class CreateInviteDialog extends StatelessWidget {
 
   Widget _buildCreatedDialog(BuildContext context, InviteCreated state) {
     return AlertDialog(
-      title: Text(
-        state.invite.code,
-        textAlign: TextAlign.center,
-      ),
+      title: Text(state.inviteCode, textAlign: TextAlign.center),
       content: Text(
         'Share this code with someone for them to be allowed entry',
         textAlign: TextAlign.center,

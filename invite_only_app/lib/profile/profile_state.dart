@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_docs/invite_only_docs.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 abstract class ProfileState extends Equatable {
   const ProfileState();
@@ -12,24 +11,22 @@ class LoadingProfileDetails extends ProfileState {
 }
 
 class ProfileDetailsLoaded extends ProfileState {
-  final User user;
-  final Stream<DocumentedUser> documentedUserStream;
+  final Stream<User> userStream;
 
-  ProfileDetailsLoaded(this.user, this.documentedUserStream);
+  ProfileDetailsLoaded(this.userStream);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userStream];
 }
 
 class DocumentUploadError extends ProfileState {
-  final User user;
-  final Stream<DocumentedUser> documentedUserStream;
-  final String errorMessage;
+  final Stream<User> userStream;
+  final Exception exception;
 
-  DocumentUploadError(this.errorMessage, this.user, this.documentedUserStream);
+  DocumentUploadError(this.userStream, this.exception);
 
   @override
-  List<Object> get props => [errorMessage, user, documentedUserStream];
+  List<Object> get props => [userStream, exception];
 }
 
 class UploadingDocument extends ProfileState {

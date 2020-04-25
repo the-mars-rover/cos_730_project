@@ -2,18 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:invite_only/app/id_doc_converter.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_docs/invite_only_docs.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'profile_event.dart';
 import 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  /// The repository for retrieving authentication details
-  final _authRepository = AuthRepository.instance;
-
-  /// The repository for retrieving documented users
-  final _idDocsRepository = IdDocsRepository.instance;
+  final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
   ProfileState get initialState => LoadingProfileDetails();
@@ -33,11 +28,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Stream<ProfileState> _mapLoadProfileDetailsToState(
       LoadProfileDetails event) async* {
-    final user = await _authRepository.currentUser();
-    final documentedUserStream =
-        await _idDocsRepository.documentedUser(user.phoneNumber);
+    final userStream = await _inviteOnlyRepo.currentUser();
 
-    yield ProfileDetailsLoaded(user, documentedUserStream);
+    yield ProfileDetailsLoaded(userStream);
   }
 
   Stream<ProfileState> _mapUploadIdCardToState(UploadDocument event) async* {
@@ -46,21 +39,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield UploadingDocument();
 
       try {
-        _idDocsRepository.submitDocument(
-          currentState.user.phoneNumber,
-          IdDocConverter.rsaToDocs(event.scannedDocument),
-        );
+        await _inviteOnlyRepo
+            .submitDocument(IdDocConverter.rsaToDocs(event.scannedDocument));
 
-        yield ProfileDetailsLoaded(
-          currentState.user,
-          currentState.documentedUserStream,
-        );
-      } on DocumentedRejected catch (e) {
-        yield DocumentUploadError(
-          e.reason,
-          currentState.user,
-          currentState.documentedUserStream,
-        );
+        yield ProfileDetailsLoaded(currentState.userStream);
+      } catch (e) {
+        yield DocumentUploadError(currentState.userStream, e);
       }
     }
   }

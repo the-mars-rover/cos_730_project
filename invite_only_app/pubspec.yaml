@@ -58,7 +58,8 @@ dependencies:
 
   # Scan identity documents such as South African ID Cards, ID Books and Driver's Licenses.
   # See https://pub.dev/packages/rsa_scan
-  rsa_scan: ^0.0.2
+  rsa_scan:
+    path: ../../rsa_scan
 
   # Simple, fast generation of RFC4122 UUIDs.
   # See https://pub.dev/packages/uuid
@@ -68,20 +69,23 @@ dependencies:
   # See https://pub.dev/packages/date_format
   date_format: ^1.0.8
 
-  # A Flutter package providing the means to work Invite Only users.
-  # See https://github.com/marcus-bornman/invite_only_users
-  invite_only_auth:
-      path: ../invite_only_auth
+  invite_only_repo:
+    path: ../invite_only_repo
 
-  # Access and manage identity document information for Invite Only users.
-  # See https://github.com/marcus-bornman/invite_only_docs
-  invite_only_docs:
-    path: ../invite_only_docs
-
-  # Manage or control access to Invite Only access-controlled Spaces
-  # See https://github.com/marcus-bornman/invite_only_spaces
-  invite_only_spaces:
-    path: ../invite_only_spaces
+#  # A Flutter package providing the means to work Invite Only users.
+#  # See https://github.com/marcus-bornman/invite_only_users
+#  invite_only_auth:
+#      path: ../invite_only_auth
+#
+#  # Access and manage identity document information for Invite Only users.
+#  # See https://github.com/marcus-bornman/invite_only_docs
+#  invite_only_docs:
+#    path: ../invite_only_docs
+#
+#  # Manage or control access to Invite Only access-controlled Spaces
+#  # See https://github.com/marcus-bornman/invite_only_spaces
+#  invite_only_spaces:
+#    path: ../invite_only_spaces
 
 dev_dependencies:
   flutter_test:

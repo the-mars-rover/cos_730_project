@@ -1,17 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'create_invite_event.dart';
 import 'create_invite_state.dart';
 
-
 class CreateInviteBloc extends Bloc<CreateInviteEvent, CreateInviteState> {
-  final AuthRepository _authRepository = AuthRepository.instance;
-
-  final SpaceRepository _spaceRepository = SpaceRepository.instance;
+  final InviteOnlyRepo _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
   CreateInviteState get initialState => CreatingInvite();
@@ -28,12 +24,8 @@ class CreateInviteBloc extends Bloc<CreateInviteEvent, CreateInviteState> {
   Stream<CreateInviteState> _mapCreateInviteToState(CreateInvite event) async* {
     try {
       yield CreatingInvite();
-      final currentUser = await _authRepository.currentUser();
-      final invite = await _spaceRepository.createInvite(
-        event.space.id,
-        currentUser.phoneNumber,
-      );
-      yield InviteCreated(invite);
+      final inviteCode = await _inviteOnlyRepo.invite(event.space);
+      yield InviteCreated(inviteCode);
     } catch (e) {
       yield InviteCreationError('Invite could not be created.');
     }

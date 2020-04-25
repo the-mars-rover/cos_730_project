@@ -1,16 +1,13 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'space_details_event.dart';
 import 'space_details_state.dart';
 
 class SpaceDetailsBloc extends Bloc<SpaceDetailsEvent, SpaceDetailsState> {
-  final AuthRepository _authRepository = AuthRepository.instance;
-
-  final SpaceRepository _spaceRepository = SpaceRepository.instance;
+  final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
   SpaceDetailsState get initialState => SpaceDetailsLoading();
@@ -28,10 +25,10 @@ class SpaceDetailsBloc extends Bloc<SpaceDetailsEvent, SpaceDetailsState> {
       LoadSpaceDetails event) async* {
     yield SpaceDetailsLoading();
 
-    User currentUser = await _authRepository.currentUser();
-    Stream<List<Access>> accessesStream =
-        _spaceRepository.accesses(event.space.id);
+    final userStream = await _inviteOnlyRepo.currentUser();
+    final accessesStream = await _inviteOnlyRepo.accesses(event.space);
+    final spaceStream = await _inviteOnlyRepo.space(event.space);
 
-    yield SpaceDetailsLoaded(currentUser, accessesStream);
+    yield SpaceDetailsLoaded(userStream, spaceStream, accessesStream);
   }
 }

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:invite_only/space_details/space_details.dart';
-import 'package:invite_only_auth/invite_only_auth.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 class SpaceCard extends StatelessWidget {
-  final User currentUser;
-
-  final ControlledSpace space;
+  final Space space;
+  final String subtitle;
 
   const SpaceCard({
     Key key,
-    @required this.currentUser,
     @required this.space,
+    @required this.subtitle,
   }) : super(key: key);
 
   @override
@@ -20,32 +18,10 @@ class SpaceCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(backgroundImage: NetworkImage(space.imageUrl)),
         title: Text(space.title),
-        subtitle: Text(_buildSubtitle()),
+        subtitle: Text(subtitle),
         trailing: Icon(Icons.navigate_next),
         onTap: () => showSpaceDetails(context, space),
       ),
     );
-  }
-
-  String _buildSubtitle() {
-    if (space.managerPhones
-        .where((p) => p == currentUser.phoneNumber)
-        .isNotEmpty) {
-      return 'You are a manager for this space.';
-    }
-
-    if (space.guardPhones
-        .where((p) => p == currentUser.phoneNumber)
-        .isNotEmpty) {
-      return 'You are a guard for this space.';
-    }
-
-    if (space.inviterPhones
-        .where((p) => p == currentUser.phoneNumber)
-        .isNotEmpty) {
-      return 'You are an inviter for this space.';
-    }
-
-    return '';
   }
 }

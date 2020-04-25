@@ -1,6 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:invite_only_spaces/invite_only_spaces.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 class AccessInfoCard extends StatelessWidget {
   final Access access;
@@ -32,14 +32,14 @@ class AccessInfoCard extends StatelessWidget {
     }
 
     if (document is Passport) {
-      //TODO: Replace this.
-      return Text('Passport not yet supported');
+      return Text(document.idNumber);
     }
 
     return null;
   }
 
   String _formattedEntryDate() {
-    return formatDate(access.entryDate, [D, ' ', mm, ' ', M, ' @ ', HH, ':', nn]);
+    return formatDate(
+        access.entryDate, [D, ' ', mm, ' ', M, ' @ ', HH, ':', nn]);
   }
 }
