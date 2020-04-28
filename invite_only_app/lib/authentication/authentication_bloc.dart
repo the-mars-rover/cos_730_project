@@ -11,29 +11,14 @@ class AuthenticationBloc
   final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
   @override
-  AuthenticationState get initialState => AuthenticationInProgress();
+  AuthenticationState get initialState => InitialAuthenticationState();
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
-    if (event is AuthInit) {
-      yield* _mapAuthInitToState(event);
-    }
-
     if (event is SignIn) {
       yield* _mapSignInToState(event);
-    }
-  }
-
-  Stream<AuthenticationState> _mapAuthInitToState(AuthInit event) async* {
-    yield AuthenticationInProgress();
-
-    var currentUser = await _inviteOnlyRepo.currentUser();
-    if (currentUser != null) {
-      yield UserAuthenticated();
-    } else {
-      yield InitialAuthenticationState();
     }
   }
 
@@ -43,8 +28,8 @@ class AuthenticationBloc
     try {
       await _inviteOnlyRepo.signInWithCredential(event.authCredential);
       yield UserAuthenticated();
-    } on AuthFailure {
-      yield AuthenticationFailed('Sign in failed. Please try again.');
+    } on AuthFailure catch (e) {
+      yield AuthenticationFailed('Sign in failed: ${e.reason}');
     }
   }
 }

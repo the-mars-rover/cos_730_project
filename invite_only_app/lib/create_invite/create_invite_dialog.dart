@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/app/app.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'create_invite_bloc.dart';
@@ -24,10 +23,6 @@ class CreateInviteDialog extends StatelessWidget {
 
           if (state is InviteCreated) {
             return _buildCreatedDialog(context, state);
-          }
-
-          if (state is InviteCreationError) {
-            return ErrorDialog(message: state.errorMessage);
           }
 
           return null;

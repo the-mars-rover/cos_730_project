@@ -17,12 +17,3 @@ class InviteCreated extends CreateInviteState {
   @override
   List<Object> get props => [inviteCode];
 }
-
-class InviteCreationError extends CreateInviteState {
-  final String errorMessage;
-
-  InviteCreationError(this.errorMessage);
-
-  @override
-  List<Object> get props => [errorMessage];
-}

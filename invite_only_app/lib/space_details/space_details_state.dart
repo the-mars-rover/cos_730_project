@@ -12,15 +12,10 @@ class SpaceDetailsLoading extends SpaceDetailsState {
 
 class SpaceDetailsLoaded extends SpaceDetailsState {
   final Stream<User> userStream;
-  final Stream<Space> spaceStream;
   final Stream<List<Access>> accessesStream;
 
-  SpaceDetailsLoaded(this.userStream, this.spaceStream, this.accessesStream);
+  SpaceDetailsLoaded(this.userStream, this.accessesStream);
 
   @override
-  List<Object> get props => [
-        this.userStream,
-        this.spaceStream,
-        this.accessesStream,
-      ];
+  List<Object> get props => [this.userStream, this.accessesStream];
 }

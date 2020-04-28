@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/app/loading_scaffold.dart';
+import 'package:invite_only/authentication/authentication.dart';
 import 'package:invite_only/create_space/create_space.dart';
 import 'package:invite_only/home/home_bloc.dart';
 import 'package:invite_only/home/home_event.dart';
@@ -18,7 +18,7 @@ class UserHomePage extends StatelessWidget {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           if (state is HomeLoading) {
-            return LoadingScaffold();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           if (state is HomeReady) {
@@ -39,12 +39,13 @@ class UserHomePage extends StatelessWidget {
             return Scaffold(
               body: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('User signer out.'),
                     Container(height: 16.0),
                     RaisedButton(
                       child: Text('Sign In'),
-                      onPressed: () {},
+                      onPressed: () => reauthenticate(context),
                     )
                   ],
                 ),

@@ -22,12 +22,8 @@ class CreateInviteBloc extends Bloc<CreateInviteEvent, CreateInviteState> {
   }
 
   Stream<CreateInviteState> _mapCreateInviteToState(CreateInvite event) async* {
-    try {
-      yield CreatingInvite();
-      final inviteCode = await _inviteOnlyRepo.invite(event.space);
-      yield InviteCreated(inviteCode);
-    } catch (e) {
-      yield InviteCreationError('Invite could not be created.');
-    }
+    yield CreatingInvite();
+    final inviteCode = await _inviteOnlyRepo.invite(event.space);
+    yield InviteCreated(inviteCode);
   }
 }

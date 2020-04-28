@@ -25,10 +25,9 @@ class SpaceDetailsBloc extends Bloc<SpaceDetailsEvent, SpaceDetailsState> {
       LoadSpaceDetails event) async* {
     yield SpaceDetailsLoading();
 
-    final userStream = await _inviteOnlyRepo.currentUser();
-    final accessesStream = await _inviteOnlyRepo.accesses(event.space);
-    final spaceStream = await _inviteOnlyRepo.space(event.space);
+    final userStream = _inviteOnlyRepo.currentUser();
+    final accessesStream = _inviteOnlyRepo.accesses(event.space);
 
-    yield SpaceDetailsLoaded(userStream, spaceStream, accessesStream);
+    yield SpaceDetailsLoaded(userStream, accessesStream);
   }
 }

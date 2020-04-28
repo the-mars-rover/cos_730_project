@@ -19,10 +19,8 @@ class AccessGranted extends GrantAccessState {
   List<Object> get props => [];
 }
 
-class AccessDenied extends GrantAccessState {
-  final Exception e;
-
-  AccessDenied(this.e);
+class DeniedAccess extends GrantAccessState {
+  DeniedAccess();
 
   @override
   List<Object> get props => [];

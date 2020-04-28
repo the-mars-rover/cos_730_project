@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only/app/app.dart';
-import 'package:invite_only/app/contacts_search_delegate.dart';
 import 'package:invite_only/create_space/create_space_bloc.dart';
 import 'package:invite_only/create_space/create_space_event.dart';
 import 'package:invite_only/create_space/create_space_state.dart';
@@ -33,12 +32,8 @@ class CreateSpacePage extends StatelessWidget {
           }
 
           if (state is ErrorCreatingSpace) {
-            showDialog(
-              context: context,
-              builder: (context) => ErrorDialog(
-                message: 'Something went wrong whilst creating the space',
-              ),
-            );
+            showErrorDialog(
+                context, 'Something went wrong whilst creating the space');
           }
         },
         builder: (context, state) {
@@ -47,7 +42,7 @@ class CreateSpacePage extends StatelessWidget {
           }
 
           if (state is CreatingSpace) {
-            return LoadingScaffold();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           if (state is SpaceCreated) {
@@ -56,7 +51,7 @@ class CreateSpacePage extends StatelessWidget {
           }
 
           if (state is ErrorCreatingSpace) {
-            return _buildForm(context, state);
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           return null;
@@ -123,7 +118,7 @@ class CreateSpacePage extends StatelessWidget {
             TextFormField(
               controller: _managersController,
               onTap: () async {
-                final contacts = await ContactsSearchDelegate.selectContacts(
+                final contacts = await selectContacts(
                   context,
                   List()..addAll(_managerContacts),
                 );
@@ -146,7 +141,7 @@ class CreateSpacePage extends StatelessWidget {
             TextFormField(
               controller: _guardsController,
               onTap: () async {
-                final contacts = await ContactsSearchDelegate.selectContacts(
+                final contacts = await selectContacts(
                   context,
                   List()..addAll(_guardContacts),
                 );
@@ -169,7 +164,7 @@ class CreateSpacePage extends StatelessWidget {
             TextFormField(
               controller: _invitersController,
               onTap: () async {
-                final contacts = await ContactsSearchDelegate.selectContacts(
+                final contacts = await selectContacts(
                   context,
                   List()..addAll(_inviterContacts),
                 );

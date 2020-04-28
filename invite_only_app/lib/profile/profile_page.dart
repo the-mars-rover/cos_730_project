@@ -16,16 +16,12 @@ class UserProfilePage extends StatelessWidget {
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) async {
           if (state is DocumentUploadError) {
-            showDialog(
-              context: context,
-              builder: (context) =>
-                  ErrorDialog(message: 'The scanned document is not valid'),
-            );
+            showErrorDialog(context, 'The scanned document is not valid');
           }
         },
         builder: (context, state) {
           if (state is LoadingProfileDetails) {
-            return LoadingScaffold();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           if (state is ProfileDetailsLoaded) {
@@ -33,7 +29,7 @@ class UserProfilePage extends StatelessWidget {
           }
 
           if (state is UploadingDocument) {
-            return LoadingScaffold();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           if (state is DocumentUploadError) {
@@ -86,7 +82,9 @@ class UserProfilePage extends StatelessWidget {
                         if (scannedIdCard == null) return;
 
                         BlocProvider.of<ProfileBloc>(context).add(
-                          UploadDocument(scannedIdCard),
+                          UpdateUser(
+                            user.copyWith(idCard: rsaToDocs(scannedIdCard)),
+                          ),
                         );
                       },
                     ),
@@ -116,7 +114,9 @@ class UserProfilePage extends StatelessWidget {
                         if (scannedIdBook == null) return;
 
                         BlocProvider.of<ProfileBloc>(context).add(
-                          UploadDocument(scannedIdBook),
+                          UpdateUser(
+                            user.copyWith(idBook: rsaToDocs(scannedIdBook)),
+                          ),
                         );
                       },
                     ),
@@ -140,7 +140,18 @@ class UserProfilePage extends StatelessWidget {
                           ),
                     IconButton(
                       icon: Icon(Icons.camera_alt),
-                      onPressed: () {},
+                      onPressed: () async {
+                        final scannedDrivers = await scanDrivers(context);
+
+                        if (scannedDrivers == null) return;
+
+                        BlocProvider.of<ProfileBloc>(context).add(
+                          UpdateUser(
+                            user.copyWith(
+                                driversLicense: rsaToDocs(scannedDrivers)),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -162,7 +173,9 @@ class UserProfilePage extends StatelessWidget {
                           ),
                     IconButton(
                       icon: Icon(Icons.camera_alt),
-                      onPressed: () {},
+                      onPressed: () {
+                        //Todo: add support for passports
+                      },
                     ),
                   ],
                 ),

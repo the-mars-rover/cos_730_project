@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:rsa_scan/rsa_scan.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 abstract class ProfileEvent extends Equatable {
   const ProfileEvent();
@@ -10,11 +10,11 @@ class LoadProfileDetails extends ProfileEvent {
   List<Object> get props => [];
 }
 
-class UploadDocument extends ProfileEvent {
-  final RsaIdDocument scannedDocument;
+class UpdateUser extends ProfileEvent {
+  final User updatedUser;
 
-  UploadDocument(this.scannedDocument);
+  UpdateUser(this.updatedUser);
 
   @override
-  List<Object> get props => [scannedDocument];
+  List<Object> get props => [updatedUser];
 }

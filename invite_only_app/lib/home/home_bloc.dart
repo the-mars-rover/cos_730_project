@@ -24,8 +24,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapInitializeHomeToState(InitializeHome event) async* {
     yield HomeLoading();
 
-    final userStream = await _inviteOnlyRepo.currentUser();
-    final spacesStream = await _inviteOnlyRepo.spaces();
+    final userStream = _inviteOnlyRepo.currentUser();
+    final spacesStream = _inviteOnlyRepo.spaces();
 
     yield HomeReady(userStream, spacesStream);
   }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:invite_only/app/id_doc_converter.dart';
+import 'package:invite_only/app/app.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'grant_access_event.dart';
@@ -32,11 +32,11 @@ class GrantAccessBloc extends Bloc<GrantAccessEvent, GrantAccessState> {
     try {
       await _inviteOnlyRepo.grantAccess(
         event.space,
-        IdDocConverter.rsaToDocs(event.scannedIdDocument),
+        rsaToDocs(event.scannedIdDocument),
       );
 
       yield AccessGranted();
-    } catch (e) {
+    } on AccessDenied {
       yield RequireCode();
     }
   }
@@ -46,15 +46,15 @@ class GrantAccessBloc extends Bloc<GrantAccessEvent, GrantAccessState> {
     yield GrantingAccess();
 
     try {
-      await _inviteOnlyRepo.grantVisitorAccess(
+      await _inviteOnlyRepo.grantAccess(
         event.space,
-        IdDocConverter.rsaToDocs(event.scannedIdDocument),
+        rsaToDocs(event.scannedIdDocument),
         event.code,
       );
 
       yield AccessGranted();
-    } catch (e) {
-      yield AccessDenied(e);
+    } on AccessDenied {
+      yield DeniedAccess();
     }
   }
 }

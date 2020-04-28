@@ -15,14 +15,12 @@ class AuthenticatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AuthenticationBloc>(
-      create: (context) => AuthenticationBloc()..add(AuthInit()),
+      create: (context) => AuthenticationBloc(),
       child: BlocConsumer<AuthenticationBloc, AuthenticationState>(
         listener: (context, state) {
           if (state is AuthenticationFailed) {
-            showDialog(
-              context: context,
-              builder: (context) => ErrorDialog(message: state.errorMessage),
-            );
+            showErrorDialog(
+                context, "Authentication Failed. Pleasy Try Again.");
           }
 
           if (state is UserAuthenticated) {
@@ -35,12 +33,12 @@ class AuthenticatePage extends StatelessWidget {
           }
 
           if (state is AuthenticationInProgress) {
-            return LoadingScaffold();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           if (state is UserAuthenticated) {
             // irrelevant due to re-navigation
-            return LoadingScaffold();
+            return Scaffold(body: Center(child: CircularProgressIndicator()));
           }
 
           if (state is AuthenticationFailed) {

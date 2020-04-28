@@ -40,7 +40,7 @@ class GrantAccessDialog extends StatelessWidget {
             return _buildGrantedDialog(context, state);
           }
 
-          if (state is AccessDenied) {
+          if (state is DeniedAccess) {
             return _buildDeniedDialog(context, state);
           }
 
@@ -131,7 +131,7 @@ class GrantAccessDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildDeniedDialog(BuildContext context, AccessDenied state) {
+  Widget _buildDeniedDialog(BuildContext context, DeniedAccess state) {
     return AlertDialog(
       title: Center(
         child: Icon(

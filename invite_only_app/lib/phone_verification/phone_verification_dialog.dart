@@ -45,7 +45,7 @@ class PhoneVerificationDialog extends StatelessWidget {
           }
 
           if (state is PhoneVerificationError) {
-            return ErrorDialog(message: state.errorMessage);
+            return buildErrorDialog("Phone number could not be verified.");
           }
 
           return null;

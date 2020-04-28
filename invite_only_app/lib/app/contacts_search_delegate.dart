@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ContactsSearchDelegate extends SearchDelegate<List<Contact>> {
   List<Contact> contacts;
@@ -106,42 +105,4 @@ class ContactsSearchDelegate extends SearchDelegate<List<Contact>> {
 
   @override
   String get searchFieldLabel => 'Search Contacts';
-
-  static Future<List<Contact>> selectContacts(BuildContext context,
-      [List<Contact> selectedContacts]) async {
-    // First ensure that contacts permission is granted
-    var permissionStatus = await Permission.contacts.status;
-    if (!permissionStatus.isGranted) {
-      permissionStatus = await Permission.contacts.request();
-      if (!permissionStatus.isGranted) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('Permission Denied'),
-              content: Text(
-                  'Access to your contacts has been denied. You will need to grant the permission from the App\'s settings.'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Open Settings'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    openAppSettings();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-
-        return null;
-      }
-    }
-
-    // Select and return contacts through a search using ContactsSearchDelegate
-    return await showSearch<List<Contact>>(
-      context: context,
-      delegate: ContactsSearchDelegate(selectedContacts: selectedContacts),
-    );
-  }
 }
