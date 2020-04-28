@@ -9,7 +9,6 @@ part of 'access.dart';
 _$_Access _$_$_AccessFromJson(Map<String, dynamic> json) {
   return _$_Access(
     id: json['id'] as String,
-    spaceId: json['spaceId'] as String,
     entryGuardPhone: json['entryGuardPhone'] as String,
     entryDate: json['entryDate'] == null
         ? null
@@ -23,7 +22,6 @@ _$_Access _$_$_AccessFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_AccessToJson(_$_Access instance) => <String, dynamic>{
       'id': instance.id,
-      'spaceId': instance.spaceId,
       'entryGuardPhone': instance.entryGuardPhone,
       'entryDate': instance.entryDate?.toIso8601String(),
       'idDocument': instance.idDocument?.toJson(),

@@ -2,19 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:invite_only_repo/src/models/id_document/id_document.dart';
 
-
 part 'access.freezed.dart';
 part 'access.g.dart';
 
 /// Stores the access details for a particular access to a [ControlledSpace].
 @freezed
-abstract class Access with _$Access {
+abstract class Access implements _$Access {
+  const Access._();
+
   const factory Access({
     /// The identifier for the access - can be anything as long as it is unique.
     @required String id,
-
-    /// The identifier of the [ControlledSpace] to which the [Access] was made.
-    @required String spaceId,
 
     /// The phone number of the guard who scanned the [idDocument] on entry.
     /// Null if access has not yet ended.
@@ -38,4 +36,6 @@ abstract class Access with _$Access {
   }) = _Access;
 
   factory Access.fromJson(Map<String, dynamic> json) => _$AccessFromJson(json);
+
+  bool canView(String phoneNumber) => granterPhoneNumber == phoneNumber;
 }

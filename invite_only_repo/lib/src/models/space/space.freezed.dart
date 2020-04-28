@@ -22,7 +22,7 @@ class _$SpaceTearOff {
       @required List<String> managerPhones,
       @required List<String> guardPhones,
       @required List<String> inviterPhones,
-      int minAge = 0,
+      int minAge,
       String imageUrl,
       double locationLatitude,
       double locationLongitude}) {
@@ -187,7 +187,7 @@ class __$SpaceCopyWithImpl<$Res> extends _$SpaceCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$_Space with DiagnosticableTreeMixin implements _Space {
+class _$_Space extends _Space with DiagnosticableTreeMixin {
   const _$_Space(
       {@required this.id,
       @required this.title,
@@ -195,7 +195,7 @@ class _$_Space with DiagnosticableTreeMixin implements _Space {
       @required this.managerPhones,
       @required this.guardPhones,
       @required this.inviterPhones,
-      this.minAge = 0,
+      this.minAge,
       this.imageUrl,
       this.locationLatitude,
       this.locationLongitude})
@@ -205,7 +205,7 @@ class _$_Space with DiagnosticableTreeMixin implements _Space {
         assert(managerPhones != null),
         assert(guardPhones != null),
         assert(inviterPhones != null),
-        assert(minAge != null);
+        super._();
 
   factory _$_Space.fromJson(Map<String, dynamic> json) =>
       _$_$_SpaceFromJson(json);
@@ -222,7 +222,6 @@ class _$_Space with DiagnosticableTreeMixin implements _Space {
   final List<String> guardPhones;
   @override
   final List<String> inviterPhones;
-  @JsonKey(defaultValue: 0)
   @override
   final int minAge;
   @override
@@ -311,7 +310,8 @@ class _$_Space with DiagnosticableTreeMixin implements _Space {
   }
 }
 
-abstract class _Space implements Space {
+abstract class _Space extends Space {
+  const _Space._() : super._();
   const factory _Space(
       {@required String id,
       @required String title,

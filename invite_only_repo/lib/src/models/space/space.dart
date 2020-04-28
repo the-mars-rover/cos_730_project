@@ -6,7 +6,9 @@ part 'space.g.dart';
 
 /// A [Space] is any space to which access is being controlled.
 @freezed
-abstract class Space with _$Space {
+abstract class Space implements _$Space {
+  const Space._();
+
   const factory Space({
     /// The identifier for the space - can be anything as long as it is unique.
     @required String id,
@@ -53,4 +55,18 @@ abstract class Space with _$Space {
   }) = _Space;
 
   factory Space.fromJson(Map<String, dynamic> json) => _$SpaceFromJson(json);
+
+  bool canEdit(String phoneNumber) => managerPhones.contains(phoneNumber);
+
+  bool canGuard(String phoneNumber) =>
+      managerPhones.contains(phoneNumber) || guardPhones.contains(phoneNumber);
+
+  bool canInvite(String phoneNumber) =>
+      managerPhones.contains(phoneNumber) ||
+      inviterPhones.contains(phoneNumber);
+
+  bool canEnter(String phoneNumber) =>
+      managerPhones.contains(phoneNumber) ||
+      guardPhones.contains(phoneNumber) ||
+      inviterPhones.contains(phoneNumber);
 }

@@ -17,14 +17,12 @@ class _$AccessTearOff {
 
   _Access call(
       {@required String id,
-      @required String spaceId,
       @required String entryGuardPhone,
       @required DateTime entryDate,
       @required IdDocument idDocument,
       @required String granterPhoneNumber}) {
     return _Access(
       id: id,
-      spaceId: spaceId,
       entryGuardPhone: entryGuardPhone,
       entryDate: entryDate,
       idDocument: idDocument,
@@ -38,7 +36,6 @@ const $Access = _$AccessTearOff();
 
 mixin _$Access {
   String get id;
-  String get spaceId;
   String get entryGuardPhone;
   DateTime get entryDate;
   IdDocument get idDocument;
@@ -53,7 +50,6 @@ abstract class $AccessCopyWith<$Res> {
       _$AccessCopyWithImpl<$Res>;
   $Res call(
       {String id,
-      String spaceId,
       String entryGuardPhone,
       DateTime entryDate,
       IdDocument idDocument,
@@ -72,7 +68,6 @@ class _$AccessCopyWithImpl<$Res> implements $AccessCopyWith<$Res> {
   @override
   $Res call({
     Object id = freezed,
-    Object spaceId = freezed,
     Object entryGuardPhone = freezed,
     Object entryDate = freezed,
     Object idDocument = freezed,
@@ -80,7 +75,6 @@ class _$AccessCopyWithImpl<$Res> implements $AccessCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
-      spaceId: spaceId == freezed ? _value.spaceId : spaceId as String,
       entryGuardPhone: entryGuardPhone == freezed
           ? _value.entryGuardPhone
           : entryGuardPhone as String,
@@ -111,7 +105,6 @@ abstract class _$AccessCopyWith<$Res> implements $AccessCopyWith<$Res> {
   @override
   $Res call(
       {String id,
-      String spaceId,
       String entryGuardPhone,
       DateTime entryDate,
       IdDocument idDocument,
@@ -132,7 +125,6 @@ class __$AccessCopyWithImpl<$Res> extends _$AccessCopyWithImpl<$Res>
   @override
   $Res call({
     Object id = freezed,
-    Object spaceId = freezed,
     Object entryGuardPhone = freezed,
     Object entryDate = freezed,
     Object idDocument = freezed,
@@ -140,7 +132,6 @@ class __$AccessCopyWithImpl<$Res> extends _$AccessCopyWithImpl<$Res>
   }) {
     return _then(_Access(
       id: id == freezed ? _value.id : id as String,
-      spaceId: spaceId == freezed ? _value.spaceId : spaceId as String,
       entryGuardPhone: entryGuardPhone == freezed
           ? _value.entryGuardPhone
           : entryGuardPhone as String,
@@ -156,28 +147,25 @@ class __$AccessCopyWithImpl<$Res> extends _$AccessCopyWithImpl<$Res>
 }
 
 @JsonSerializable()
-class _$_Access with DiagnosticableTreeMixin implements _Access {
+class _$_Access extends _Access with DiagnosticableTreeMixin {
   const _$_Access(
       {@required this.id,
-      @required this.spaceId,
       @required this.entryGuardPhone,
       @required this.entryDate,
       @required this.idDocument,
       @required this.granterPhoneNumber})
       : assert(id != null),
-        assert(spaceId != null),
         assert(entryGuardPhone != null),
         assert(entryDate != null),
         assert(idDocument != null),
-        assert(granterPhoneNumber != null);
+        assert(granterPhoneNumber != null),
+        super._();
 
   factory _$_Access.fromJson(Map<String, dynamic> json) =>
       _$_$_AccessFromJson(json);
 
   @override
   final String id;
-  @override
-  final String spaceId;
   @override
   final String entryGuardPhone;
   @override
@@ -189,7 +177,7 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Access(id: $id, spaceId: $spaceId, entryGuardPhone: $entryGuardPhone, entryDate: $entryDate, idDocument: $idDocument, granterPhoneNumber: $granterPhoneNumber)';
+    return 'Access(id: $id, entryGuardPhone: $entryGuardPhone, entryDate: $entryDate, idDocument: $idDocument, granterPhoneNumber: $granterPhoneNumber)';
   }
 
   @override
@@ -198,7 +186,6 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
     properties
       ..add(DiagnosticsProperty('type', 'Access'))
       ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('spaceId', spaceId))
       ..add(DiagnosticsProperty('entryGuardPhone', entryGuardPhone))
       ..add(DiagnosticsProperty('entryDate', entryDate))
       ..add(DiagnosticsProperty('idDocument', idDocument))
@@ -211,9 +198,6 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
         (other is _Access &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.spaceId, spaceId) ||
-                const DeepCollectionEquality()
-                    .equals(other.spaceId, spaceId)) &&
             (identical(other.entryGuardPhone, entryGuardPhone) ||
                 const DeepCollectionEquality()
                     .equals(other.entryGuardPhone, entryGuardPhone)) &&
@@ -232,7 +216,6 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(spaceId) ^
       const DeepCollectionEquality().hash(entryGuardPhone) ^
       const DeepCollectionEquality().hash(entryDate) ^
       const DeepCollectionEquality().hash(idDocument) ^
@@ -248,10 +231,10 @@ class _$_Access with DiagnosticableTreeMixin implements _Access {
   }
 }
 
-abstract class _Access implements Access {
+abstract class _Access extends Access {
+  const _Access._() : super._();
   const factory _Access(
       {@required String id,
-      @required String spaceId,
       @required String entryGuardPhone,
       @required DateTime entryDate,
       @required IdDocument idDocument,
@@ -261,8 +244,6 @@ abstract class _Access implements Access {
 
   @override
   String get id;
-  @override
-  String get spaceId;
   @override
   String get entryGuardPhone;
   @override

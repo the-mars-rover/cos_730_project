@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:invite_only_repo/src/errors/auth_failure.dart';
-import 'package:invite_only_repo/src/errors/document_invalid.dart';
-import 'package:invite_only_repo/src/errors/permission_denied.dart';
 import 'package:invite_only_repo/src/models/access/access.dart';
 import 'package:invite_only_repo/src/models/id_document/id_document.dart';
 import 'package:invite_only_repo/src/models/space/space.dart';
@@ -12,8 +10,17 @@ import 'package:invite_only_repo/src/models/user/user.dart';
 import 'firebase_invite_only_repo.dart';
 
 abstract class InviteOnlyRepo {
-  static final _instance = FirebaseInviteOnlyRepo();
+  /// The initialize method should be called as soon as the app starts.
+  static Future<void> initialize() async {
+    _instance = await FirebaseInviteOnlyRepo.getInstance();
+  }
 
+  /// The singleton instance of this class, instantiated during [initialize]
+  static FirebaseInviteOnlyRepo _instance;
+
+  /// Just a simple getter to retrieve the singleton instance of this class.
+  ///
+  /// If [initialize] has not been called, this will be null.
   static InviteOnlyRepo get instance => _instance;
 
   /// Starts the phone number verification process for a given phone number.
@@ -59,23 +66,23 @@ abstract class InviteOnlyRepo {
   /// Returns a stream of the currently authenticated user's details. Will return
   /// null if there is no currently authenticated user.
   ///
-  /// If the currently authenticated user is deleted during the emission of the
-  /// stream, the stream will emit null instead of any User details.
-  Future<Stream<User>> currentUser();
+  /// The stream may emit null if the user's details are busy being recorded.
+  Stream<User> currentUser();
 
-  /// Deletes the currently authenticated user.
-  ///
-  /// Throws [Unauthenticated] if there is no currently authenticated user.
-  Future<void> deleteUser();
+  /// Sign out the currently authenticated user.
+  Future<void> signOut();
 
-  /// Submit an ID Document for the currently authenticated user.
-  ///
-  /// Throws [Unauthenticated] if there is no currently authenticated user.
-  ///
-  /// Throws [DocumentInvalid] if the document could not be added.
-  Future<void> submitDocument(IdDocument idDocument);
+  /// Deletes the user, retrieved using [currentUser].
+  Future<void> deleteUser(User user);
 
-  /// Creates a new access-controlled space with the given details.
+  /// Save new details for the user, retrieved using [currentUser].
+  Future<void> updateUser(User user);
+
+  /// Returns a stream of access controlled spaces for which the currently
+  /// authenticated is a manager, guard or inviter.
+  Stream<List<Space>> spaces();
+
+  /// Creates an access-controlled space with the given details.
   ///
   /// Arguments:
   /// * [title] - The title for the space, describes the space briefly.
@@ -96,8 +103,6 @@ abstract class InviteOnlyRepo {
   ///
   /// * [locationLatitude] and [locationLongitude] - represent the location of the
   /// space, may be left as null.
-  ///
-  /// Throws [PermissionDenied] if there is no currently authenticated user.
   Future<void> createSpace({
     @required String title,
     @required bool inviteOnly,
@@ -110,76 +115,39 @@ abstract class InviteOnlyRepo {
     double locationLongitude,
   });
 
-  /// Update the given space with the properties that are set. If no space exists
-  /// with the given ID, nothing will be done.
-  ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not
-  /// a manager for the given space.
+  /// Update the given space that was read using [spaces].
   Future<void> updateSpace(Space space);
 
-  /// Delete the given space. If no space exists with the same id as the given space,
-  /// nothing will happen.
-  ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not
-  /// a manager for the given space.
+  /// Delete the given space that was read using [spaces].
   Future<void> deleteSpace(Space space);
 
-  /// Creates an invite and returns an invite code for the new invite to the given space.
-  /// The currently authenticated user will be marked as the inviter of the invite
-  /// so if there is no currently authenticated user, null will be returned.
-  ///
-  /// Throws [Unauthenticated] if there is no currently authenticated user.
-  ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not
-  /// a manager or inviter for the given space.
+  /// Creates an invite and returns an invite code for the new invite to the given space,
+  /// that was read using [spaces]. The currently authenticated user will be
+  /// marked as the inviter of the invite.
   Future<String> invite(Space space);
 
-  /// Grant access to a manager, inviter or guard to the space with the given ID.
+  /// Grant access to an access controlled space.
   ///
-  /// [idDocument] is the ID document of the person to whom entry is being granted.
+  /// Arguments:
+  /// * [space] is the space to which access is being granted, read using [spaces].
   ///
-  /// Throws [Unauthenticated] if there is no currently authenticated user.
+  /// * [idDocument] is the ID document of the person to whom entry is being granted.
   ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not
-  /// a manager or guard for the given space.
+  /// * [inviteCode] is optional. Retrieved using [invite], it should only be passed
+  /// if the person with the given ID is not a manager, guard or inviter for the space.
   ///
-  /// Throws [AccessDenied] if the person with the presented document is not a
-  /// manager, inviter or guard for the given space.
-  Future<void> grantAccess(Space space, IdDocument idDocument);
+  /// Throws [AccessDenied] if:
+  /// - No invite code was given and the person with the presented document is not a
+  /// manager, inviter or guard for the space.
+  /// - or, if the invite code was invalid.
+  Future<void> grantAccess(Space space, IdDocument idDocument,
+      [String inviteCode]);
 
-  /// Grant access to a manager, inviter or guard to the space with the given ID.
+  /// Returns a stream of accesses for the space with the given id.
   ///
-  /// [idDocument] is the ID document of the person to whom entry is being granted.
-  ///
-  /// Throws [Unauthenticated] if there is no currently authenticated user.
-  ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not
-  /// a manager or guard for the given space.
-  ///
-  /// Throws [AccessDenied] if the invite code is not valid.
-  Future<void> grantVisitorAccess(
-      Space space, IdDocument idDocument, String code);
-
-  /// Returns a stream of access controlled spaces which the currently
-  /// authenticated user may view.
-  ///
-  /// Throws [Unauthenticated] if there is no currently authenticated user.
-  Future<Stream<List<Space>>> spaces();
-
-  /// Returns a stream of a single access controlled space.
-  ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not a manager,
-  /// guard or inviter for the given space.
-  ///
-  /// The stream will emit null if the space does not exist.
-  Future<Stream<Space>> space(Space space);
-
-  /// Returns a stream of accesses for the given space which may be viewed by the
-  /// currently authenticated user.
-  ///
-  /// Throws [PermissionDenied] if the currently authenticated user is not a manager,
-  /// guard or inviter for the given space.
-  Future<Stream<List<Access>>> accesses(Space space);
+  /// If the space with the given id is deleted during the emission of this stream,
+  /// null will be emitted.
+  Stream<List<Access>> accesses(Space space);
 }
 
 class InviteOnlyCredential {

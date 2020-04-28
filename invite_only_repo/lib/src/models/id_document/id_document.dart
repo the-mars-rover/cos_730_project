@@ -1,8 +1,7 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'id_document.freezed.dart';
-
 part 'id_document.g.dart';
 
 @freezed
@@ -94,7 +93,7 @@ abstract class IdDocument with _$IdDocument {
     @required List<String> vehicleCodes,
 
     /// The PrDP Code appearing on the license.
-    @required String prdpCode,
+    String prdpCode,
 
     /// The country code representing the country in which the ID was issued.
     @required String idCountryOfIssue,
@@ -117,7 +116,7 @@ abstract class IdDocument with _$IdDocument {
     @required String driverRestrictions,
 
     /// The expiry date of the PrDP Permit.
-    @required DateTime prdpExpiry,
+    DateTime prdpExpiry,
 
     /// The issue number of this license.
     @required String licenseIssueNumber,

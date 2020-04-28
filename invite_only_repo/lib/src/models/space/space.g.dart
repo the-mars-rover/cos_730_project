@@ -17,7 +17,7 @@ _$_Space _$_$_SpaceFromJson(Map<String, dynamic> json) {
         (json['guardPhones'] as List)?.map((e) => e as String)?.toList(),
     inviterPhones:
         (json['inviterPhones'] as List)?.map((e) => e as String)?.toList(),
-    minAge: json['minAge'] as int ?? 0,
+    minAge: json['minAge'] as int,
     imageUrl: json['imageUrl'] as String,
     locationLatitude: (json['locationLatitude'] as num)?.toDouble(),
     locationLongitude: (json['locationLongitude'] as num)?.toDouble(),

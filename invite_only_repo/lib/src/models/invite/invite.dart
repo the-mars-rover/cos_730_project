@@ -21,6 +21,9 @@ abstract class Invite with _$Invite {
 
     /// The phone number of the person who generated this invite
     @required String inviterPhoneNumber,
+
+    /// Whether this invite has been used or not.
+    @required bool used,
   }) = _Invite;
 
   factory Invite.fromJson(Map<String, dynamic> json) => _$InviteFromJson(json);

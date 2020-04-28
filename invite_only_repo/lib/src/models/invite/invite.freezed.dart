@@ -20,13 +20,15 @@ class _$InviteTearOff {
       @required String code,
       @required String spaceId,
       @required DateTime expiryDate,
-      @required String inviterPhoneNumber}) {
+      @required String inviterPhoneNumber,
+      @required bool used}) {
     return _Invite(
       id: id,
       code: code,
       spaceId: spaceId,
       expiryDate: expiryDate,
       inviterPhoneNumber: inviterPhoneNumber,
+      used: used,
     );
   }
 }
@@ -40,6 +42,7 @@ mixin _$Invite {
   String get spaceId;
   DateTime get expiryDate;
   String get inviterPhoneNumber;
+  bool get used;
 
   Map<String, dynamic> toJson();
   $InviteCopyWith<Invite> get copyWith;
@@ -53,7 +56,8 @@ abstract class $InviteCopyWith<$Res> {
       String code,
       String spaceId,
       DateTime expiryDate,
-      String inviterPhoneNumber});
+      String inviterPhoneNumber,
+      bool used});
 }
 
 class _$InviteCopyWithImpl<$Res> implements $InviteCopyWith<$Res> {
@@ -70,6 +74,7 @@ class _$InviteCopyWithImpl<$Res> implements $InviteCopyWith<$Res> {
     Object spaceId = freezed,
     Object expiryDate = freezed,
     Object inviterPhoneNumber = freezed,
+    Object used = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
@@ -80,6 +85,7 @@ class _$InviteCopyWithImpl<$Res> implements $InviteCopyWith<$Res> {
       inviterPhoneNumber: inviterPhoneNumber == freezed
           ? _value.inviterPhoneNumber
           : inviterPhoneNumber as String,
+      used: used == freezed ? _value.used : used as bool,
     ));
   }
 }
@@ -93,7 +99,8 @@ abstract class _$InviteCopyWith<$Res> implements $InviteCopyWith<$Res> {
       String code,
       String spaceId,
       DateTime expiryDate,
-      String inviterPhoneNumber});
+      String inviterPhoneNumber,
+      bool used});
 }
 
 class __$InviteCopyWithImpl<$Res> extends _$InviteCopyWithImpl<$Res>
@@ -111,6 +118,7 @@ class __$InviteCopyWithImpl<$Res> extends _$InviteCopyWithImpl<$Res>
     Object spaceId = freezed,
     Object expiryDate = freezed,
     Object inviterPhoneNumber = freezed,
+    Object used = freezed,
   }) {
     return _then(_Invite(
       id: id == freezed ? _value.id : id as String,
@@ -121,6 +129,7 @@ class __$InviteCopyWithImpl<$Res> extends _$InviteCopyWithImpl<$Res>
       inviterPhoneNumber: inviterPhoneNumber == freezed
           ? _value.inviterPhoneNumber
           : inviterPhoneNumber as String,
+      used: used == freezed ? _value.used : used as bool,
     ));
   }
 }
@@ -132,12 +141,14 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
       @required this.code,
       @required this.spaceId,
       @required this.expiryDate,
-      @required this.inviterPhoneNumber})
+      @required this.inviterPhoneNumber,
+      @required this.used})
       : assert(id != null),
         assert(code != null),
         assert(spaceId != null),
         assert(expiryDate != null),
-        assert(inviterPhoneNumber != null);
+        assert(inviterPhoneNumber != null),
+        assert(used != null);
 
   factory _$_Invite.fromJson(Map<String, dynamic> json) =>
       _$_$_InviteFromJson(json);
@@ -152,10 +163,12 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
   final DateTime expiryDate;
   @override
   final String inviterPhoneNumber;
+  @override
+  final bool used;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Invite(id: $id, code: $code, spaceId: $spaceId, expiryDate: $expiryDate, inviterPhoneNumber: $inviterPhoneNumber)';
+    return 'Invite(id: $id, code: $code, spaceId: $spaceId, expiryDate: $expiryDate, inviterPhoneNumber: $inviterPhoneNumber, used: $used)';
   }
 
   @override
@@ -167,7 +180,8 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
       ..add(DiagnosticsProperty('code', code))
       ..add(DiagnosticsProperty('spaceId', spaceId))
       ..add(DiagnosticsProperty('expiryDate', expiryDate))
-      ..add(DiagnosticsProperty('inviterPhoneNumber', inviterPhoneNumber));
+      ..add(DiagnosticsProperty('inviterPhoneNumber', inviterPhoneNumber))
+      ..add(DiagnosticsProperty('used', used));
   }
 
   @override
@@ -186,7 +200,9 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
                     .equals(other.expiryDate, expiryDate)) &&
             (identical(other.inviterPhoneNumber, inviterPhoneNumber) ||
                 const DeepCollectionEquality()
-                    .equals(other.inviterPhoneNumber, inviterPhoneNumber)));
+                    .equals(other.inviterPhoneNumber, inviterPhoneNumber)) &&
+            (identical(other.used, used) ||
+                const DeepCollectionEquality().equals(other.used, used)));
   }
 
   @override
@@ -196,7 +212,8 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
       const DeepCollectionEquality().hash(code) ^
       const DeepCollectionEquality().hash(spaceId) ^
       const DeepCollectionEquality().hash(expiryDate) ^
-      const DeepCollectionEquality().hash(inviterPhoneNumber);
+      const DeepCollectionEquality().hash(inviterPhoneNumber) ^
+      const DeepCollectionEquality().hash(used);
 
   @override
   _$InviteCopyWith<_Invite> get copyWith =>
@@ -214,7 +231,8 @@ abstract class _Invite implements Invite {
       @required String code,
       @required String spaceId,
       @required DateTime expiryDate,
-      @required String inviterPhoneNumber}) = _$_Invite;
+      @required String inviterPhoneNumber,
+      @required bool used}) = _$_Invite;
 
   factory _Invite.fromJson(Map<String, dynamic> json) = _$_Invite.fromJson;
 
@@ -228,6 +246,8 @@ abstract class _Invite implements Invite {
   DateTime get expiryDate;
   @override
   String get inviterPhoneNumber;
+  @override
+  bool get used;
   @override
   _$InviteCopyWith<_Invite> get copyWith;
 }

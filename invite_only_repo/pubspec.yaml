@@ -1,7 +1,7 @@
 name: invite_only_repo
 description: Access and manage users and access-controlled spaces remotely
 version: 0.0.1
-homepage:
+homepage: https://github.com/marcus-bornman/invite_only/tree/master/invite_only_repo
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -29,10 +29,6 @@ dependencies:
   # Simple, fast generation of RFC4122 UUIDs.
   # See https://pub.dev/packages/uuid
   uuid: ^2.0.4
-
-  # RxDart adds additional capabilities to Dart Streams and StreamControllers.
-  # See https://pub.dev/packages/rxdart
-  rxdart: ^0.24.0
 
 dev_dependencies:
   flutter_test:
