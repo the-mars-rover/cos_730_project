@@ -1,6 +1,6 @@
 # Cloud Run Hello World with Cloud Code
 
-This "Hello World" is a [Cloud Run](https://cloud.google.com/run/docs) service that renders a webpage.
+This is a [Cloud Run](https://cloud.google.com/run/docs) service that provides access to the core "Invite Only" functions.
 
 ----
 

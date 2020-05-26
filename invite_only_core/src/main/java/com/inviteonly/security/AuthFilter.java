@@ -4,11 +4,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
-import com.inviteonly.users.entities.User;
-import com.inviteonly.users.services.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -26,28 +25,26 @@ import java.io.IOException;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
-	@Autowired
-	private UserService userService;
-
 	@Override
 	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
 			throws IOException, ServletException {
-		String token = getTokenFromRequest(request);
 		try {
+			String token = getTokenFromRequest(request);
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
 
 			UserRecord userRecord = FirebaseAuth.getInstance().getUser(decodedToken.getUid());
-			User savedUser = userService.findUser(userRecord.getPhoneNumber());
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-					savedUser, decodedToken, null);
+					userRecord.getPhoneNumber(), decodedToken, null);
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-		} catch (FirebaseAuthException e) {
-			log.error("Firebase Exception:: ", e.getLocalizedMessage());
-		}
 
-		filterChain.doFilter(request, response);
+			filterChain.doFilter(request, response);
+		} catch (FirebaseAuthException e) {
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.getWriter().write("Unauthorized");
+		}
 	}
 
 	private String getTokenFromRequest(HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package com.inviteonly.users.entities;
+package com.inviteonly.docs.entities;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
