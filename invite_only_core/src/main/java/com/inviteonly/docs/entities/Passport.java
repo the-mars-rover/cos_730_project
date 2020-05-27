@@ -9,4 +9,5 @@ import javax.persistence.Entity;
 @Entity
 @Data
 public class Passport extends IdDocument {
+	//TODO: Provide support for passports
 }
