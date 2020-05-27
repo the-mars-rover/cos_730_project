@@ -12,9 +12,9 @@ import java.io.IOException;
  * This class serves as an entry point for the Spring Boot app.
  */
 @SpringBootApplication
-public class ClientApiApplication {
+public class InviteOnlyCore {
 	public static void main(final String[] args) {
-		SpringApplication.run(ClientApiApplication.class, args);
+		SpringApplication.run(InviteOnlyCore.class, args);
 
 		try {
 			FirebaseOptions options = new FirebaseOptions.Builder()
