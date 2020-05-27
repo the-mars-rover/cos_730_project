@@ -2,6 +2,7 @@ package com.inviteonly.invites.controllers;
 
 import com.inviteonly.invites.entities.Invite;
 import com.inviteonly.invites.services.IInvitesService;
+import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 @RequestMapping("/spaces/{spaceId}/invites")
 public class InviteController {
+	private final SecurityService securityService;
+
 	private final IInvitesService invitesService;
 
 	private final InviteResourceAssembler assembler;
@@ -24,8 +27,7 @@ public class InviteController {
 	@PostMapping
 	EntityModel<Invite> postInvite(@PathVariable Long spaceId) {
 		try {
-			//TODO: Replace with auth user phone number
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			Invite createdInvite = invitesService.createInvite(phoneNumber, spaceId);
 

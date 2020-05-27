@@ -5,6 +5,7 @@ import com.inviteonly.docs.errors.DocNotFoundException;
 import com.inviteonly.entries.entities.SpaceEntry;
 import com.inviteonly.entries.services.EntryService;
 import com.inviteonly.invites.errors.InvalidInviteCode;
+import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 @RequestMapping("/spaces/{spaceId}/entries")
 public class EntryController {
+	private final SecurityService securityService;
+
 	private final EntryService entryService;
 
 	private final EntryResourceAssembler entryResourceAssembler;
@@ -34,8 +37,7 @@ public class EntryController {
 	EntityModel<SpaceEntry> postEntry(@PathVariable Long spaceId, @Validated @RequestBody IdDocument idDocument,
 	                                  @Validated @RequestParam(required = false) String inviteCode) {
 		try {
-			// TODO: Replace with auth user phone
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			SpaceEntry newEntry;
 			if (inviteCode != null) {
@@ -61,8 +63,7 @@ public class EntryController {
 	@GetMapping
 	PagedModel<EntityModel<SpaceEntry>> getEntries(@PathVariable Long spaceId, @NotNull Pageable pageable) {
 		try {
-			// TODO: Replace with auth user phone
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			Page<SpaceEntry> page = entryService.findEntries(phoneNumber, spaceId, pageable);
 

@@ -1,5 +1,6 @@
 package com.inviteonly.spaces.controllers;
 
+import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.entities.Space;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import com.inviteonly.spaces.services.ISpaceService;
@@ -18,6 +19,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/spaces")
 public class SpaceController {
+	private final SecurityService securityService;
+
 	private final ISpaceService spaceService;
 
 	private final SpaceResourceAssembler assembler;
@@ -36,8 +39,7 @@ public class SpaceController {
 	@PutMapping("/{spaceId}")
 	EntityModel<Space> putSpace(@PathVariable Long spaceId, @Validated @RequestBody Space space) {
 		try {
-			// Todo: replace with authenticated user's phone number
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			space.setId(spaceId);
 			Space createdSpace = spaceService.updateSpace(phoneNumber, space);
@@ -55,8 +57,7 @@ public class SpaceController {
 	@GetMapping
 	CollectionModel<EntityModel<Space>> getSpaces() {
 		try {
-			// Todo: replace with authenticated user's phone number
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			List<Space> spaceList = spaceService.findUserSpaces(phoneNumber);
 
@@ -69,8 +70,7 @@ public class SpaceController {
 	@DeleteMapping("/{spaceId}")
 	void deleteSpace(@PathVariable Long spaceId) {
 		try {
-			// Todo: replace with authenticated user's phone number
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			spaceService.deleteSpace(phoneNumber, spaceId);
 		} catch (SpaceNotFoundException e) {

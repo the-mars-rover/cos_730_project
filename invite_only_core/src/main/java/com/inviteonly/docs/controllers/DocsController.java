@@ -2,6 +2,7 @@ package com.inviteonly.docs.controllers;
 
 import com.inviteonly.docs.entities.IdDocument;
 import com.inviteonly.docs.services.DocsService;
+import com.inviteonly.security.services.SecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -17,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 @RequestMapping("/docs")
 public class DocsController {
+	private final SecurityService securityService;
+
 	private final DocsService service;
 
 	private final UserDocAssembler assembler;
@@ -24,8 +27,7 @@ public class DocsController {
 	@PostMapping
 	EntityModel<IdDocument> postDocument(@Validated @RequestBody IdDocument newDocument) {
 		try {
-			// TODO: Replace this with auth user phone number
-			String phoneNumber = "+27815029249";
+			String phoneNumber = securityService.authenticatedPhone();
 
 			IdDocument savedDocument = service.addUserDocument(phoneNumber ,newDocument);
 
@@ -38,8 +40,7 @@ public class DocsController {
 
 	@GetMapping
 	CollectionModel<EntityModel<IdDocument>> getDocuments() {
-		// TODO: Replace this with auth user phone number
-		String phoneNumber = "+27815029249";
+		String phoneNumber = securityService.authenticatedPhone();
 
 		return assembler.toCollectionModel(service.findUserDocuments(phoneNumber));
 	}
