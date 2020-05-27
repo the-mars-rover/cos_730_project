@@ -1,5 +1,6 @@
-package com.inviteonly.security;
+package com.inviteonly.security.config;
 
+import com.inviteonly.security.filters.AuthFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

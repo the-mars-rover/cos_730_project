@@ -1,4 +1,4 @@
-package com.inviteonly.security;
+package com.inviteonly.security.filters;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -12,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
@@ -31,33 +30,26 @@ public class AuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
 			throws IOException, ServletException {
 		try {
-			String token = getTokenFromRequest(request);
+			// Get token
+			Cookie cookieToken = WebUtils.getCookie(request, "token");
+			String token = cookieToken == null ? request.getHeader("Authorization").substring(7) : cookieToken.getValue();
+
+			// Validate Token
 			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
 
+			// Get user record from firebase
 			UserRecord userRecord = FirebaseAuth.getInstance().getUser(decodedToken.getUid());
+
+			// Set authentication details
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 					userRecord.getPhoneNumber(), decodedToken, null);
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
+			// Apply the filter
 			filterChain.doFilter(request, response);
-		} catch (FirebaseAuthException e) {
+		} catch (IndexOutOfBoundsException | FirebaseAuthException e) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-			response.getWriter().write("Unauthorized");
 		}
-	}
-
-	private String getTokenFromRequest(HttpServletRequest request) {
-		String token = null;
-		Cookie cookieToken = WebUtils.getCookie(request, "token");
-		if (cookieToken != null) {
-			token = cookieToken.getValue();
-		} else {
-			String bearerToken = request.getHeader("Authorization");
-			if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-				token = bearerToken.substring(7);
-			}
-		}
-		return token;
 	}
 }
