@@ -1,6 +1,7 @@
 package com.inviteonly.docs.services;
 
 import com.inviteonly.docs.entities.IdDocument;
+import com.inviteonly.docs.errors.DocNotFoundException;
 import com.inviteonly.docs.errors.DocOwnerException;
 import com.inviteonly.docs.repositories.IDocsRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,18 @@ public class DocsService implements IDocsService {
 
 		storedDocument.setPhoneNumber(phoneNumber);
 		return docsRepository.save(idDocument);
+	}
+
+	@Override
+	public IdDocument deleteUserDocument(String phoneNumber, Long documentId) throws DocNotFoundException, DocOwnerException {
+		IdDocument storedDocument = docsRepository.findById(documentId).orElseThrow(DocNotFoundException::new);
+
+		String currentOwner = storedDocument.getPhoneNumber();
+		if (currentOwner != null && !currentOwner.equals(phoneNumber)) {
+			throw new DocOwnerException();
+		}
+
+		docsRepository.delete(storedDocument);
+		return storedDocument;
 	}
 }
