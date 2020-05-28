@@ -13,4 +13,4 @@ target
 .project
 .settings
 
-compute-service-account-key.json
+*key.json
