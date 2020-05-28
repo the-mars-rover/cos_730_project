@@ -6,7 +6,6 @@ import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,16 +21,12 @@ public class InviteController {
 
 	private final IInvitesService invitesService;
 
-	private final InviteResourceAssembler assembler;
-
 	@PostMapping
-	EntityModel<Invite> postInvite(@PathVariable Long spaceId) {
+	Invite postInvite(@PathVariable Long spaceId) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
-			Invite createdInvite = invitesService.createInvite(phoneNumber, spaceId);
-
-			return assembler.toModel(createdInvite);
+			return invitesService.createInvite(phoneNumber, spaceId);
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Space with id %s could not be found.", spaceId));
 		} catch (SpaceAuthorizationException e) {

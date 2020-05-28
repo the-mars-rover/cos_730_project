@@ -11,15 +11,13 @@ import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -29,24 +27,17 @@ public class EntryController {
 
 	private final EntryService entryService;
 
-	private final EntryResourceAssembler entryResourceAssembler;
-
-	private final PagedResourcesAssembler<SpaceEntry> pagedResourcesAssembler;
-
 	@PostMapping
-	EntityModel<SpaceEntry> postEntry(@PathVariable Long spaceId, @Validated @RequestBody IdDocument idDocument,
-	                                  @Validated @RequestParam(required = false) String inviteCode) {
+	SpaceEntry postEntry(@PathVariable Long spaceId, @Validated @RequestBody IdDocument idDocument,
+	                     @Validated @RequestParam(required = false) String inviteCode) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
-			SpaceEntry newEntry;
 			if (inviteCode != null) {
-				newEntry = entryService.addVisitorEntry(phoneNumber, spaceId, idDocument,  inviteCode);
-			} else {
-				newEntry = entryService.addResidentEntry(phoneNumber, spaceId, idDocument);
+				return entryService.addVisitorEntry(phoneNumber, spaceId, idDocument, inviteCode);
 			}
 
-			return entryResourceAssembler.toModel(newEntry);
+			return entryService.addResidentEntry(phoneNumber, spaceId, idDocument);
 		} catch (DocNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user with matching ID Document");
 		} catch (SpaceNotFoundException e) {
@@ -61,13 +52,11 @@ public class EntryController {
 	}
 
 	@GetMapping
-	PagedModel<EntityModel<SpaceEntry>> getEntries(@PathVariable Long spaceId, @NotNull Pageable pageable) {
+	Page<SpaceEntry> getEntries(@PathVariable Long spaceId, @NotNull Pageable pageable) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
-			Page<SpaceEntry> page = entryService.findEntries(phoneNumber, spaceId, pageable);
-
-			return pagedResourcesAssembler.toModel(page, entryResourceAssembler);
+			return entryService.findEntries(phoneNumber, spaceId, pageable);
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id");
 		} catch (Exception e) {

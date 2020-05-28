@@ -2,12 +2,10 @@ package com.inviteonly.spaces.controllers;
 
 import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.entities.Space;
+import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import com.inviteonly.spaces.services.ISpaceService;
-import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,45 +21,37 @@ public class SpaceController {
 
 	private final ISpaceService spaceService;
 
-	private final SpaceResourceAssembler assembler;
-
 	@PostMapping
-	EntityModel<Space> postSpace(@Validated @RequestBody Space space) {
+	Space postSpace(@Validated @RequestBody Space space) {
 		try {
-			Space createdSpace = spaceService.createSpace(space);
-
-			return assembler.toModel(createdSpace);
+			return spaceService.createSpace(space);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
 		}
 	}
 
 	@PutMapping("/{spaceId}")
-	EntityModel<Space> putSpace(@PathVariable Long spaceId, @Validated @RequestBody Space space) {
+	Space putSpace(@PathVariable Long spaceId, @Validated @RequestBody Space space) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
 			space.setId(spaceId);
-			Space createdSpace = spaceService.updateSpace(phoneNumber, space);
-
-			return assembler.toModel(createdSpace);
+			return spaceService.updateSpace(phoneNumber, space);
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id exists");
 		} catch (SpaceAuthorizationException e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
 		}
 	}
 
 	@GetMapping
-	CollectionModel<EntityModel<Space>> getSpaces() {
+	List<Space> getSpaces() {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
-			List<Space> spaceList = spaceService.findUserSpaces(phoneNumber);
-
-			return assembler.toCollectionModel(spaceList);
+			return spaceService.findUserSpaces(phoneNumber);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
 		}
