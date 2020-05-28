@@ -1,12 +1,11 @@
 package com.inviteonly.security.filters;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.auth.UserRecord;
+import com.inviteonly.security.services.FirebaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,29 +25,25 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
+	private final FirebaseService firebaseService;
+
 	@Override
 	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
 			throws IOException, ServletException {
 		try {
-			// Get token
+			// Get token and validate it with Firebase
 			Cookie cookieToken = WebUtils.getCookie(request, "token");
-			String token = cookieToken == null ? request.getHeader("Authorization").substring(7) : cookieToken.getValue();
-
-			// Validate Token
-			FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-
-			// Get user record from firebase
-			UserRecord userRecord = FirebaseAuth.getInstance().getUser(decodedToken.getUid());
+			String token = cookieToken == null ? request.getHeader(HttpHeaders.AUTHORIZATION).substring(7) : cookieToken.getValue();
+			String phoneNumber = firebaseService.phoneNumberForToken(token);
 
 			// Set authentication details
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-					userRecord.getPhoneNumber(), decodedToken, null);
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(phoneNumber, token, null);
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			// Apply the filter
 			filterChain.doFilter(request, response);
-		} catch (IndexOutOfBoundsException | FirebaseAuthException e) {
+		} catch (NullPointerException | IndexOutOfBoundsException | FirebaseAuthException e) {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 	}
