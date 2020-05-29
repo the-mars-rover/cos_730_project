@@ -5,6 +5,8 @@ import com.inviteonly.docs.errors.DocNotFoundException;
 import com.inviteonly.docs.errors.DocOwnerException;
 import com.inviteonly.docs.services.IDocsService;
 import com.inviteonly.security.services.SecurityService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +26,8 @@ public class DocsController {
 
 	private final IDocsService docsService;
 
+	@Operation(summary = "Add an ID document belonging to the authenticated phone number",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	IdDocument postDocument(@Validated @RequestBody IdDocument newDocument) {
@@ -37,6 +41,8 @@ public class DocsController {
 
 	}
 
+	@Operation(summary = "Get all ID documents belonging to the authenticated phone number",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	List<IdDocument> getDocuments() {
@@ -45,6 +51,8 @@ public class DocsController {
 		return docsService.findUserDocuments(phoneNumber);
 	}
 
+	@Operation(summary = "Delete an ID document belonging to the authenticated phone number",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@DeleteMapping("/{documentId}")
 	@ResponseStatus(HttpStatus.OK)
 	IdDocument deleteDocument(@PathVariable Long documentId) {

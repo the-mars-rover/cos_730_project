@@ -5,6 +5,8 @@ import com.inviteonly.spaces.entities.Space;
 import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import com.inviteonly.spaces.services.ISpaceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +23,8 @@ public class SpaceController {
 
 	private final ISpaceService spaceService;
 
+	@Operation(summary = "Create a new access-controlled space",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
 	Space postSpace(@Validated @RequestBody Space space) {
 		try {
@@ -30,6 +34,9 @@ public class SpaceController {
 		}
 	}
 
+	@Operation(summary = "Update a space's details",
+			description = "Only managers of the space will be authorized to call this endpoint.",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PutMapping("/{spaceId}")
 	Space putSpace(@PathVariable Long spaceId, @Validated @RequestBody Space space) {
 		try {
@@ -46,6 +53,9 @@ public class SpaceController {
 		}
 	}
 
+	@Operation(summary = "Retrieve all access-controlled space",
+			description = "Responds with a list of all space for which the authenticated phone number is a manager, inviter or guard.",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@GetMapping
 	List<Space> getSpaces() {
 		try {
@@ -57,6 +67,9 @@ public class SpaceController {
 		}
 	}
 
+	@Operation(summary = "Delete the space with the given ID",
+			description = "Only managers of the space will be authorized to call this endpoint.",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@DeleteMapping("/{spaceId}")
 	void deleteSpace(@PathVariable Long spaceId) {
 		try {

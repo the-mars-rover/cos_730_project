@@ -5,6 +5,8 @@ import com.inviteonly.invites.services.IInvitesService;
 import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,10 @@ public class InviteController {
 
 	private final IInvitesService invitesService;
 
+	@Operation(summary = "Create an invite for the space with the given ID",
+			description = "Only inviters of the space will be authorized to call this endpoint. A successful response" +
+					" includes an invite code that can be used to add an entry to the space.",
+			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
 	Invite postInvite(@PathVariable Long spaceId) {
 		try {
