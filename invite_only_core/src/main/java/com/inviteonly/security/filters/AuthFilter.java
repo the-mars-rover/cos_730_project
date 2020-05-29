@@ -47,4 +47,15 @@ public class AuthFilter extends OncePerRequestFilter {
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		String path = request.getServletPath();
+
+		boolean requiresPhoneAuth;
+		requiresPhoneAuth = path.startsWith("/docs");
+		requiresPhoneAuth = requiresPhoneAuth || path.startsWith("/spaces");
+
+		return !requiresPhoneAuth;
+	}
 }
