@@ -35,6 +35,8 @@ public class DocsController {
 			String phoneNumber = securityService.authenticatedPhone();
 
 			return docsService.addUserDocument(phoneNumber, newDocument);
+		} catch (DocOwnerException e) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "The document already belongs to someone else.");
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
 		}
@@ -46,9 +48,13 @@ public class DocsController {
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	List<IdDocument> getDocuments() {
-		String phoneNumber = securityService.authenticatedPhone();
+		try {
+			String phoneNumber = securityService.authenticatedPhone();
 
-		return docsService.findUserDocuments(phoneNumber);
+			return docsService.findUserDocuments(phoneNumber);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
+		}
 	}
 
 	@Operation(summary = "Delete an ID document belonging to the authenticated phone number",
