@@ -26,6 +26,7 @@ public class SpaceController {
 	@Operation(summary = "Create a new access-controlled space",
 			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	Space postSpace(@Validated @RequestBody Space space) {
 		try {
 			return spaceService.createSpace(space);
@@ -79,7 +80,7 @@ public class SpaceController {
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id exists");
 		} catch (SpaceAuthorizationException e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
 		}

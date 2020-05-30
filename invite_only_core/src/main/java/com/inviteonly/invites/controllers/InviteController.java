@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -28,6 +25,7 @@ public class InviteController {
 					" includes an invite code that can be used to add an entry to the space.",
 			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	Invite postInvite(@PathVariable Long spaceId) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
@@ -36,7 +34,7 @@ public class InviteController {
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Space with id %s could not be found.", spaceId));
 		} catch (SpaceAuthorizationException e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
 		}

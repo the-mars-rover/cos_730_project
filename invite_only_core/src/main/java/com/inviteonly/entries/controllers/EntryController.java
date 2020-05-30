@@ -36,6 +36,7 @@ public class EntryController {
 					"provided if not.",
 			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	SpaceEntry postEntry(@PathVariable Long spaceId, @Validated @RequestBody IdDocument idDocument,
 	                     @Validated @RequestParam(required = false) String inviteCode) {
 		try {
@@ -51,7 +52,7 @@ public class EntryController {
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id");
 		} catch (SpaceAuthorizationException e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
 		} catch (InvalidInviteCode e) {
 			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid invite code");
 		} catch (Exception e) {
