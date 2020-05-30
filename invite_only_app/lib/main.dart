@@ -1,3 +1,3 @@
-import 'package:invite_only/app/app.dart';
+import 'package:invite_only_app/app/app.dart';
 
 void main() => startApp();

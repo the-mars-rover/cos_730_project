@@ -1,49 +1,41 @@
 {
   "project_info": {
-    "project_number": "374482451512",
-    "firebase_url": "https://invite-only-2bafd.firebaseio.com",
-    "project_id": "invite-only-2bafd",
-    "storage_bucket": "invite-only-2bafd.appspot.com"
+    "project_number": "1012477399652",
+    "firebase_url": "https://invite-only-278808.firebaseio.com",
+    "project_id": "invite-only-278808",
+    "storage_bucket": "invite-only-278808.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:374482451512:android:e3b4d3456714ca902bbacd",
+        "mobilesdk_app_id": "1:1012477399652:android:ab3ec6d83cdba4af2d8571",
         "android_client_info": {
-          "package_name": "com.marcusbornman.invite_only"
+          "package_name": "com.inviteonly.invite_only_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "374482451512-d83ucibe57dmf1knr6j7hqrtqib3jsga.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.marcusbornman.invite_only",
-            "certificate_hash": "4d50328e5d0eb9e461520fa74cdc210e89de4fc2"
-          }
-        },
-        {
-          "client_id": "374482451512-43ir355mpkno0s904goei6vga7e4d587.apps.googleusercontent.com",
+          "client_id": "1012477399652-s507d1ht2ufhkeer7jqu4n7pfulo62kv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCCnJkrwp3bk23HMjlLZOQcEeV9YWDEwTo"
+          "current_key": "AIzaSyAXTDtFj3Dk0J61YcT9QlhXiCzWmDKvC4c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "374482451512-43ir355mpkno0s904goei6vga7e4d587.apps.googleusercontent.com",
+              "client_id": "1012477399652-s507d1ht2ufhkeer7jqu4n7pfulo62kv.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "374482451512-1p34qnqn5p8fljlj5hhcbp74m5bsjicr.apps.googleusercontent.com",
+              "client_id": "1012477399652-85rtt2dkfj8no8ksn3b4rjc8em01jv8a.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.marcusbornman.inviteOnly"
+                "bundle_id": "com.inviteonly.inviteOnlyApp"
               }
             }
           ]

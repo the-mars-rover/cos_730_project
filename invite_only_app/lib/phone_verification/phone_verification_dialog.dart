@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/app/app.dart';
+import 'package:invite_only_app/app/app.dart';
 
 import 'phone_verification_bloc.dart';
 import 'phone_verification_event.dart';

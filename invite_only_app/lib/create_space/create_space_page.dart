@@ -2,10 +2,10 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/app/app.dart';
-import 'package:invite_only/create_space/create_space_bloc.dart';
-import 'package:invite_only/create_space/create_space_event.dart';
-import 'package:invite_only/create_space/create_space_state.dart';
+import 'package:invite_only_app/app/app.dart';
+import 'package:invite_only_app/create_space/create_space_bloc.dart';
+import 'package:invite_only_app/create_space/create_space_event.dart';
+import 'package:invite_only_app/create_space/create_space_state.dart';
 
 class CreateSpacePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();

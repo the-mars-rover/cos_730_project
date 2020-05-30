@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/create_invite/create_invite.dart';
-import 'package:invite_only/grant_access/grant_access.dart';
-import 'package:invite_only/space_details/space_details_bloc.dart';
-import 'package:invite_only/space_details/space_details_event.dart';
-import 'package:invite_only/space_details/space_details_state.dart';
+import 'package:invite_only_app/create_invite/create_invite.dart';
+import 'package:invite_only_app/grant_access/grant_access.dart';
+import 'package:invite_only_app/space_details/space_details_bloc.dart';
+import 'package:invite_only_app/space_details/space_details_event.dart';
+import 'package:invite_only_app/space_details/space_details_state.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 

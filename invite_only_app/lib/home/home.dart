@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:invite_only/home/user_home_page.dart';
+import 'package:invite_only_app/home/user_home_page.dart';
 
 Future<void> startAppOnHome() async {
   runApp(MaterialApp(

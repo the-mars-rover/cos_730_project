@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:international_phone_input/international_phone_input.dart';
-import 'package:invite_only/app/app.dart';
-import 'package:invite_only/home/home.dart';
-import 'package:invite_only/phone_verification/phone_verification.dart';
+import 'package:invite_only_app/app/app.dart';
+import 'package:invite_only_app/home/home.dart';
+import 'package:invite_only_app/phone_verification/phone_verification.dart';
 
 import 'authentication_bloc.dart';
 import 'authentication_event.dart';

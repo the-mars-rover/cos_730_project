@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:invite_only/app/app.dart';
+import 'package:invite_only_app/app/app.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'grant_access_event.dart';

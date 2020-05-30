@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only/authentication/authentication.dart';
-import 'package:invite_only/create_space/create_space.dart';
-import 'package:invite_only/home/home_bloc.dart';
-import 'package:invite_only/home/home_event.dart';
-import 'package:invite_only/home/home_state.dart';
-import 'package:invite_only/profile/profile.dart';
+import 'package:invite_only_app/authentication/authentication.dart';
+import 'package:invite_only_app/create_space/create_space.dart';
+import 'package:invite_only_app/home/home_bloc.dart';
+import 'package:invite_only_app/home/home_event.dart';
+import 'package:invite_only_app/home/home_state.dart';
+import 'package:invite_only_app/profile/profile.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 import 'space_card.dart';

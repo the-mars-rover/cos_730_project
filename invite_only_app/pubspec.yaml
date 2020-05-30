@@ -1,5 +1,9 @@
-name: invite_only
-description: A new Flutter project.
+name: invite_only_app
+description: The client app for the Invite Only platform.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -50,7 +54,7 @@ dependencies:
 
   # A Flutter package that helps implement the BLoC pattern.
   # See https://pub.dev/packages/flutter_bloc
-  flutter_bloc: ^3.2.0
+  flutter_bloc: ^4.0.0
 
   # Equatable overrides == and hashCode for you so you don't have to waste your time writing lots of boilerplate code.
   # See https://pub.dev/packages/equatable

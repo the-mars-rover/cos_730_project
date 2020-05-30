@@ -1,8 +1,8 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:invite_only/app/error_dialog.dart';
-import 'package:invite_only/authentication/authentication.dart';
-import 'package:invite_only/home/home.dart';
+import 'package:invite_only_app/app/error_dialog.dart';
+import 'package:invite_only_app/authentication/authentication.dart';
+import 'package:invite_only_app/home/home.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rsa_scan/rsa_scan.dart';
