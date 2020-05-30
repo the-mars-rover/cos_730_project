@@ -8,14 +8,13 @@ part of 'invite.dart';
 
 _$_Invite _$_$_InviteFromJson(Map<String, dynamic> json) {
   return _$_Invite(
-    id: json['id'] as String,
+    id: json['id'] as int,
     code: json['code'] as String,
     spaceId: json['spaceId'] as String,
+    inviterPhone: json['inviterPhone'] as String,
     expiryDate: json['expiryDate'] == null
         ? null
         : DateTime.parse(json['expiryDate'] as String),
-    inviterPhoneNumber: json['inviterPhoneNumber'] as String,
-    used: json['used'] as bool,
   );
 }
 
@@ -23,7 +22,6 @@ Map<String, dynamic> _$_$_InviteToJson(_$_Invite instance) => <String, dynamic>{
       'id': instance.id,
       'code': instance.code,
       'spaceId': instance.spaceId,
+      'inviterPhone': instance.inviterPhone,
       'expiryDate': instance.expiryDate?.toIso8601String(),
-      'inviterPhoneNumber': instance.inviterPhoneNumber,
-      'used': instance.used,
     };

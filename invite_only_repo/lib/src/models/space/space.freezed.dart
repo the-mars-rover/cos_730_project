@@ -16,24 +16,20 @@ class _$SpaceTearOff {
   const _$SpaceTearOff();
 
   _Space call(
-      {@required String id,
+      {@required int id,
       @required String title,
-      @required bool inviteOnly,
       @required List<String> managerPhones,
       @required List<String> guardPhones,
       @required List<String> inviterPhones,
-      int minAge,
       String imageUrl,
       double locationLatitude,
       double locationLongitude}) {
     return _Space(
       id: id,
       title: title,
-      inviteOnly: inviteOnly,
       managerPhones: managerPhones,
       guardPhones: guardPhones,
       inviterPhones: inviterPhones,
-      minAge: minAge,
       imageUrl: imageUrl,
       locationLatitude: locationLatitude,
       locationLongitude: locationLongitude,
@@ -45,13 +41,11 @@ class _$SpaceTearOff {
 const $Space = _$SpaceTearOff();
 
 mixin _$Space {
-  String get id;
+  int get id;
   String get title;
-  bool get inviteOnly;
   List<String> get managerPhones;
   List<String> get guardPhones;
   List<String> get inviterPhones;
-  int get minAge;
   String get imageUrl;
   double get locationLatitude;
   double get locationLongitude;
@@ -64,13 +58,11 @@ abstract class $SpaceCopyWith<$Res> {
   factory $SpaceCopyWith(Space value, $Res Function(Space) then) =
       _$SpaceCopyWithImpl<$Res>;
   $Res call(
-      {String id,
+      {int id,
       String title,
-      bool inviteOnly,
       List<String> managerPhones,
       List<String> guardPhones,
       List<String> inviterPhones,
-      int minAge,
       String imageUrl,
       double locationLatitude,
       double locationLongitude});
@@ -87,20 +79,16 @@ class _$SpaceCopyWithImpl<$Res> implements $SpaceCopyWith<$Res> {
   $Res call({
     Object id = freezed,
     Object title = freezed,
-    Object inviteOnly = freezed,
     Object managerPhones = freezed,
     Object guardPhones = freezed,
     Object inviterPhones = freezed,
-    Object minAge = freezed,
     Object imageUrl = freezed,
     Object locationLatitude = freezed,
     Object locationLongitude = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed ? _value.id : id as String,
+      id: id == freezed ? _value.id : id as int,
       title: title == freezed ? _value.title : title as String,
-      inviteOnly:
-          inviteOnly == freezed ? _value.inviteOnly : inviteOnly as bool,
       managerPhones: managerPhones == freezed
           ? _value.managerPhones
           : managerPhones as List<String>,
@@ -110,7 +98,6 @@ class _$SpaceCopyWithImpl<$Res> implements $SpaceCopyWith<$Res> {
       inviterPhones: inviterPhones == freezed
           ? _value.inviterPhones
           : inviterPhones as List<String>,
-      minAge: minAge == freezed ? _value.minAge : minAge as int,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       locationLatitude: locationLatitude == freezed
           ? _value.locationLatitude
@@ -127,13 +114,11 @@ abstract class _$SpaceCopyWith<$Res> implements $SpaceCopyWith<$Res> {
       __$SpaceCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
+      {int id,
       String title,
-      bool inviteOnly,
       List<String> managerPhones,
       List<String> guardPhones,
       List<String> inviterPhones,
-      int minAge,
       String imageUrl,
       double locationLatitude,
       double locationLongitude});
@@ -151,20 +136,16 @@ class __$SpaceCopyWithImpl<$Res> extends _$SpaceCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object title = freezed,
-    Object inviteOnly = freezed,
     Object managerPhones = freezed,
     Object guardPhones = freezed,
     Object inviterPhones = freezed,
-    Object minAge = freezed,
     Object imageUrl = freezed,
     Object locationLatitude = freezed,
     Object locationLongitude = freezed,
   }) {
     return _then(_Space(
-      id: id == freezed ? _value.id : id as String,
+      id: id == freezed ? _value.id : id as int,
       title: title == freezed ? _value.title : title as String,
-      inviteOnly:
-          inviteOnly == freezed ? _value.inviteOnly : inviteOnly as bool,
       managerPhones: managerPhones == freezed
           ? _value.managerPhones
           : managerPhones as List<String>,
@@ -174,7 +155,6 @@ class __$SpaceCopyWithImpl<$Res> extends _$SpaceCopyWithImpl<$Res>
       inviterPhones: inviterPhones == freezed
           ? _value.inviterPhones
           : inviterPhones as List<String>,
-      minAge: minAge == freezed ? _value.minAge : minAge as int,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       locationLatitude: locationLatitude == freezed
           ? _value.locationLatitude
@@ -191,17 +171,14 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
   const _$_Space(
       {@required this.id,
       @required this.title,
-      @required this.inviteOnly,
       @required this.managerPhones,
       @required this.guardPhones,
       @required this.inviterPhones,
-      this.minAge,
       this.imageUrl,
       this.locationLatitude,
       this.locationLongitude})
       : assert(id != null),
         assert(title != null),
-        assert(inviteOnly != null),
         assert(managerPhones != null),
         assert(guardPhones != null),
         assert(inviterPhones != null),
@@ -211,19 +188,15 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
       _$_$_SpaceFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   final String title;
-  @override
-  final bool inviteOnly;
   @override
   final List<String> managerPhones;
   @override
   final List<String> guardPhones;
   @override
   final List<String> inviterPhones;
-  @override
-  final int minAge;
   @override
   final String imageUrl;
   @override
@@ -233,7 +206,7 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Space(id: $id, title: $title, inviteOnly: $inviteOnly, managerPhones: $managerPhones, guardPhones: $guardPhones, inviterPhones: $inviterPhones, minAge: $minAge, imageUrl: $imageUrl, locationLatitude: $locationLatitude, locationLongitude: $locationLongitude)';
+    return 'Space(id: $id, title: $title, managerPhones: $managerPhones, guardPhones: $guardPhones, inviterPhones: $inviterPhones, imageUrl: $imageUrl, locationLatitude: $locationLatitude, locationLongitude: $locationLongitude)';
   }
 
   @override
@@ -243,11 +216,9 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'Space'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
-      ..add(DiagnosticsProperty('inviteOnly', inviteOnly))
       ..add(DiagnosticsProperty('managerPhones', managerPhones))
       ..add(DiagnosticsProperty('guardPhones', guardPhones))
       ..add(DiagnosticsProperty('inviterPhones', inviterPhones))
-      ..add(DiagnosticsProperty('minAge', minAge))
       ..add(DiagnosticsProperty('imageUrl', imageUrl))
       ..add(DiagnosticsProperty('locationLatitude', locationLatitude))
       ..add(DiagnosticsProperty('locationLongitude', locationLongitude));
@@ -261,9 +232,6 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
-            (identical(other.inviteOnly, inviteOnly) ||
-                const DeepCollectionEquality()
-                    .equals(other.inviteOnly, inviteOnly)) &&
             (identical(other.managerPhones, managerPhones) ||
                 const DeepCollectionEquality()
                     .equals(other.managerPhones, managerPhones)) &&
@@ -273,8 +241,6 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
             (identical(other.inviterPhones, inviterPhones) ||
                 const DeepCollectionEquality()
                     .equals(other.inviterPhones, inviterPhones)) &&
-            (identical(other.minAge, minAge) ||
-                const DeepCollectionEquality().equals(other.minAge, minAge)) &&
             (identical(other.imageUrl, imageUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.imageUrl, imageUrl)) &&
@@ -291,11 +257,9 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(title) ^
-      const DeepCollectionEquality().hash(inviteOnly) ^
       const DeepCollectionEquality().hash(managerPhones) ^
       const DeepCollectionEquality().hash(guardPhones) ^
       const DeepCollectionEquality().hash(inviterPhones) ^
-      const DeepCollectionEquality().hash(minAge) ^
       const DeepCollectionEquality().hash(imageUrl) ^
       const DeepCollectionEquality().hash(locationLatitude) ^
       const DeepCollectionEquality().hash(locationLongitude);
@@ -313,13 +277,11 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
 abstract class _Space extends Space {
   const _Space._() : super._();
   const factory _Space(
-      {@required String id,
+      {@required int id,
       @required String title,
-      @required bool inviteOnly,
       @required List<String> managerPhones,
       @required List<String> guardPhones,
       @required List<String> inviterPhones,
-      int minAge,
       String imageUrl,
       double locationLatitude,
       double locationLongitude}) = _$_Space;
@@ -327,19 +289,15 @@ abstract class _Space extends Space {
   factory _Space.fromJson(Map<String, dynamic> json) = _$_Space.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
   String get title;
-  @override
-  bool get inviteOnly;
   @override
   List<String> get managerPhones;
   @override
   List<String> get guardPhones;
   @override
   List<String> get inviterPhones;
-  @override
-  int get minAge;
   @override
   String get imageUrl;
   @override

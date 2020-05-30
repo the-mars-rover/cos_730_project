@@ -7,8 +7,8 @@ part 'invite.g.dart';
 @freezed
 abstract class Invite with _$Invite {
   const factory Invite({
-    /// The identifier for the invite - can be anything as long as it is unique.
-    @required String id,
+    /// The unique identifier for the invite.
+    @required int id,
 
     /// The six-digit code that can be submitted to use this invite.
     @required String code,
@@ -16,14 +16,11 @@ abstract class Invite with _$Invite {
     /// The identifier for the [ControlledSpace] for which this invite was created.
     @required String spaceId,
 
-    /// The date until which this invite may be used.
-    @required DateTime expiryDate,
-
     /// The phone number of the person who generated this invite
-    @required String inviterPhoneNumber,
+    @required String inviterPhone,
 
-    /// Whether this invite has been used or not.
-    @required bool used,
+    /// The date at which this invite is no longer valid.
+    @required DateTime expiryDate,
   }) = _Invite;
 
   factory Invite.fromJson(Map<String, dynamic> json) => _$InviteFromJson(json);

@@ -22,9 +22,9 @@ dependencies:
   # See https://pub.dev/packages/firebase_auth
   firebase_auth: ^0.15.5+3
 
-  # A Flutter plugin to use the Cloud Firestore API.
-  # See https://pub.dev/packages/cloud_firestore
-  cloud_firestore: ^0.13.4+2
+  # A composable, Future-based library for making HTTP requests.
+  # See https://pub.dev/packages/http
+  http: ^0.12.1
 
   # Simple, fast generation of RFC4122 UUIDs.
   # See https://pub.dev/packages/uuid

@@ -7,8 +7,16 @@ part 'id_document.g.dart';
 @freezed
 abstract class IdDocument with _$IdDocument {
   const factory IdDocument.idBook({
+    @Default("idBook") String type,
+
+    /// The unique identifier for the document
+    @required int id,
+
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
+
+    /// The phone number to which the ID document is linked.
+    String phoneNumber,
 
     /// The text representing gender of the person to whom this document belongs.
     ///
@@ -25,8 +33,16 @@ abstract class IdDocument with _$IdDocument {
   }) = IdBook;
 
   const factory IdDocument.idCard({
+    @Default("idCard") String type,
+
+    /// The unique identifier for the document
+    @required int id,
+
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
+
+    /// The phone number to which the ID document is linked.
+    String phoneNumber,
 
     /// The first names of the person to whom this document belongs.
     ///
@@ -63,8 +79,16 @@ abstract class IdDocument with _$IdDocument {
   }) = IdCard;
 
   const factory IdDocument.driversLicense({
+    @Default("driversLicense") String type,
+
+    /// The unique identifier for the document
+    @required int id,
+
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
+
+    /// The phone number to which the ID document is linked.
+    String phoneNumber,
 
     /// The first names of the person to whom this document belongs.
     ///
@@ -130,8 +154,16 @@ abstract class IdDocument with _$IdDocument {
 
   //TODO: Add properties for a passport
   const factory IdDocument.passport({
+    @Default("passport") String type,
+
+    /// The unique identifier for the document
+    @required int id,
+
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
+
+    /// The phone number to which the ID document is linked.
+    String phoneNumber,
   }) = Passport;
 
   factory IdDocument.fromJson(Map<String, dynamic> json) =>

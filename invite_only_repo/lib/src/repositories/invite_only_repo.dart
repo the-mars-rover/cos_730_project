@@ -1,22 +1,25 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:invite_only_repo/src/errors/auth_failure.dart';
-import 'package:invite_only_repo/src/models/access/access.dart';
+import 'package:invite_only_repo/src/errors/conflict.dart';
+import 'package:invite_only_repo/src/errors/not_found.dart';
+import 'package:invite_only_repo/src/errors/uknown_error.dart';
+import 'package:invite_only_repo/src/errors/unauthenticated.dart';
+import 'package:invite_only_repo/src/errors/unauthorized.dart';
+import 'package:invite_only_repo/src/models/entry/entry.dart';
 import 'package:invite_only_repo/src/models/id_document/id_document.dart';
+import 'package:invite_only_repo/src/models/invite/invite.dart';
 import 'package:invite_only_repo/src/models/space/space.dart';
-import 'package:invite_only_repo/src/models/user/user.dart';
 
-import 'firebase_invite_only_repo.dart';
+import 'invite_only_repo_impl.dart';
 
 abstract class InviteOnlyRepo {
   /// The initialize method should be called as soon as the app starts.
   static Future<void> initialize() async {
-    _instance = await FirebaseInviteOnlyRepo.getInstance();
+    _instance = await InviteOnlyRepoImpl.getInstance();
   }
 
   /// The singleton instance of this class, instantiated during [initialize]
-  static FirebaseInviteOnlyRepo _instance;
+  static InviteOnlyRepoImpl _instance;
 
   /// Just a simple getter to retrieve the singleton instance of this class.
   ///
@@ -63,91 +66,89 @@ abstract class InviteOnlyRepo {
   /// will contain the reason for the failed sign in.
   Future<void> signInWithCredential(InviteOnlyCredential inviteOnlyCredential);
 
-  /// Returns a stream of the currently authenticated user's details. Will return
-  /// null if there is no currently authenticated user.
-  ///
-  /// The stream may emit null if the user's details are busy being recorded.
-  Stream<User> currentUser();
-
   /// Sign out the currently authenticated user.
   Future<void> signOut();
 
-  /// Deletes the user, retrieved using [currentUser].
-  Future<void> deleteUser(User user);
+  /// Add an ID document to the currently authenticated user and return the
+  /// document that was added.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [Conflict] if the document has already been added by someone else.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<IdDocument> addIdDocument(IdDocument idDocument);
 
-  /// Save new details for the user, retrieved using [currentUser].
-  Future<void> updateUser(User user);
+  /// Fetch all ID documents linked to the currently authenticated user; or,
+  /// an empty list if no documents have been added to the user.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<List<IdDocument>> fetchIdDocuments();
 
-  /// Returns a stream of access controlled spaces for which the currently
-  /// authenticated is a manager, guard or inviter.
-  Stream<List<Space>> spaces();
+  /// Remove an ID document from the currently authenticated user.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [NotFound] if the document could not be found.
+  /// Throws [Unauthorized] if the document is not allowed to be deleted.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<void> deleteIdDocument(IdDocument idDocument);
 
-  /// Creates an access-controlled space with the given details.
+  /// Add a new access-controlled space and return the newly created space.
   ///
-  /// Arguments:
-  /// * [title] - The title for the space, describes the space briefly.
-  ///
-  /// * [inviteOnly] - If true, only managers, guards, inviters and people with
-  /// valid invites will be allowed to enter the space.
-  ///
-  /// * [managerPhones] - A list of phone numbers identifying managers of this space.
-  ///
-  /// * [guardPhones] - A list of phone numbers identifying guards of this space.
-  ///
-  /// * [inviterPhones] - A list of phone numbers identifying inviters of this space.
-  ///
-  /// * [minAge] - The minimum age of people allowed to enter this space if
-  /// [inviteOnly] is false. Defaults to 0 if not passed.
-  ///
-  /// * [image] - An identifying image for the space. May be left as null.
-  ///
-  /// * [locationLatitude] and [locationLongitude] - represent the location of the
-  /// space, may be left as null.
-  Future<void> createSpace({
-    @required String title,
-    @required bool inviteOnly,
-    @required List<String> managerPhones,
-    @required List<String> guardPhones,
-    @required List<String> inviterPhones,
-    int minAge,
-    File image,
-    double locationLatitude,
-    double locationLongitude,
-  });
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<Space> addSpace(Space space);
 
-  /// Update the given space that was read using [spaces].
-  Future<void> updateSpace(Space space);
+  /// Fetch all spaces for which the currently authenticated user is a manager,
+  /// inviter or guard. Returns an empty list if no such spaces exist.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<List<Space>> fetchSpaces();
 
-  /// Delete the given space that was read using [spaces].
+  /// Update an existing access-controlled space and return the updated space.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [NotFound] if the space could not be found.
+  /// Throws [Unauthorized] if the space is not allowed to be deleted.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<Space> updateSpace(Space space);
+
+  /// Remove the given space entirely - this will delete the space for all users.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [NotFound] if the space could not be found.
+  /// Throws [Unauthorized] if the space is not allowed to be deleted.
+  /// Throws [UnknownError] if an unknown error occurred.
   Future<void> deleteSpace(Space space);
 
-  /// Creates an invite and returns an invite code for the new invite to the given space,
-  /// that was read using [spaces]. The currently authenticated user will be
-  /// marked as the inviter of the invite.
-  Future<String> invite(Space space);
+  /// Create a new invite for the given space. Only inviters for the space are
+  /// authorized to create invites.
+  ///
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [NotFound] if the space could not be found.
+  /// Throws [Unauthorized] if the invite was not allowed to be created.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<Invite> createInvite(Space space);
 
-  /// Grant access to an access controlled space.
+  /// Add a new entry for the given space. Only guards for the space are
+  /// authorized to add entries. If the person with the given document is not
+  /// a manager, inviter or guard for the space, [code] must also be provided.
   ///
-  /// Arguments:
-  /// * [space] is the space to which access is being granted, read using [spaces].
-  ///
-  /// * [idDocument] is the ID document of the person to whom entry is being granted.
-  ///
-  /// * [inviteCode] is optional. Retrieved using [invite], it should only be passed
-  /// if the person with the given ID is not a manager, guard or inviter for the space.
-  ///
-  /// Throws [AccessDenied] if:
-  /// - No invite code was given and the person with the presented document is not a
-  /// manager, inviter or guard for the space.
-  /// - or, if the invite code was invalid.
-  Future<void> grantAccess(Space space, IdDocument idDocument,
-      [String inviteCode]);
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [NotFound] if the space could not be found or if [code] was
+  /// not given and no user exists with the given ID Document.
+  /// Throws [Unauthorized] if the entry was not allowed to be added.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<Entry> addEntry(Space space, IdDocument idDocument, [String code]);
 
-  /// Returns a stream of accesses for the space with the given id.
+  /// Fetch all entries for the given space, allowed to be seen by the currently
+  /// authenticated user. Returns an empty list if there are no such entries.
+  /// This method is paginated so requires the size and number of a page.
   ///
-  /// If the space with the given id is deleted during the emission of this stream,
-  /// null will be emitted.
-  Stream<List<Access>> accesses(Space space);
+  /// Throws [Unauthenticated] if there is no authenticated user.
+  /// Throws [NotFound] if the space could not be found.
+  /// Throws [UnknownError] if an unknown error occurred.
+  Future<List<Entry>> fetchEntries(Space space, int pageSize, int pageNum);
 }
 
 class InviteOnlyCredential {

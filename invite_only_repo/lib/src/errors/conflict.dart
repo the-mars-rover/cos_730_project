@@ -1,0 +1,1 @@
+class Conflict implements Exception {}

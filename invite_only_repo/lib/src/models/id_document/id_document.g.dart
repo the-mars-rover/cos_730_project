@@ -8,7 +8,10 @@ part of 'id_document.dart';
 
 _$IdBook _$_$IdBookFromJson(Map<String, dynamic> json) {
   return _$IdBook(
+    type: json['type'] as String ?? 'idBook',
+    id: json['id'] as int,
     idNumber: json['idNumber'] as String,
+    phoneNumber: json['phoneNumber'] as String,
     gender: json['gender'] as String,
     birthDate: json['birthDate'] == null
         ? null
@@ -18,7 +21,10 @@ _$IdBook _$_$IdBookFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$_$IdBookToJson(_$IdBook instance) => <String, dynamic>{
+      'type': instance.type,
+      'id': instance.id,
       'idNumber': instance.idNumber,
+      'phoneNumber': instance.phoneNumber,
       'gender': instance.gender,
       'birthDate': instance.birthDate?.toIso8601String(),
       'citizenshipStatus': instance.citizenshipStatus,
@@ -26,7 +32,10 @@ Map<String, dynamic> _$_$IdBookToJson(_$IdBook instance) => <String, dynamic>{
 
 _$IdCard _$_$IdCardFromJson(Map<String, dynamic> json) {
   return _$IdCard(
+    type: json['type'] as String ?? 'idCard',
+    id: json['id'] as int,
     idNumber: json['idNumber'] as String,
+    phoneNumber: json['phoneNumber'] as String,
     firstNames: json['firstNames'] as String,
     surname: json['surname'] as String,
     gender: json['gender'] as String,
@@ -44,7 +53,10 @@ _$IdCard _$_$IdCardFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$_$IdCardToJson(_$IdCard instance) => <String, dynamic>{
+      'type': instance.type,
+      'id': instance.id,
       'idNumber': instance.idNumber,
+      'phoneNumber': instance.phoneNumber,
       'firstNames': instance.firstNames,
       'surname': instance.surname,
       'gender': instance.gender,
@@ -58,7 +70,10 @@ Map<String, dynamic> _$_$IdCardToJson(_$IdCard instance) => <String, dynamic>{
 
 _$DriversLicense _$_$DriversLicenseFromJson(Map<String, dynamic> json) {
   return _$DriversLicense(
+    type: json['type'] as String ?? 'driversLicense',
+    id: json['id'] as int,
     idNumber: json['idNumber'] as String,
+    phoneNumber: json['phoneNumber'] as String,
     firstNames: json['firstNames'] as String,
     surname: json['surname'] as String,
     gender: json['gender'] as String,
@@ -94,7 +109,10 @@ _$DriversLicense _$_$DriversLicenseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$DriversLicenseToJson(_$DriversLicense instance) =>
     <String, dynamic>{
+      'type': instance.type,
+      'id': instance.id,
       'idNumber': instance.idNumber,
+      'phoneNumber': instance.phoneNumber,
       'firstNames': instance.firstNames,
       'surname': instance.surname,
       'gender': instance.gender,
@@ -117,11 +135,17 @@ Map<String, dynamic> _$_$DriversLicenseToJson(_$DriversLicense instance) =>
 
 _$Passport _$_$PassportFromJson(Map<String, dynamic> json) {
   return _$Passport(
+    type: json['type'] as String ?? 'passport',
+    id: json['id'] as int,
     idNumber: json['idNumber'] as String,
+    phoneNumber: json['phoneNumber'] as String,
   );
 }
 
 Map<String, dynamic> _$_$PassportToJson(_$Passport instance) =>
     <String, dynamic>{
+      'type': instance.type,
+      'id': instance.id,
       'idNumber': instance.idNumber,
+      'phoneNumber': instance.phoneNumber,
     };
