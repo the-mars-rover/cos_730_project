@@ -50,7 +50,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		String path = request.getServletPath();
+		String path = request.getRequestURI().substring(request.getContextPath().length());
 
 		boolean requiresPhoneAuth;
 		requiresPhoneAuth = path.startsWith("/docs");
