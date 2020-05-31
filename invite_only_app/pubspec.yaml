@@ -46,7 +46,7 @@ dependencies:
 
   # A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
   # See https://pub.dev/packages/firebase_core
-  firebase_core: ^0.4.4+3
+  firebase_core: ^0.4.5
 
   # A Flutter plugin to use the Google Analytics for Firebase API.
   # See https://pub.dev/packages/firebase_analytics
@@ -62,8 +62,7 @@ dependencies:
 
   # Scan identity documents such as South African ID Cards, ID Books and Driver's Licenses.
   # See https://pub.dev/packages/rsa_scan
-  rsa_scan:
-    path: ../../rsa_scan
+  rsa_scan: ^0.0.3
 
   # Simple, fast generation of RFC4122 UUIDs.
   # See https://pub.dev/packages/uuid
@@ -94,7 +93,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/launcher_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
