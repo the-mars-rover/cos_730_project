@@ -13,18 +13,13 @@ import 'package:invite_only_repo/src/models/space/space.dart';
 import 'invite_only_repo_impl.dart';
 
 abstract class InviteOnlyRepo {
-  /// The initialize method should be called as soon as the app starts.
-  static Future<void> initialize() async {
-    _instance = await InviteOnlyRepoImpl.getInstance();
-  }
-
-  /// The singleton instance of this class, instantiated during [initialize]
-  static InviteOnlyRepoImpl _instance;
-
-  /// Just a simple getter to retrieve the singleton instance of this class.
+  /// Just a simple getter to retrieve the singleton instance of the  class.
   ///
   /// If [initialize] has not been called, this will be null.
-  static InviteOnlyRepo get instance => _instance;
+  static InviteOnlyRepo get instance => InviteOnlyRepoImpl.getInstance();
+
+  /// Returns the current user's phone number, or null if there is no authenticated user.
+  Future<String> currentUser();
 
   /// Starts the phone number verification process for a given phone number.
   ///
@@ -139,6 +134,7 @@ abstract class InviteOnlyRepo {
   /// not given and no user exists with the given ID Document.
   /// Throws [Unauthorized] if the entry was not allowed to be added.
   /// Throws [UnknownError] if an unknown error occurred.
+  /// Throws [InvalidInvite] if the invite code given is not valid.
   Future<Entry> addEntry(Space space, IdDocument idDocument, [String code]);
 
   /// Fetch all entries for the given space, allowed to be seen by the currently

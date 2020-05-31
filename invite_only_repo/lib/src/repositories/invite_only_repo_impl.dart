@@ -21,7 +21,7 @@ import 'invite_only_repo.dart';
 
 class InviteOnlyRepoImpl implements InviteOnlyRepo {
   /// The url to use for requests to the core API.
-  static String _coreUrl;
+  static String _coreUrl = 'https://core.inviteonly.co.za';
 
   /// The singleton instance of this class
   static InviteOnlyRepoImpl _instance;
@@ -36,13 +36,8 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   /// The method to retrieve the singleton instance of this class
   ///
   /// The optional parameters should only be necessary for testing purposes.
-  static Future<InviteOnlyRepoImpl> getInstance(
-      {FirebaseAuth firebaseAuth}) async {
+  static InviteOnlyRepoImpl getInstance({FirebaseAuth firebaseAuth}) {
     if (_instance == null) {
-      _coreUrl = 'https://core.inviteonly.co.za';
-      assert(() {
-        _coreUrl = "localhost:8080";
-      }());
       _instance = InviteOnlyRepoImpl._internal(fireAuth: firebaseAuth);
     }
 
@@ -103,8 +98,14 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/spaces/${space.id}/entries";
     if (code != null) url += "?inviteCode=$code";
-    final response = await http.post(url,
-        headers: {'Authorization': 'Bearer $token'}, body: idDocument.toJson());
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(idDocument.toJson()),
+    );
 
     switch (response.statusCode) {
       case HttpStatus.created:
@@ -124,8 +125,14 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   Future<IdDocument> addIdDocument(IdDocument idDocument) async {
     final token = await _authToken();
     String url = "$_coreUrl/docs";
-    final response = await http.post(url,
-        headers: {'Authorization': 'Bearer $token'}, body: idDocument.toJson());
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(idDocument.toJson()),
+    );
 
     switch (response.statusCode) {
       case HttpStatus.created:
@@ -141,8 +148,14 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   Future<Space> addSpace(Space space) async {
     final token = await _authToken();
     String url = "$_coreUrl/spaces";
-    final response = await http.post(url,
-        headers: {'Authorization': 'Bearer $token'}, body: space.toJson());
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(space.toJson()),
+    );
 
     switch (response.statusCode) {
       case HttpStatus.created:
@@ -220,7 +233,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.ok:
-        List<Map<String, dynamic>> list = json.decode(response.body);
+        List<dynamic> list = json.decode(response.body)['content'];
         return list.map((e) => Entry.fromJson(e)).toList();
       case HttpStatus.notFound:
         throw NotFound();
@@ -238,7 +251,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.ok:
-        List<Map<String, dynamic>> list = json.decode(response.body);
+        List<dynamic> list = json.decode(response.body);
         return list.map((e) => IdDocument.fromJson(e)).toList();
       default:
         throw UnknownError(response.reasonPhrase);
@@ -254,7 +267,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.ok:
-        List<Map<String, dynamic>> list = json.decode(response.body);
+        List<dynamic> list = json.decode(response.body);
         return list.map((e) => Space.fromJson(e)).toList();
       default:
         throw UnknownError(response.reasonPhrase);
@@ -264,10 +277,15 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   @override
   Future<Space> updateSpace(Space space) async {
     final token = await _authToken();
-    String url = "$_coreUrl/spaces/${space.id}";
-    final response = await http.put(url,
-        headers: {'Authorization': 'Bearer $token'}, body: space.toJson());
-
+    String url = "$_coreUrl/spaces/${space.id.toString()}";
+    final response = await http.put(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(space.toJson()),
+    );
     switch (response.statusCode) {
       case HttpStatus.ok:
         return Space.fromJson(json.decode(response.body));
@@ -288,5 +306,14 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
       tokenResult = await user.getIdToken(refresh: true);
     }
     return tokenResult.token;
+  }
+
+  @override
+  Future<String> currentUser() async {
+    final user = await _fireAuth.currentUser();
+
+    if (user == null) return null;
+
+    return user.phoneNumber;
   }
 }
