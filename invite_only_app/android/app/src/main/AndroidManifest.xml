@@ -2,6 +2,7 @@
     package="com.inviteonly.invite_only_app">
 
     <!--  Required permissions for this application.  -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
@@ -12,8 +13,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="invite_only_app"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Invite Only"
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
