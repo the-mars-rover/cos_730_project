@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final FirebaseService firebaseService;
 
 	@Override
-	protected void configure(HttpSecurity http) {
-		http.addFilterBefore(new AuthFilter(firebaseService), UsernamePasswordAuthenticationFilter.class);
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable().addFilterBefore(new AuthFilter(firebaseService), UsernamePasswordAuthenticationFilter.class);
 	}
 }
