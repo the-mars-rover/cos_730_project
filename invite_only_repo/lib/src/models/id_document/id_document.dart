@@ -7,10 +7,11 @@ part 'id_document.g.dart';
 @freezed
 abstract class IdDocument with _$IdDocument {
   const factory IdDocument.idBook({
+    /// It should not ever be necessary to replace the default value for this field.
     @Default("idBook") String type,
 
     /// The unique identifier for the document
-    @required int id,
+    int id,
 
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
@@ -33,10 +34,11 @@ abstract class IdDocument with _$IdDocument {
   }) = IdBook;
 
   const factory IdDocument.idCard({
+    /// It should not ever be necessary to replace the default value for this field.
     @Default("idCard") String type,
 
     /// The unique identifier for the document
-    @required int id,
+    int id,
 
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
@@ -79,10 +81,11 @@ abstract class IdDocument with _$IdDocument {
   }) = IdCard;
 
   const factory IdDocument.driversLicense({
+    /// It should not ever be necessary to replace the default value for this field.
     @Default("driversLicense") String type,
 
     /// The unique identifier for the document
-    @required int id,
+    int id,
 
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,
@@ -154,10 +157,11 @@ abstract class IdDocument with _$IdDocument {
 
   //TODO: Add properties for a passport
   const factory IdDocument.passport({
+    /// It should not ever be necessary to replace the default value for this field.
     @Default("passport") String type,
 
     /// The unique identifier for the document
-    @required int id,
+    int id,
 
     /// The ID Number of the person to whom this document belongs.
     @required String idNumber,

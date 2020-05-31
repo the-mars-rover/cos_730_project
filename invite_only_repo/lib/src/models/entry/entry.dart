@@ -15,7 +15,7 @@ abstract class Entry implements _$Entry {
       {
 
       /// The unique identifier for the entry.
-      @required int id,
+      int id,
 
       /// The phone number of the guard who scanned the [idDocument] on entry.
       @required String guardPhone,

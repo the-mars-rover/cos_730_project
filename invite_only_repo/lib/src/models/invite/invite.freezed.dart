@@ -16,15 +16,13 @@ class _$InviteTearOff {
   const _$InviteTearOff();
 
   _Invite call(
-      {@required int id,
+      {int id,
       @required String code,
-      @required String spaceId,
       @required String inviterPhone,
       @required DateTime expiryDate}) {
     return _Invite(
       id: id,
       code: code,
-      spaceId: spaceId,
       inviterPhone: inviterPhone,
       expiryDate: expiryDate,
     );
@@ -37,7 +35,6 @@ const $Invite = _$InviteTearOff();
 mixin _$Invite {
   int get id;
   String get code;
-  String get spaceId;
   String get inviterPhone;
   DateTime get expiryDate;
 
@@ -48,12 +45,7 @@ mixin _$Invite {
 abstract class $InviteCopyWith<$Res> {
   factory $InviteCopyWith(Invite value, $Res Function(Invite) then) =
       _$InviteCopyWithImpl<$Res>;
-  $Res call(
-      {int id,
-      String code,
-      String spaceId,
-      String inviterPhone,
-      DateTime expiryDate});
+  $Res call({int id, String code, String inviterPhone, DateTime expiryDate});
 }
 
 class _$InviteCopyWithImpl<$Res> implements $InviteCopyWith<$Res> {
@@ -67,14 +59,12 @@ class _$InviteCopyWithImpl<$Res> implements $InviteCopyWith<$Res> {
   $Res call({
     Object id = freezed,
     Object code = freezed,
-    Object spaceId = freezed,
     Object inviterPhone = freezed,
     Object expiryDate = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
       code: code == freezed ? _value.code : code as String,
-      spaceId: spaceId == freezed ? _value.spaceId : spaceId as String,
       inviterPhone: inviterPhone == freezed
           ? _value.inviterPhone
           : inviterPhone as String,
@@ -88,12 +78,7 @@ abstract class _$InviteCopyWith<$Res> implements $InviteCopyWith<$Res> {
   factory _$InviteCopyWith(_Invite value, $Res Function(_Invite) then) =
       __$InviteCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {int id,
-      String code,
-      String spaceId,
-      String inviterPhone,
-      DateTime expiryDate});
+  $Res call({int id, String code, String inviterPhone, DateTime expiryDate});
 }
 
 class __$InviteCopyWithImpl<$Res> extends _$InviteCopyWithImpl<$Res>
@@ -108,14 +93,12 @@ class __$InviteCopyWithImpl<$Res> extends _$InviteCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object code = freezed,
-    Object spaceId = freezed,
     Object inviterPhone = freezed,
     Object expiryDate = freezed,
   }) {
     return _then(_Invite(
       id: id == freezed ? _value.id : id as int,
       code: code == freezed ? _value.code : code as String,
-      spaceId: spaceId == freezed ? _value.spaceId : spaceId as String,
       inviterPhone: inviterPhone == freezed
           ? _value.inviterPhone
           : inviterPhone as String,
@@ -128,14 +111,11 @@ class __$InviteCopyWithImpl<$Res> extends _$InviteCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Invite with DiagnosticableTreeMixin implements _Invite {
   const _$_Invite(
-      {@required this.id,
+      {this.id,
       @required this.code,
-      @required this.spaceId,
       @required this.inviterPhone,
       @required this.expiryDate})
-      : assert(id != null),
-        assert(code != null),
-        assert(spaceId != null),
+      : assert(code != null),
         assert(inviterPhone != null),
         assert(expiryDate != null);
 
@@ -147,15 +127,13 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
   @override
   final String code;
   @override
-  final String spaceId;
-  @override
   final String inviterPhone;
   @override
   final DateTime expiryDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Invite(id: $id, code: $code, spaceId: $spaceId, inviterPhone: $inviterPhone, expiryDate: $expiryDate)';
+    return 'Invite(id: $id, code: $code, inviterPhone: $inviterPhone, expiryDate: $expiryDate)';
   }
 
   @override
@@ -165,7 +143,6 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
       ..add(DiagnosticsProperty('type', 'Invite'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('code', code))
-      ..add(DiagnosticsProperty('spaceId', spaceId))
       ..add(DiagnosticsProperty('inviterPhone', inviterPhone))
       ..add(DiagnosticsProperty('expiryDate', expiryDate));
   }
@@ -178,9 +155,6 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.code, code) ||
                 const DeepCollectionEquality().equals(other.code, code)) &&
-            (identical(other.spaceId, spaceId) ||
-                const DeepCollectionEquality()
-                    .equals(other.spaceId, spaceId)) &&
             (identical(other.inviterPhone, inviterPhone) ||
                 const DeepCollectionEquality()
                     .equals(other.inviterPhone, inviterPhone)) &&
@@ -194,7 +168,6 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(code) ^
-      const DeepCollectionEquality().hash(spaceId) ^
       const DeepCollectionEquality().hash(inviterPhone) ^
       const DeepCollectionEquality().hash(expiryDate);
 
@@ -210,9 +183,8 @@ class _$_Invite with DiagnosticableTreeMixin implements _Invite {
 
 abstract class _Invite implements Invite {
   const factory _Invite(
-      {@required int id,
+      {int id,
       @required String code,
-      @required String spaceId,
       @required String inviterPhone,
       @required DateTime expiryDate}) = _$_Invite;
 
@@ -222,8 +194,6 @@ abstract class _Invite implements Invite {
   int get id;
   @override
   String get code;
-  @override
-  String get spaceId;
   @override
   String get inviterPhone;
   @override

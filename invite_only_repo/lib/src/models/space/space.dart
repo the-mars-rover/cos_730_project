@@ -11,7 +11,7 @@ abstract class Space implements _$Space {
 
   const factory Space({
     /// The unique identifier for the space.
-    @required int id,
+    int id,
 
     /// The title for the space - describes the space briefly.
     @required String title,
@@ -20,17 +20,17 @@ abstract class Space implements _$Space {
     ///
     /// Managers have the authority to update the users and properties of the
     /// space as well as to delete the space entirely.
-    @required List<String> managerPhones,
+    @required Set<String> managerPhones,
 
     /// A list of phone numbers identifying guards of this space
     ///
     /// Guards have the authority to Grant/Deny an access to a space.
-    @required List<String> guardPhones,
+    @required Set<String> guardPhones,
 
     /// A list of phone numbers identifying inviters of this space.
     ///
     /// Inviters have the authority to Generate invite's for the space.
-    @required List<String> inviterPhones,
+    @required Set<String> inviterPhones,
 
     /// The url to the image for this space.
     String imageUrl,

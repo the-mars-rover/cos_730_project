@@ -16,11 +16,11 @@ class _$SpaceTearOff {
   const _$SpaceTearOff();
 
   _Space call(
-      {@required int id,
+      {int id,
       @required String title,
-      @required List<String> managerPhones,
-      @required List<String> guardPhones,
-      @required List<String> inviterPhones,
+      @required Set<String> managerPhones,
+      @required Set<String> guardPhones,
+      @required Set<String> inviterPhones,
       String imageUrl,
       double locationLatitude,
       double locationLongitude}) {
@@ -43,9 +43,9 @@ const $Space = _$SpaceTearOff();
 mixin _$Space {
   int get id;
   String get title;
-  List<String> get managerPhones;
-  List<String> get guardPhones;
-  List<String> get inviterPhones;
+  Set<String> get managerPhones;
+  Set<String> get guardPhones;
+  Set<String> get inviterPhones;
   String get imageUrl;
   double get locationLatitude;
   double get locationLongitude;
@@ -60,9 +60,9 @@ abstract class $SpaceCopyWith<$Res> {
   $Res call(
       {int id,
       String title,
-      List<String> managerPhones,
-      List<String> guardPhones,
-      List<String> inviterPhones,
+      Set<String> managerPhones,
+      Set<String> guardPhones,
+      Set<String> inviterPhones,
       String imageUrl,
       double locationLatitude,
       double locationLongitude});
@@ -91,13 +91,13 @@ class _$SpaceCopyWithImpl<$Res> implements $SpaceCopyWith<$Res> {
       title: title == freezed ? _value.title : title as String,
       managerPhones: managerPhones == freezed
           ? _value.managerPhones
-          : managerPhones as List<String>,
+          : managerPhones as Set<String>,
       guardPhones: guardPhones == freezed
           ? _value.guardPhones
-          : guardPhones as List<String>,
+          : guardPhones as Set<String>,
       inviterPhones: inviterPhones == freezed
           ? _value.inviterPhones
-          : inviterPhones as List<String>,
+          : inviterPhones as Set<String>,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       locationLatitude: locationLatitude == freezed
           ? _value.locationLatitude
@@ -116,9 +116,9 @@ abstract class _$SpaceCopyWith<$Res> implements $SpaceCopyWith<$Res> {
   $Res call(
       {int id,
       String title,
-      List<String> managerPhones,
-      List<String> guardPhones,
-      List<String> inviterPhones,
+      Set<String> managerPhones,
+      Set<String> guardPhones,
+      Set<String> inviterPhones,
       String imageUrl,
       double locationLatitude,
       double locationLongitude});
@@ -148,13 +148,13 @@ class __$SpaceCopyWithImpl<$Res> extends _$SpaceCopyWithImpl<$Res>
       title: title == freezed ? _value.title : title as String,
       managerPhones: managerPhones == freezed
           ? _value.managerPhones
-          : managerPhones as List<String>,
+          : managerPhones as Set<String>,
       guardPhones: guardPhones == freezed
           ? _value.guardPhones
-          : guardPhones as List<String>,
+          : guardPhones as Set<String>,
       inviterPhones: inviterPhones == freezed
           ? _value.inviterPhones
-          : inviterPhones as List<String>,
+          : inviterPhones as Set<String>,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
       locationLatitude: locationLatitude == freezed
           ? _value.locationLatitude
@@ -169,7 +169,7 @@ class __$SpaceCopyWithImpl<$Res> extends _$SpaceCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Space extends _Space with DiagnosticableTreeMixin {
   const _$_Space(
-      {@required this.id,
+      {this.id,
       @required this.title,
       @required this.managerPhones,
       @required this.guardPhones,
@@ -177,8 +177,7 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
       this.imageUrl,
       this.locationLatitude,
       this.locationLongitude})
-      : assert(id != null),
-        assert(title != null),
+      : assert(title != null),
         assert(managerPhones != null),
         assert(guardPhones != null),
         assert(inviterPhones != null),
@@ -192,11 +191,11 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
   @override
   final String title;
   @override
-  final List<String> managerPhones;
+  final Set<String> managerPhones;
   @override
-  final List<String> guardPhones;
+  final Set<String> guardPhones;
   @override
-  final List<String> inviterPhones;
+  final Set<String> inviterPhones;
   @override
   final String imageUrl;
   @override
@@ -277,11 +276,11 @@ class _$_Space extends _Space with DiagnosticableTreeMixin {
 abstract class _Space extends Space {
   const _Space._() : super._();
   const factory _Space(
-      {@required int id,
+      {int id,
       @required String title,
-      @required List<String> managerPhones,
-      @required List<String> guardPhones,
-      @required List<String> inviterPhones,
+      @required Set<String> managerPhones,
+      @required Set<String> guardPhones,
+      @required Set<String> inviterPhones,
       String imageUrl,
       double locationLatitude,
       double locationLongitude}) = _$_Space;
@@ -293,11 +292,11 @@ abstract class _Space extends Space {
   @override
   String get title;
   @override
-  List<String> get managerPhones;
+  Set<String> get managerPhones;
   @override
-  List<String> get guardPhones;
+  Set<String> get guardPhones;
   @override
-  List<String> get inviterPhones;
+  Set<String> get inviterPhones;
   @override
   String get imageUrl;
   @override

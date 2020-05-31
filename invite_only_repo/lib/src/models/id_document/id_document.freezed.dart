@@ -29,7 +29,7 @@ class _$IdDocumentTearOff {
 
   IdBook idBook(
       {String type = 'idBook',
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber,
       @required String gender,
@@ -48,7 +48,7 @@ class _$IdDocumentTearOff {
 
   IdCard idCard(
       {String type = 'idCard',
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber,
       @required String firstNames,
@@ -79,7 +79,7 @@ class _$IdDocumentTearOff {
 
   DriversLicense driversLicense(
       {String type = 'driversLicense',
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber,
       @required String firstNames,
@@ -126,7 +126,7 @@ class _$IdDocumentTearOff {
 
   Passport passport(
       {String type = 'passport',
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber}) {
     return Passport(
@@ -339,14 +339,13 @@ class _$IdBookCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 class _$IdBook with DiagnosticableTreeMixin implements IdBook {
   const _$IdBook(
       {this.type = 'idBook',
-      @required this.id,
+      this.id,
       @required this.idNumber,
       this.phoneNumber,
       @required this.gender,
       @required this.birthDate,
       @required this.citizenshipStatus})
       : assert(type != null),
-        assert(id != null),
         assert(idNumber != null),
         assert(gender != null),
         assert(birthDate != null),
@@ -577,7 +576,7 @@ class _$IdBook with DiagnosticableTreeMixin implements IdBook {
 abstract class IdBook implements IdDocument {
   const factory IdBook(
       {String type,
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber,
       @required String gender,
@@ -678,7 +677,7 @@ class _$IdCardCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 class _$IdCard with DiagnosticableTreeMixin implements IdCard {
   const _$IdCard(
       {this.type = 'idCard',
-      @required this.id,
+      this.id,
       @required this.idNumber,
       this.phoneNumber,
       @required this.firstNames,
@@ -691,7 +690,6 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
       @required this.countryOfBirth,
       @required this.citizenshipStatus})
       : assert(type != null),
-        assert(id != null),
         assert(idNumber != null),
         assert(firstNames != null),
         assert(surname != null),
@@ -994,7 +992,7 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
 abstract class IdCard implements IdDocument {
   const factory IdCard(
       {String type,
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber,
       @required String firstNames,
@@ -1146,7 +1144,7 @@ class _$DriversLicenseCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
   const _$DriversLicense(
       {this.type = 'driversLicense',
-      @required this.id,
+      this.id,
       @required this.idNumber,
       this.phoneNumber,
       @required this.firstNames,
@@ -1167,7 +1165,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
       @required this.validFrom,
       @required this.validTo})
       : assert(type != null),
-        assert(id != null),
         assert(idNumber != null),
         assert(firstNames != null),
         assert(surname != null),
@@ -1547,7 +1544,7 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
 abstract class DriversLicense implements IdDocument {
   const factory DriversLicense(
       {String type,
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber,
       @required String firstNames,
@@ -1636,11 +1633,10 @@ class _$PassportCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
 class _$Passport with DiagnosticableTreeMixin implements Passport {
   const _$Passport(
       {this.type = 'passport',
-      @required this.id,
+      this.id,
       @required this.idNumber,
       this.phoneNumber})
       : assert(type != null),
-        assert(id != null),
         assert(idNumber != null);
 
   factory _$Passport.fromJson(Map<String, dynamic> json) =>
@@ -1846,7 +1842,7 @@ class _$Passport with DiagnosticableTreeMixin implements Passport {
 abstract class Passport implements IdDocument {
   const factory Passport(
       {String type,
-      @required int id,
+      int id,
       @required String idNumber,
       String phoneNumber}) = _$Passport;
 

@@ -16,7 +16,7 @@ class _$EntryTearOff {
   const _$EntryTearOff();
 
   _Entry call(
-      {@required int id,
+      {int id,
       @required String guardPhone,
       @required DateTime entryDate,
       @required IdDocument idDocument,
@@ -156,13 +156,12 @@ class __$EntryCopyWithImpl<$Res> extends _$EntryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Entry extends _Entry with DiagnosticableTreeMixin {
   const _$_Entry(
-      {@required this.id,
+      {this.id,
       @required this.guardPhone,
       @required this.entryDate,
       @required this.idDocument,
       this.invite})
-      : assert(id != null),
-        assert(guardPhone != null),
+      : assert(guardPhone != null),
         assert(entryDate != null),
         assert(idDocument != null),
         super._();
@@ -239,7 +238,7 @@ class _$_Entry extends _Entry with DiagnosticableTreeMixin {
 abstract class _Entry extends Entry {
   const _Entry._() : super._();
   const factory _Entry(
-      {@required int id,
+      {int id,
       @required String guardPhone,
       @required DateTime entryDate,
       @required IdDocument idDocument,

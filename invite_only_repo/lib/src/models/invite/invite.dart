@@ -8,13 +8,10 @@ part 'invite.g.dart';
 abstract class Invite with _$Invite {
   const factory Invite({
     /// The unique identifier for the invite.
-    @required int id,
+    int id,
 
     /// The six-digit code that can be submitted to use this invite.
     @required String code,
-
-    /// The identifier for the [ControlledSpace] for which this invite was created.
-    @required String spaceId,
 
     /// The phone number of the person who generated this invite
     @required String inviterPhone,
