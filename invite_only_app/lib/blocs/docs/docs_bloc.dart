@@ -26,6 +26,10 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
     if (event is SubmitDoc) {
       yield* _mapSubmitDocToState(event);
     }
+
+    if (event is DeleteDoc) {
+      yield* _mapDeleteDocToState(event);
+    }
   }
 
   Stream<DocsState> _mapLoadDocsToState(LoadDocs event) async* {
@@ -58,6 +62,18 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
     } on Conflict {
       yield DocsError(
           'It looks like that document is already linked to you or someone else.');
+    } catch (e) {
+      yield DocsError(
+          'Sorry, an unexpected error occurred. Please try again later.');
+    }
+  }
+
+  Stream<DocsState> _mapDeleteDocToState(DeleteDoc event) async* {
+    try {
+      yield LoadingDocs();
+      await _inviteOnlyRepo.deleteIdDocument(event.idDocument);
+
+      this.add(LoadDocs());
     } catch (e) {
       yield DocsError(
           'Sorry, an unexpected error occurred. Please try again later.');

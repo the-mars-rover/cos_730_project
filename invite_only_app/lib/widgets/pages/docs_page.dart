@@ -6,6 +6,7 @@ import 'package:invite_only_app/blocs/docs/docs_bloc.dart';
 import 'package:invite_only_app/blocs/docs/docs_event.dart';
 import 'package:invite_only_app/blocs/docs/docs_state.dart';
 import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
 Future<void> showDocsPage(BuildContext context) async {
@@ -47,14 +48,14 @@ class DocsPage extends StatelessWidget {
     );
   }
 
-  Scaffold _buildProfileScaffold(BuildContext context, DocsLoaded state) {
+  Scaffold _buildProfileScaffold(BuildContext context, DocsLoaded docsState) {
     return Scaffold(
       appBar: AppBar(title: Text("My Profile")),
       body: ListView(
         children: <Widget>[
           BlocBuilder<AuthBloc, AuthState>(
             bloc: AuthBloc.of(context),
-            builder: (_, state) {
+            builder: (context, state) {
               if (state is UserAuthenticated) {
                 return ListTile(
                   title: Text(state.phoneNumber),
@@ -66,106 +67,14 @@ class DocsPage extends StatelessWidget {
             },
           ),
           Divider(),
-          ListTile(
-            title: Text("South African ID Card"),
-            subtitle: Text(
-              state.idCard == null ? "Not Uploaded" : "Uploaded",
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                state.idCard == null
-                    ? Container()
-                    : Icon(Icons.check_circle, color: Colors.green),
-                IconButton(
-                  icon: Icon(Icons.camera_alt),
-                  onPressed: () async {
-                    final scannedIdCard = await scanIdCard(context);
-                    if (scannedIdCard == null) return;
-
-                    DocsBloc.of(context).add(
-                      SubmitDoc(DocsBloc.rsaToDocs(scannedIdCard)),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
+          _buildDocTile<IdCard>(context, docsState),
           Divider(),
-          ListTile(
-            title: Text("South African ID Book"),
-            subtitle: Text(
-              state.idBook == null ? "Not Uploaded" : "Uploaded",
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                state.idBook == null
-                    ? Container()
-                    : Icon(Icons.check_circle, color: Colors.green),
-                IconButton(
-                  icon: Icon(Icons.camera_alt),
-                  onPressed: () async {
-                    final scannedIdBook = await scanIdBook(context);
-                    if (scannedIdBook == null) return;
-
-                    DocsBloc.of(context).add(
-                      SubmitDoc(DocsBloc.rsaToDocs(scannedIdBook)),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
+          _buildDocTile<IdBook>(context, docsState),
           Divider(),
-          ListTile(
-            title: Text("South African Driver's License"),
-            subtitle: Text(
-              state.driversLicense == null ? "Not Uploaded" : "Uploaded",
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                state.driversLicense == null
-                    ? Container()
-                    : Icon(Icons.check_circle, color: Colors.green),
-                IconButton(
-                  icon: Icon(Icons.camera_alt),
-                  onPressed: () async {
-                    final scannedDrivers = await scanDrivers(context);
-
-                    if (scannedDrivers == null) return;
-
-                    DocsBloc.of(context).add(
-                      SubmitDoc(DocsBloc.rsaToDocs(scannedDrivers)),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
+          _buildDocTile<DriversLicense>(context, docsState),
           Divider(),
           // TODO: Uncomment when support for passports is added
-//          ListTile(
-//            title: Text("Passport"),
-//            subtitle: Text(
-//              state.passport == null ? "Not Uploaded" : "Uploaded",
-//            ),
-//            trailing: Row(
-//              mainAxisSize: MainAxisSize.min,
-//              children: <Widget>[
-//                state.passport == null
-//                    ? Container()
-//                    : Icon(Icons.check_circle, color: Colors.green),
-//                IconButton(
-//                  icon: Icon(Icons.camera_alt),
-//                  onPressed: () {
-//
-//                  },
-//                ),
-//              ],
-//            ),
-//          ),
+//          _buildDocTile<Passport>(context, docsState),
 //          Divider(),
           ListTile(
             title: OutlineButton.icon(
@@ -185,6 +94,65 @@ class DocsPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  ListTile _buildDocTile<T extends IdDocument>(
+      BuildContext context, DocsLoaded state) {
+    bool uploaded = false;
+    if (T == IdCard) uploaded = state.idCard != null;
+    if (T == IdBook) uploaded = state.idBook != null;
+    if (T == DriversLicense) uploaded = state.driversLicense != null;
+    if (T == Passport) uploaded = state.passport != null;
+
+    return ListTile(
+      title: Builder(builder: (context) {
+        if (T == IdCard) return Text('ID Card');
+        if (T == IdBook) return Text('ID Book');
+        if (T == DriversLicense) return Text('Drivers License');
+        if (T == Passport) return Text('Passport');
+        return null;
+      }),
+      subtitle: Text(
+        !uploaded == null ? "Not Uploaded" : "Uploaded",
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: !uploaded
+            ? [
+                IconButton(
+                  icon: Icon(Icons.camera_alt),
+                  onPressed: () async {
+                    var rsa;
+                    if (T == IdCard) rsa = await scanIdCard(context);
+                    if (T == IdBook) rsa = await scanIdBook(context);
+                    if (T == DriversLicense) rsa = await scanDrivers(context);
+                    if (T == Passport) rsa = await scanId(context);
+
+                    if (rsa == null) return;
+                    DocsBloc.of(context).add(
+                      SubmitDoc(DocsBloc.rsaToDocs(rsa)),
+                    );
+                  },
+                ),
+              ]
+            : [
+                Icon(Icons.check_circle, color: Colors.green),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () async {
+                    if (T == IdCard)
+                      DocsBloc.of(context).add(DeleteDoc(state.idCard));
+                    if (T == IdBook)
+                      DocsBloc.of(context).add(DeleteDoc(state.idBook));
+                    if (T == DriversLicense)
+                      DocsBloc.of(context).add(DeleteDoc(state.driversLicense));
+                    if (T == Passport)
+                      DocsBloc.of(context).add(DeleteDoc(state.passport));
+                  },
+                ),
+              ],
       ),
     );
   }

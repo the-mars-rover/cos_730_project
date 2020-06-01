@@ -18,3 +18,12 @@ class SubmitDoc extends DocsEvent {
   @override
   List<Object> get props => [idDocument];
 }
+
+class DeleteDoc extends DocsEvent {
+  final IdDocument idDocument;
+
+  DeleteDoc(this.idDocument);
+
+  @override
+  List<Object> get props => [idDocument];
+}

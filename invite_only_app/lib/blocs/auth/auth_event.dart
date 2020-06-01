@@ -10,3 +10,5 @@ class SignIn extends AuthEvent {
 
   SignIn(this.authCredential);
 }
+
+class SignOut extends AuthEvent {}

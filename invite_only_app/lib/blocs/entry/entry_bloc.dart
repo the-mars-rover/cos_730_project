@@ -35,15 +35,9 @@ class EntryBloc extends Bloc<EntryEvent, EntryState> {
       await _inviteOnlyRepo.addEntry(event.space, event.idDocument);
 
       yield EntryGranted();
-    } on NotFound {
-      yield EntryError("The given document has not been linked to any user's.");
-    } on Unauthorized {
-      yield ResidentEntryDenied(
-          "The user with the given document does not have permission"
-          " to enter the space.");
     } catch (e) {
-      yield EntryError(
-          "Sorry, an unexpected error occurred. Please try again later.");
+      yield ResidentEntryDenied(
+          "The user with the given document does not have permission");
     }
   }
 

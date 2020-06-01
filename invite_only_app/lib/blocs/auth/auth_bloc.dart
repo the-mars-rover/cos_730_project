@@ -25,6 +25,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event is SignIn) {
       yield* _mapSignInToState(event);
     }
+
+    if (event is SignOut) {
+      yield* _mapSignOutToState(event);
+    }
   }
 
   Stream<AuthState> _mapInitializeAuthToState(InitializeAuth event) async* {
@@ -49,6 +53,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } on AuthFailure catch (e) {
       yield AuthFailed('Sign in failed: ${e.reason}');
     }
+  }
+
+  Stream<AuthState> _mapSignOutToState(SignOut event) async* {
+    await _inviteOnlyRepo.signOut();
+    yield UserUnauthenticated();
   }
 
   static of(BuildContext context) => BlocProvider.of<AuthBloc>(context);
