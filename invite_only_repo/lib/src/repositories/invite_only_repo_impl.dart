@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
 import 'package:invite_only_repo/src/errors/auth_failure.dart';
 import 'package:invite_only_repo/src/errors/conflict.dart';
@@ -252,7 +253,9 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     switch (response.statusCode) {
       case HttpStatus.ok:
         List<dynamic> list = json.decode(response.body);
-        return list.map((e) => IdDocument.fromJson(e)).toList();
+        return list.map((e) {
+          return IdDocumentConverter().fromJson(e);
+        }).toList();
       default:
         throw UnknownError(response.reasonPhrase);
     }

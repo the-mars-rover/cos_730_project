@@ -173,3 +173,39 @@ abstract class IdDocument with _$IdDocument {
   factory IdDocument.fromJson(Map<String, dynamic> json) =>
       _$IdDocumentFromJson(json);
 }
+
+class IdDocumentConverter
+    implements JsonConverter<IdDocument, Map<String, dynamic>> {
+  const IdDocumentConverter();
+
+  @override
+  IdDocument fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+
+    //type data was already set (e.g. because we serialized it ourselves)
+    if (json["runtimeType"] != null) {
+      return IdDocument.fromJson(json);
+    }
+
+    if (json['type'] == 'idBook') {
+      return IdBook.fromJson(json);
+    }
+
+    if (json['type'] == 'idCard') {
+      return IdCard.fromJson(json);
+    }
+
+    if (json['type'] == 'driversLicense') {
+      return DriversLicense.fromJson(json);
+    }
+
+    if (json['type'] == 'passport') {
+      return Passport.fromJson(json);
+    }
+
+    return null;
+  }
+
+  @override
+  Map<String, dynamic> toJson(IdDocument data) => data.toJson();
+}
