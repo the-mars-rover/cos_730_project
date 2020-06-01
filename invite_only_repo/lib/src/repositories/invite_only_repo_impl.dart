@@ -110,7 +110,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.created:
-        return Entry.fromJson(json.decode(response.body));
+        return EntryConverter().fromJson(json.decode(response.body));
       case HttpStatus.notFound:
         throw NotFound();
       case HttpStatus.forbidden:
@@ -137,7 +137,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.created:
-        return IdDocument.fromJson(json.decode(response.body));
+        return IdDocumentConverter().fromJson(json.decode(response.body));
       case HttpStatus.conflict:
         throw Conflict();
       default:
@@ -194,7 +194,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.ok:
-        return Entry.fromJson(json.decode(response.body));
+        return;
       case HttpStatus.notFound:
         throw NotFound();
       case HttpStatus.forbidden:
@@ -213,7 +213,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
 
     switch (response.statusCode) {
       case HttpStatus.ok:
-        return Entry.fromJson(json.decode(response.body));
+        return;
       case HttpStatus.notFound:
         throw NotFound();
       case HttpStatus.forbidden:
@@ -235,7 +235,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     switch (response.statusCode) {
       case HttpStatus.ok:
         List<dynamic> list = json.decode(response.body)['content'];
-        return list.map((e) => Entry.fromJson(e)).toList();
+        return list.map((e) => EntryConverter().fromJson(e)).toList();
       case HttpStatus.notFound:
         throw NotFound();
       default:

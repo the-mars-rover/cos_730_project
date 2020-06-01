@@ -31,3 +31,22 @@ abstract class Entry implements _$Entry {
 
   factory Entry.fromJson(Map<String, dynamic> json) => _$EntryFromJson(json);
 }
+
+class EntryConverter implements JsonConverter<Entry, Map<String, dynamic>> {
+  const EntryConverter();
+
+  @override
+  Entry fromJson(Map<String, dynamic> json) {
+    if (json == null) return null;
+
+    return Entry(
+      id: json['id'],
+      guardPhone: json['guardPhone'],
+      entryDate: DateTime.parse(json['entryDate']),
+      idDocument: IdDocumentConverter().fromJson(json['idDocument']),
+    );
+  }
+
+  @override
+  Map<String, dynamic> toJson(Entry data) => data.toJson();
+}
