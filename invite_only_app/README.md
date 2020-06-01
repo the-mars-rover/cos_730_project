@@ -1,3 +1,5 @@
+[![Codemagic build status](https://api.codemagic.io/apps/5ed4f6a067d168000dd90859/5ed4f6a067d168000dd90858/status_badge.svg)](https://codemagic.io/apps/5ed4f6a067d168000dd90859/5ed4f6a067d168000dd90858/latest_build)
+
 # invite_only_app
 
 The client app for the Invite Only platform.
