@@ -18,4 +18,4 @@ steps:
       - '--platform'
       - 'managed'
   images:
-    - 'gcr.io/$PROJECT_ID/[SERVICE-NAME]:$COMMIT_SHA'
+    - 'gcr.io/$PROJECT_ID/[invite-only-core]:$COMMIT_SHA'
