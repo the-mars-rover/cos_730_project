@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/entries/entries_bloc.dart';
@@ -117,49 +118,54 @@ class EntriesPage extends StatelessWidget {
           ),
         ],
       ),
-      persistentFooterButtons: <Widget>[
-        Builder(
-          builder: (context) {
-            if (!entriesState.space.canEdit(phone)) return Container();
+      floatingActionButton: Builder(builder: (context) {
+        List<SpeedDialChild> actions = [];
+        if (space.canEdit(phone)) {
+          actions.add(SpeedDialChild(
+            child: Icon(Icons.edit),
+            backgroundColor: Theme.of(context).primaryColor,
+            label: 'Manage',
+            onTap: () async {
+              final updated = await editSpace(
+                context,
+                entriesState.space.copyWith(),
+              );
+              if (updated == null) return;
+              SpacesBloc.of(context).add(LoadSpaces());
+              EntriesBloc.of(context).add(LoadEntries(updated));
+            },
+          ));
+        }
 
-            return OutlineButton.icon(
-              onPressed: () async {
-                final updated = await editSpace(context, entriesState.space);
-                if (updated != null) {
-                  SpacesBloc.of(context).add(LoadSpaces());
-                  EntriesBloc.of(context).add(LoadEntries(updated));
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('${updated.title} successfully updated'),
-                  ));
-                }
-              },
-              icon: Icon(Icons.edit),
-              label: Text('Manage'),
-            );
-          },
-        ),
-        Visibility(
-          visible: entriesState.space.canGuard(phone),
-          child: OutlineButton.icon(
-            onPressed: () async {
+        if (space.canInvite(phone)) {
+          actions.add(SpeedDialChild(
+            child: Icon(Icons.mail),
+            backgroundColor: Theme.of(context).primaryColor,
+            label: 'Invite',
+            onTap: () => createInvite(context, entriesState.space),
+          ));
+        }
+
+        if (space.canGuard(phone)) {
+          actions.add(SpeedDialChild(
+            child: Icon(Icons.security),
+            backgroundColor: Theme.of(context).primaryColor,
+            label: 'Guard',
+            onTap: () async {
               final scannedIdDocument = await scanId(context);
               if (scannedIdDocument == null) return;
-
               grantEntry(context, entriesState.space, scannedIdDocument);
             },
-            icon: Icon(Icons.security),
-            label: Text('Guard'),
-          ),
-        ),
-        Visibility(
-          visible: entriesState.space.canInvite(phone),
-          child: OutlineButton.icon(
-            onPressed: () => createInvite(context, entriesState.space),
-            icon: Icon(Icons.mail),
-            label: Text('Invite'),
-          ),
-        ),
-      ],
+          ));
+        }
+
+        return SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.5,
+          children: actions,
+        );
+      }),
     );
   }
 }

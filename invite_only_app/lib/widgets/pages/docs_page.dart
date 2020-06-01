@@ -22,9 +22,6 @@ class DocsPage extends StatelessWidget {
         }
 
         if (state is DocSubmitted) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text('Document successfully uploaded'),
-          ));
           DocsBloc.of(context).add(LoadDocs());
         }
       },

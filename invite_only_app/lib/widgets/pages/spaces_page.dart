@@ -55,15 +55,21 @@ class SpacesPage extends StatelessWidget {
                 children: <Widget>[
                   ListTile(
                     leading: Icon(Icons.person),
-                    title: Text("ID Documents"),
+                    title: Text("My Profile"),
                     onTap: () => showDocsPage(context),
                   ),
                   Divider(),
-                  ListTile(
-                    leading: Icon(Icons.add_location),
-                    title: Text("Create Space"),
-                    onTap: () => createSpace(context),
-                  ),
+                  Builder(builder: (context) {
+                    return ListTile(
+                      leading: Icon(Icons.add_location),
+                      title: Text("Create Space"),
+                      onTap: () async {
+                        final newSpace = await createSpace(context);
+                        if (newSpace == null) return;
+                        SpacesBloc.of(context).add(LoadSpaces());
+                      },
+                    );
+                  }),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.info),
@@ -81,12 +87,23 @@ class SpacesPage extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(8.0),
-        children: spaces.map((space) {
-          return SpaceCard(space: space);
-        }).toList(),
-      ),
+      body: spaces.isEmpty
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Text(
+                  'You do not have access to any spaces.\n\n'
+                  'You can create your own space or ask a manager of an existing space to add you.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          : ListView(
+              padding: EdgeInsets.all(8.0),
+              children: spaces.map((space) {
+                return SpaceCard(space: space);
+              }).toList(),
+            ),
     );
   }
 }

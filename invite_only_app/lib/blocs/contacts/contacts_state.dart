@@ -12,12 +12,6 @@ class ContactsLoaded extends ContactsState {
   ContactsLoaded(this.contacts);
 }
 
-class UserAuthenticated extends ContactsState {
-  final String phoneNumber;
-
-  UserAuthenticated(this.phoneNumber);
-}
-
 class ContactsPermissionDenied extends ContactsState {}
 
 class ContactsError extends ContactsState {

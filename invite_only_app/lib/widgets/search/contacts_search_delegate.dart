@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/contacts/contacts_bloc.dart';
 import 'package:invite_only_app/blocs/contacts/contacts_event.dart';
 import 'package:invite_only_app/blocs/contacts/contacts_state.dart';
@@ -76,10 +78,16 @@ class ContactsSearchDelegate extends SearchDelegate<String> {
         ),
       ),
       persistentFooterButtons: <Widget>[
-        FlatButton(
-          onPressed: _queryIsValidPhone() ? () => close(context, query) : null,
-          child: Text('Add'),
-        )
+        BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+          if (state is UserAuthenticated) {
+            return FlatButton(
+              onPressed: () => close(context, state.phoneNumber),
+              child: Text('Add yourself'),
+            );
+          }
+
+          return Container();
+        })
       ],
     );
   }
@@ -91,10 +99,6 @@ class ContactsSearchDelegate extends SearchDelegate<String> {
 
   @override
   String get searchFieldLabel => 'Search Contacts';
-
-  bool _queryIsValidPhone() {
-    return query.isNotEmpty;
-  }
 
   Widget _buildContactsList(ContactsLoaded state) {
     return ListView.separated(

@@ -72,6 +72,10 @@ dependencies:
   # See https://pub.dev/packages/date_format
   date_format: ^1.0.8
 
+  # Flutter package to render a Material Design Speed Dial.
+  # See https://pub.dev/packages/flutter_speed_dial
+  flutter_speed_dial: ^1.2.5
+
   invite_only_repo:
     path: ../invite_only_repo
 

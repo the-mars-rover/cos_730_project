@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/members/members_bloc.dart';
 import 'package:invite_only_app/blocs/members/members_event.dart';
 import 'package:invite_only_app/blocs/members/members_state.dart';
@@ -96,16 +98,23 @@ class MembersPage extends StatelessWidget {
                   );
                 }
 
-                return ListTile(
-                  title: Text(p),
-                  subtitle: Text('Not in your contact list'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.remove_circle_outline),
-                    onPressed: () {
-                      MembersBloc.of(context).add(RemoveMember(p));
-                    },
-                  ),
-                );
+                return BlocBuilder<AuthBloc, AuthState>(
+                    builder: (context, state) {
+                  if (state is UserAuthenticated && state.phoneNumber == p) {
+                    return ListTile(title: Text(p), subtitle: Text('You'));
+                  }
+
+                  return ListTile(
+                    title: Text(p),
+                    subtitle: Text('Not in your contact list'),
+                    trailing: IconButton(
+                      icon: Icon(Icons.remove_circle_outline),
+                      onPressed: () {
+                        MembersBloc.of(context).add(RemoveMember(p));
+                      },
+                    ),
+                  );
+                });
               }).toList(),
             ),
       persistentFooterButtons: <Widget>[
