@@ -37,7 +37,7 @@ public class DocsService implements IDocsService {
 		}
 
 		storedDocument.setPhoneNumber(phoneNumber);
-		return docsRepository.save(idDocument);
+		return docsRepository.save(storedDocument);
 	}
 
 	@Override
