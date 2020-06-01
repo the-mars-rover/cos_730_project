@@ -17,5 +17,5 @@ steps:
       - 'europe-west4'
       - '--platform'
       - 'managed'
-  images:
-    - 'gcr.io/$PROJECT_ID/[invite-only-core]:$COMMIT_SHA'
+images:
+  - 'gcr.io/$PROJECT_ID/[invite-only-core]:$COMMIT_SHA'
