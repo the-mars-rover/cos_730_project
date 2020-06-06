@@ -16,7 +16,8 @@ abstract class InviteOnlyRepo {
   /// Just a simple getter to retrieve the singleton instance of the  class.
   ///
   /// If [initialize] has not been called, this will be null.
-  static InviteOnlyRepo get instance => InviteOnlyRepoImpl.getInstance();
+  static InviteOnlyRepo get instance =>
+      InviteOnlyRepoImpl.getInstance('https://core.inviteonly.co.za');
 
   /// Returns the current user's phone number, or null if there is no authenticated user.
   Future<String> currentUser();
@@ -41,7 +42,7 @@ abstract class InviteOnlyRepo {
     @required Duration retrievalTimeout,
     @required Function(InviteOnlyCredential) verificationCompleted,
     @required Function(AuthFailure) verificationFailed,
-    @required Function(String) codeSent,
+    @required Function(String, [int]) codeSent,
   });
 
   /// Returns an [InviteOnlyCredential]
