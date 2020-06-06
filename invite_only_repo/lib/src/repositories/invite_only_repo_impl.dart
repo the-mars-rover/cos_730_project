@@ -21,25 +21,37 @@ import 'package:invite_only_repo/src/models/space/space.dart';
 import 'invite_only_repo.dart';
 
 class InviteOnlyRepoImpl implements InviteOnlyRepo {
-  /// The url to use for requests to the core API.
-  static String _coreUrl = 'https://core.inviteonly.co.za';
-
   /// The singleton instance of this class
   static InviteOnlyRepoImpl _instance;
+
+  /// The url to use for requests to the core API.
+  final String _coreUrl;
 
   /// The provider for authentication services.
   final FirebaseAuth _fireAuth;
 
+  /// The http Client to use for api calls
+  final http.Client _client;
+
   /// The internally visible constructor for this class - singleton.
-  InviteOnlyRepoImpl._internal({FirebaseAuth fireAuth})
-      : _fireAuth = fireAuth != null ? fireAuth : FirebaseAuth.instance;
+  InviteOnlyRepoImpl._internal(
+    String url,
+    FirebaseAuth fireAuth,
+    http.Client client,
+  )   : _coreUrl = url,
+        _fireAuth = fireAuth != null ? fireAuth : FirebaseAuth.instance,
+        _client = client != null ? client : http.Client();
 
   /// The method to retrieve the singleton instance of this class
   ///
   /// The optional parameters should only be necessary for testing purposes.
-  static InviteOnlyRepoImpl getInstance({FirebaseAuth firebaseAuth}) {
+  static InviteOnlyRepoImpl getInstance(
+    String url, {
+    FirebaseAuth firebaseAuth,
+    http.Client client,
+  }) {
     if (_instance == null) {
-      _instance = InviteOnlyRepoImpl._internal(fireAuth: firebaseAuth);
+      _instance = InviteOnlyRepoImpl._internal(url, firebaseAuth, client);
     }
 
     return _instance;
@@ -51,7 +63,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     @required Duration retrievalTimeout,
     @required Function(InviteOnlyCredential) verificationCompleted,
     @required Function(AuthFailure) verificationFailed,
-    @required Function(String) codeSent,
+    @required Function(String, [int]) codeSent,
   }) async {
     await _fireAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -59,11 +71,11 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
       verificationCompleted: (credential) {
         verificationCompleted(InviteOnlyCredential(credential));
       },
-      verificationFailed: (e) => AuthFailure(e.message),
-      codeSent: codeSent,
-      codeAutoRetrievalTimeout: (verificationId) {
-        //do nothing
+      verificationFailed: (e) {
+        verificationFailed(AuthFailure(e.message));
       },
+      codeSent: codeSent,
+      codeAutoRetrievalTimeout: (_) {},
     );
   }
 
@@ -99,7 +111,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/spaces/${space.id}/entries";
     if (code != null) url += "?inviteCode=$code";
-    final response = await http.post(
+    final response = await _client.post(
       url,
       headers: {
         'Authorization': 'Bearer $token',
@@ -126,7 +138,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   Future<IdDocument> addIdDocument(IdDocument idDocument) async {
     final token = await _authToken();
     String url = "$_coreUrl/docs";
-    final response = await http.post(
+    final response = await _client.post(
       url,
       headers: {
         'Authorization': 'Bearer $token',
@@ -149,7 +161,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   Future<Space> addSpace(Space space) async {
     final token = await _authToken();
     String url = "$_coreUrl/spaces";
-    final response = await http.post(
+    final response = await _client.post(
       url,
       headers: {
         'Authorization': 'Bearer $token',
@@ -171,7 +183,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/spaces/${space.id}/invites";
     final response =
-        await http.post(url, headers: {'Authorization': 'Bearer $token'});
+        await _client.post(url, headers: {'Authorization': 'Bearer $token'});
 
     switch (response.statusCode) {
       case HttpStatus.created:
@@ -190,7 +202,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/docs/${idDocument.id}";
     final response =
-        await http.delete(url, headers: {'Authorization': 'Bearer $token'});
+        await _client.delete(url, headers: {'Authorization': 'Bearer $token'});
 
     switch (response.statusCode) {
       case HttpStatus.ok:
@@ -209,7 +221,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/spaces/${space.id}";
     final response =
-        await http.delete(url, headers: {'Authorization': 'Bearer $token'});
+        await _client.delete(url, headers: {'Authorization': 'Bearer $token'});
 
     switch (response.statusCode) {
       case HttpStatus.ok:
@@ -230,7 +242,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     String url =
         "$_coreUrl/spaces/${space.id}/entries?page=$pageNum&size=$pageSize";
     final response =
-        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+        await _client.get(url, headers: {'Authorization': 'Bearer $token'});
 
     switch (response.statusCode) {
       case HttpStatus.ok:
@@ -248,7 +260,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/docs";
     final response =
-        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+        await _client.get(url, headers: {'Authorization': 'Bearer $token'});
 
     switch (response.statusCode) {
       case HttpStatus.ok:
@@ -266,7 +278,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
     final token = await _authToken();
     String url = "$_coreUrl/spaces";
     final response =
-        await http.get(url, headers: {'Authorization': 'Bearer $token'});
+        await _client.get(url, headers: {'Authorization': 'Bearer $token'});
 
     switch (response.statusCode) {
       case HttpStatus.ok:
@@ -281,7 +293,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   Future<Space> updateSpace(Space space) async {
     final token = await _authToken();
     String url = "$_coreUrl/spaces/${space.id.toString()}";
-    final response = await http.put(
+    final response = await _client.put(
       url,
       headers: {
         'Authorization': 'Bearer $token',
