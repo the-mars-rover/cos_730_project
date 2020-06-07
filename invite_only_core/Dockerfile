@@ -25,7 +25,7 @@ COPY --from=build-env /app/target/invite_only_core-*.jar /invite_only_core.jar
 COPY $GOOGLE_APPLICATION_CREDENTIALS /service-account-key.json
 
 # Set the GOOGLE_APPLICATION_CREDENTIALS environment var
-ENV GOOGLE_APPLICATION_CREDENTIALS service-account-key.json
+ENV GOOGLE_APPLICATION_CREDENTIALS /service-account-key.json
 
 # Run the web service on container startup.
 CMD ["java", "-jar", "/invite_only_core.jar"]
