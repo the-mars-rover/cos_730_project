@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Invite Only Core
+name: Invite Only Core - Build and Deploy
 
 on:
   push:
