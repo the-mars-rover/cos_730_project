@@ -46,7 +46,7 @@ jobs:
           export_default_credentials: true
       # Decrypt the GCP service account key
       - name: Decrypt GCP Service Account Key
-        run: sudo ./.github/scripts/decrypt_service_account_key.sh
+        run: sh ./.github/scripts/decrypt_service_account_key.sh
         env:
           GCP_CREDENTIALS_PASSWORD: ${{ secrets.GCP_CREDENTIALS_PASSWORD }}
       # Build and push image to Google Container Registry
