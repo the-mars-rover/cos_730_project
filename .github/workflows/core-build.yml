@@ -36,7 +36,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
+      # Decrypt the GCP service account key
+      - name: Decrypt GCP Service Account Key
+        run: scripts/decrypt_service_account_key.sh
+        env:
+          GCP_CREDENTIALS_PASSWORD: ${{ secrets.GCP_CREDENTIALS_PASSWORD }}
+        working-directory: invite_only_core
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
@@ -44,12 +49,6 @@ jobs:
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_default_credentials: true
-      # Decrypt the GCP service account key
-      - name: Decrypt GCP Service Account Key
-        run: scripts/decrypt_service_account_key.sh
-        env:
-          GCP_CREDENTIALS_PASSWORD: ${{ secrets.GCP_CREDENTIALS_PASSWORD }}
-        working-directory: invite_only_core
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
