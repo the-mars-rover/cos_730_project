@@ -1,6 +1,6 @@
-[![Codemagic build status](https://api.codemagic.io/apps/5ed4f6a067d168000dd90859/5edb6e463091aa1ebfbc2864/status_badge.svg)](https://codemagic.io/apps/5ed4f6a067d168000dd90859/5edb6e463091aa1ebfbc2864/latest_build)
-
 # Invite Only Repo
+
+[![Codemagic build status](https://api.codemagic.io/apps/5ed4f6a067d168000dd90859/5edc9c6a0e8f47156c993d6a/status_badge.svg)](https://codemagic.io/apps/5ed4f6a067d168000dd90859/5edc9c6a0e8f47156c993d6a/latest_build)
 
 This is the root of the Invite Only Repo flutter package. The package provides the means for any flutter application to
 interact with the [Invite Only Core API](../invite_only_core).

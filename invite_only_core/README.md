@@ -1,4 +1,6 @@
-# Cloud Run Hello World with Cloud Code
+# Invite Only Core
+
+![Invite Only Core - Build and Deploy](https://github.com/Born-Pty-Ltd/invite_only/workflows/Invite%20Only%20Core%20-%20Build%20and%20Deploy/badge.svg)
 
 This is a [Cloud Run](https://cloud.google.com/run/docs) service that provides access to the core "Invite Only" functions.
 
