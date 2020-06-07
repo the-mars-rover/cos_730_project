@@ -49,7 +49,8 @@ jobs:
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA"
+            --tag "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA" \
+            --substitutions=_GCP_CREDENTIALS_PASSWORD="${{ secrets.GCP_CREDENTIALS_PASSWORD }}"
         working-directory: invite_only_core
       # Deploy image to Cloud Run
       - name: Deploy
