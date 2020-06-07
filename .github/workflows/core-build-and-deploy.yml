@@ -20,14 +20,13 @@ on:
       - master
 
 env:
-  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
   GCP_DB_INSTANCE: ${{ secrets.GCP_DB_INSTANCE }}
   GCP_DB_NAME: ${{ secrets.GCP_DB_NAME }}
-  GCP_REGION: ${{ secrets.GCP_REGION }}
-  GCP_SERVICE_NAME: ${{ secrets.GCP_SERVICE_NAME }}
-  DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
 jobs:
   setup-build-deploy:
@@ -42,24 +41,28 @@ jobs:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '290.0.1'
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_default_credentials: true
-
+      # Decrypt the GCP service account key
+      - name: Decrypt GCP Service Account Key
+        run: ./.github/scripts/decrypt_secret.sh
+        env:
+          $GCP_CREDENTIALS_PASSWORD: ${{ secrets.$GCP_CREDENTIALS_PASSWORD }}
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "gcr.io/$GCP_PROJECT_ID/$GCP_SERVICE_NAME:$GITHUB_SHA"
+            --tag "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA"
         working-directory: invite_only_core
       # Deploy image to Cloud Run
       - name: Deploy
         run: |-
-          gcloud run deploy "$GCP_SERVICE_NAME" \
+          gcloud run deploy "invite-only-core" \
             --quiet \
-            --region "$GCP_REGION" \
-            --image "gcr.io/$GCP_PROJECT_ID/$GCP_SERVICE_NAME:$GITHUB_SHA" \
+            --region "europe-west4" \
+            --image "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA" \
             --platform "managed" \
             --allow-unauthenticated
         working-directory: invite_only_core
