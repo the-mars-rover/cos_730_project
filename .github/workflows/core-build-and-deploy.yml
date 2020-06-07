@@ -44,13 +44,18 @@ jobs:
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_default_credentials: true
+      # Decrypt the GCP service account key
+      - name: Decrypt GCP Service Account Key
+        run: sh scripts/decrypt_service_account_key.sh
+        env:
+          GCP_CREDENTIALS_PASSWORD: ${{ secrets.GCP_CREDENTIALS_PASSWORD }}
+        working-directory: invite_only_core
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA" \
-            --substitutions=_GCP_CREDENTIALS_PASSWORD="${{ secrets.GCP_CREDENTIALS_PASSWORD }}"
+            --tag "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA"
         working-directory: invite_only_core
       # Deploy image to Cloud Run
       - name: Deploy
