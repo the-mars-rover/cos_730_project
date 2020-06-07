@@ -22,10 +22,10 @@ FROM adoptopenjdk/openjdk11:alpine-slim
 COPY --from=build-env /app/target/invite_only_core-*.jar /invite_only_core.jar
 
 # Copy the google service account key file to the production image.
-COPY $GOOGLE_APPLICATION_CREDENTIALS /service-account-key.json
+#COPY $GOOGLE_APPLICATION_CREDENTIALS /service-account-key.json
 
 # Set the GOOGLE_APPLICATION_CREDENTIALS environment var
-ENV GOOGLE_APPLICATION_CREDENTIALS /service-account-key.json
+ENV GOOGLE_APPLICATION_CREDENTIALS $GOOGLE_APPLICATION_CREDENTIALS
 
 # Run the web service on container startup.
 CMD ["java", "-jar", "/invite_only_core.jar"]
