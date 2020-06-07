@@ -25,7 +25,6 @@ env:
   GCP_DB_NAME: ${{ secrets.GCP_DB_NAME }}
   GCP_REGION: ${{ secrets.GCP_REGION }}
   GCP_SERVICE_NAME: ${{ secrets.GCP_SERVICE_NAME }}
-  DB_URL: ${{ secrets.DB_URL }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
