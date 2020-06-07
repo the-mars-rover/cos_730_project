@@ -6,7 +6,7 @@ import 'package:invite_only_app/blocs/spaces/spaces_bloc.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_event.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_state.dart';
 import 'package:invite_only_app/widgets/cards/space_card.dart';
-import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
+import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/pages/docs_page.dart';
 import 'package:invite_only_app/widgets/pages/space_page.dart';
 
@@ -66,14 +66,7 @@ class SpacesPage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return BlocConsumer<SpacesBloc, SpacesState>(
-      listener: (context, state) {
-        if (state is SpacesError) {
-          showError(context, state.error).then((value) {
-            SpacesBloc.of(context).add(LoadSpaces());
-          });
-        }
-      },
+    return BlocBuilder<SpacesBloc, SpacesState>(
       builder: (context, state) {
         if (state is SpacesLoading) {
           return Center(child: CircularProgressIndicator());
@@ -105,7 +98,8 @@ class SpacesPage extends StatelessWidget {
         }
 
         if (state is SpacesError) {
-          return Center(child: CircularProgressIndicator());
+          return ErrorMessage(state.error,
+              onRetry: () => AuthBloc.of(context).add(InitializeAuth()));
         }
 
         return null;

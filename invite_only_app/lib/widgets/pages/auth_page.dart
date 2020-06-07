@@ -35,7 +35,8 @@ class AuthPage extends StatelessWidget {
         }
 
         if (state is AuthFailed) {
-          return _buildErrorScaffold(context, state);
+          return ErrorMessage(state.errorMessage,
+              onRetry: () => AuthBloc.of(context).add(InitializeAuth()));
         }
 
         return null;
@@ -129,17 +130,6 @@ class AuthPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Scaffold _buildErrorScaffold(BuildContext context, AuthFailed state) {
-    return Scaffold(
-      body: ErrorMessage(
-        state.errorMessage,
-        onRetry: () {
-          AuthBloc.of(context).add(InitializeAuth());
-        },
       ),
     );
   }
