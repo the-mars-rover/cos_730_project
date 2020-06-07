@@ -36,12 +36,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # Decrypt the GCP service account key
-      - name: Decrypt GCP Service Account Key
-        run: scripts/decrypt_service_account_key.sh
-        env:
-          GCP_CREDENTIALS_PASSWORD: ${{ secrets.GCP_CREDENTIALS_PASSWORD }}
-        working-directory: invite_only_core
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
