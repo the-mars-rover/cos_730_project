@@ -48,7 +48,7 @@ jobs:
       - name: Decrypt GCP Service Account Key
         run: ./.github/scripts/decrypt_secret.sh
         env:
-          $GCP_CREDENTIALS_PASSWORD: ${{ secrets.$GCP_CREDENTIALS_PASSWORD }}
+          GCP_CREDENTIALS_PASSWORD: ${{ secrets.$GCP_CREDENTIALS_PASSWORD }}
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
