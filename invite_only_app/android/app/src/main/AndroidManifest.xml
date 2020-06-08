@@ -55,8 +55,9 @@
                 android:name="com.google.firebase.ml.vision.DEPENDENCIES"
                 android:value="ocr,label,barcode,face" />
 
-        <!-- Used for google maps API. The key must be defined in res/values/api_keys.xml  -->
+        <!-- Used for google maps API. Usage of the API Key is restricted to a package name and
+             specific SHA-1 signing-certificate  -->
         <meta-data android:name="com.google.android.geo.API_KEY"
-                   android:value="@string/GoogleMapsKey"/>
+                   android:value="AIzaSyAXTDtFj3Dk0J61YcT9QlhXiCzWmDKvC4c"/>
     </application>
 </manifest>
