@@ -1,11 +1,10 @@
 package com.inviteonly.docs.entities;
 
-import com.inviteonly.utils.StringListConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -31,7 +30,7 @@ public class DriversLicense extends IdDocument {
 	private String licenseNumber;
 
 	@NotNull
-	@Convert(converter = StringListConverter.class)
+	@ElementCollection
 	private List<String> vehicleCodes;
 
 	@Nullable
@@ -44,7 +43,7 @@ public class DriversLicense extends IdDocument {
 	private String licenseCountryOfIssue;
 
 	@NotNull
-	@Convert(converter = StringListConverter.class)
+	@ElementCollection
 	private List<String> vehicleRestrictions;
 
 	@NotNull
