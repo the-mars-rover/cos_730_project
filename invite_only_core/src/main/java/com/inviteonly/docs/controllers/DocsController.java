@@ -61,11 +61,11 @@ public class DocsController {
 			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@DeleteMapping("/{documentId}")
 	@ResponseStatus(HttpStatus.OK)
-	IdDocument deleteDocument(@PathVariable Long documentId) {
+	void deleteDocument(@PathVariable Long documentId) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
-			return docsService.deleteUserDocument(phoneNumber, documentId);
+			docsService.deleteUserDocument(phoneNumber, documentId);
 		} catch (DocOwnerException e) {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Document does not belong to the authenticated user.");
 		} catch (DocNotFoundException e) {

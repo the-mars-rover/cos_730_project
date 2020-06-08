@@ -27,7 +27,7 @@ public interface IDocsService {
 	 * @param phoneNumber the phone number of the user to whom the document belongs.
 	 * @param documentId the id of the document to be deleted.
 	 * @throws DocOwnerException if the saved document does not belong to the user with the given phone number.
-	 * @throws DocNotFoundException if no document with the given type could be found linked to the user.
+	 * @throws DocNotFoundException if no document with the given id could be found linked to the user.
 	 */
-	IdDocument deleteUserDocument(String phoneNumber, Long documentId) throws DocNotFoundException, DocOwnerException;
+	void deleteUserDocument(String phoneNumber, Long documentId) throws DocNotFoundException, DocOwnerException;
 }
