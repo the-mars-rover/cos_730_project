@@ -9,6 +9,7 @@ import 'package:invite_only_app/widgets/cards/space_card.dart';
 import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/pages/docs_page.dart';
 import 'package:invite_only_app/widgets/pages/space_page.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 
 class SpacesPage extends StatelessWidget {
   @override
@@ -45,11 +46,11 @@ class SpacesPage extends StatelessWidget {
                     );
                   }),
                   Divider(),
-//                  ListTile(
-//                    leading: Icon(Icons.info),
-//                    title: Text("About Us"),
-//                  ),
-//                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.info),
+                    title: Text("About Us"),
+                  ),
+                  Divider(),
                   ListTile(
                     leading: Icon(Icons.exit_to_app),
                     title: Text("Sign Out"),
@@ -74,36 +75,64 @@ class SpacesPage extends StatelessWidget {
 
         if (state is SpacesLoaded) {
           final spaces = state.spaces;
-          return spaces.isEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Text(
-                      'You do not have access to any spaces.\n\n'
-                      'You can create your own space or ask a manager of an existing space to add you.',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
-              : RefreshIndicator(
-                  onRefresh: () => SpacesBloc.of(context).add(LoadSpaces()),
-                  child: ListView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(8.0),
-                    children: spaces.map((space) {
-                      return SpaceCard(space: space);
-                    }).toList(),
-                  ),
-                );
+          return _buildSpacesList(context, spaces);
         }
 
         if (state is SpacesError) {
           return ErrorMessage(state.error,
-              onRetry: () => AuthBloc.of(context).add(InitializeAuth()));
+              onRetry: () => SpacesBloc.of(context).add(LoadSpaces()));
         }
 
         return null;
       },
+    );
+  }
+
+  Widget _buildSpacesList(BuildContext context, List<Space> spaces) {
+    if (spaces.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(64.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(Icons.error_outline, color: Colors.amber, size: 64.0),
+              Container(height: 24.0),
+              Text(
+                'No available spaces',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              Container(height: 16.0),
+              Text(
+                'You don\'t have any available spaces. Add a space yourself or ask a manager of another space to add you.',
+                textAlign: TextAlign.center,
+              ),
+              FlatButton(
+                child: Text(
+                  'Refresh',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () => SpacesBloc.of(context).add(LoadSpaces()),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: () {
+        SpacesBloc.of(context).add(LoadSpaces());
+        return Future.value();
+      },
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.all(8.0),
+        children: spaces.map((space) {
+          return SpaceCard(space: space);
+        }).toList(),
+      ),
     );
   }
 }
