@@ -20,12 +20,13 @@ on:
       - master
 
 env:
-  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
-  RUN_REGION: europe-west4
-  SERVICE_NAME: invite-only-core
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   DB_URL: ${{ secrets.DB_URL }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+  GCP_DB_INSTANCE: ${{ secrets.GCP_DB_INSTANCE }}
+  GCP_DB_NAME: ${{ secrets.GCP_DB_NAME }}
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
 jobs:
   setup-build-deploy:
@@ -35,29 +36,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       # Setup gcloud CLI
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '290.0.1'
-          service_account_key: ${{ secrets.RUN_SA_KEY }}
-          project_id: ${{ secrets.RUN_PROJECT }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
           export_default_credentials: true
-
       # Build and push image to Google Container Registry
       - name: Build
         run: |-
           gcloud builds submit \
             --quiet \
-            --tag "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA"
+            --tag "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA"
         working-directory: invite_only_core
       # Deploy image to Cloud Run
       - name: Deploy
         run: |-
-          gcloud run deploy "$SERVICE_NAME" \
+          gcloud run deploy "invite-only-core" \
             --quiet \
-            --region "$RUN_REGION" \
-            --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+            --region "europe-west4" \
+            --image "gcr.io/$GCP_PROJECT_ID/invite-only-core:$GITHUB_SHA" \
             --platform "managed" \
             --allow-unauthenticated
         working-directory: invite_only_core
