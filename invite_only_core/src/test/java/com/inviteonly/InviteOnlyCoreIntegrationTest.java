@@ -197,11 +197,11 @@ public class InviteOnlyCoreIntegrationTest {
 		requestMap.put("validFrom", "2015-10-14");
 		requestMap.put("validTo", "2030-10-21");
 		requestMap.put("licenseNumber", "00002");
-		requestMap.put("vehicleCodes", "2");
+		requestMap.put("vehicleCodes", List.of());
 		requestMap.put("licenseIssueNumber", "00002");
 		requestMap.put("driverRestrictions", "N");
 		requestMap.put("idNumberType", "ID Number");
-		requestMap.put("vehicleRestrictions", "");
+		requestMap.put("vehicleRestrictions", List.of());
 		requestMap.put("idCountryOfIssue", "ZA");
 		requestMap.put("licenseCountryOfIssue", "ZA");
 		JSONObject requestObject = new JSONObject(requestMap);
