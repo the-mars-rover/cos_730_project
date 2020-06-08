@@ -41,15 +41,13 @@ public class DocsService implements IDocsService {
 	}
 
 	@Override
-	public IdDocument deleteUserDocument(String phoneNumber, Long documentId) throws DocNotFoundException, DocOwnerException {
+	public void deleteUserDocument(String phoneNumber, Long documentId) throws DocNotFoundException, DocOwnerException {
 		IdDocument storedDocument = docsRepository.findById(documentId).orElseThrow(DocNotFoundException::new);
 
 		String currentOwner = storedDocument.getPhoneNumber();
-		if (currentOwner != null && !currentOwner.equals(phoneNumber)) {
-			throw new DocOwnerException();
-		}
+		if (currentOwner == null || !currentOwner.equals(phoneNumber)) throw new DocOwnerException();
 
-		docsRepository.delete(storedDocument);
-		return storedDocument;
+		storedDocument.setPhoneNumber(null);
+		docsRepository.save(storedDocument);
 	}
 }
