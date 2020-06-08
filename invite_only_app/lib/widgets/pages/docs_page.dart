@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_event.dart';
 import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/docs/docs_bloc.dart';
 import 'package:invite_only_app/blocs/docs/docs_event.dart';
@@ -19,14 +20,20 @@ class DocsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('My Profile')),
-      body: BlocBuilder<DocsBloc, DocsState>(
+      body: BlocConsumer<DocsBloc, DocsState>(
+        listener: (context, state) {
+          if (state is AllDeleted) {
+            AuthBloc.of(context).add(SignOut());
+            Navigator.of(context).pop();
+          }
+        },
         builder: (context, state) {
           if (state is LoadingDocs) {
             return Center(child: CircularProgressIndicator());
           }
 
           if (state is DocsLoaded) {
-            return _buildProfileScaffold(context, state);
+            return _buildProfile(context, state);
           }
 
           if (state is DocsError) {
@@ -36,13 +43,17 @@ class DocsPage extends StatelessWidget {
             );
           }
 
+          if (state is AllDeleted) {
+            return Center(child: CircularProgressIndicator());
+          }
+
           return null;
         },
       ),
     );
   }
 
-  Widget _buildProfileScaffold(BuildContext context, DocsLoaded docsState) {
+  Widget _buildProfile(BuildContext context, DocsLoaded docsState) {
     return ListView(
       children: <Widget>[
         BlocBuilder<AuthBloc, AuthState>(
@@ -81,7 +92,7 @@ class DocsPage extends StatelessWidget {
             borderSide: BorderSide(color: Colors.red),
             highlightedBorderColor: Colors.red,
             onPressed: () {
-              // TODO: Delete all user info
+              DocsBloc.of(context).add(DeleteAll());
             },
           ),
         ),

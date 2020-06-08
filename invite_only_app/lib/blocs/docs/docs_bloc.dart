@@ -30,6 +30,10 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
     if (event is DeleteDoc) {
       yield* _mapDeleteDocToState(event);
     }
+
+    if (event is DeleteAll) {
+      yield* _mapDeleteAllToState(event);
+    }
   }
 
   Stream<DocsState> _mapLoadDocsToState(LoadDocs event) async* {
@@ -77,6 +81,29 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
     } catch (e) {
       yield DocsError(
           'Sorry, an unexpected error occurred. Please try again later.');
+    }
+  }
+
+  Stream<DocsState> _mapDeleteAllToState(DeleteAll event) async* {
+    final currState = state;
+    if (currState is DocsLoaded) {
+      try {
+        yield LoadingDocs();
+
+        if (currState.idCard != null)
+          await _inviteOnlyRepo.deleteIdDocument(currState.idCard);
+        if (currState.idBook != null)
+          await _inviteOnlyRepo.deleteIdDocument(currState.idBook);
+        if (currState.driversLicense != null)
+          await _inviteOnlyRepo.deleteIdDocument(currState.driversLicense);
+        if (currState.passport != null)
+          await _inviteOnlyRepo.deleteIdDocument(currState.passport);
+
+        yield AllDeleted();
+      } catch (e) {
+        yield DocsError(
+            'Sorry, an unexpected error occurred. Please try again later.');
+      }
     }
   }
 
