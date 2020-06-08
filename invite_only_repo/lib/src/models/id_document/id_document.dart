@@ -109,10 +109,6 @@ abstract class IdDocument with _$IdDocument {
     /// The birth date of the person to whom this document belongs.
     @required DateTime birthDate,
 
-    /// The issue date for each license code. Normally contains a date for each
-    /// vehicleCode in [vehicleCodes].
-    @required List<DateTime> issueDates,
-
     /// The license number of this license.
     @required String licenseNumber,
 

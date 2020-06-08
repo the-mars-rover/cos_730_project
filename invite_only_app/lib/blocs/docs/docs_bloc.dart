@@ -115,7 +115,6 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
         surname: document.surname,
         gender: document.gender,
         birthDate: document.birthDate,
-        issueDates: document.issueDates,
         licenseNumber: document.licenseNumber,
         vehicleCodes: document.vehicleCodes,
         prdpCode: document.prdpCode,
