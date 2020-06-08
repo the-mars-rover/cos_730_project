@@ -50,8 +50,13 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <!-- Used for firebase ML Vision -->
         <meta-data
                 android:name="com.google.firebase.ml.vision.DEPENDENCIES"
                 android:value="ocr,label,barcode,face" />
+
+        <!-- Used for google maps API. The key must be defined in res/values/api_keys.xml  -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                   android:value="@string/GoogleMapsKey"/>
     </application>
 </manifest>
