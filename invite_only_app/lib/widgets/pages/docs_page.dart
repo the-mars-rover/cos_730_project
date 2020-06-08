@@ -5,7 +5,7 @@ import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/docs/docs_bloc.dart';
 import 'package:invite_only_app/blocs/docs/docs_event.dart';
 import 'package:invite_only_app/blocs/docs/docs_state.dart';
-import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
+import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
@@ -16,85 +16,75 @@ Future<void> showDocsPage(BuildContext context) async {
 class DocsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DocsBloc, DocsState>(
-      listener: (context, state) async {
-        if (state is DocsError) {
-          showError(context, state.error);
-        }
+    return Scaffold(
+      appBar: AppBar(title: Text('My Documents')),
+      body: BlocBuilder<DocsBloc, DocsState>(
+        builder: (context, state) {
+          if (state is LoadingDocs) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-        if (state is DocSubmitted) {
-          DocsBloc.of(context).add(LoadDocs());
-        }
-      },
-      builder: (context, state) {
-        if (state is LoadingDocs) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
+          if (state is DocsLoaded) {
+            return _buildProfileScaffold(context, state);
+          }
 
-        if (state is DocsLoaded) {
-          return _buildProfileScaffold(context, state);
-        }
+          if (state is DocsError) {
+            return ErrorMessage(
+              state.error,
+              onRetry: () => DocsBloc.of(context).add(LoadDocs()),
+            );
+          }
 
-        if (state is DocsError) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-
-        if (state is DocSubmitted) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-
-        return null;
-      },
+          return null;
+        },
+      ),
     );
   }
 
-  Scaffold _buildProfileScaffold(BuildContext context, DocsLoaded docsState) {
-    return Scaffold(
-      appBar: AppBar(title: Text("My Profile")),
-      body: ListView(
-        children: <Widget>[
-          BlocBuilder<AuthBloc, AuthState>(
-            bloc: AuthBloc.of(context),
-            builder: (context, state) {
-              if (state is UserAuthenticated) {
-                return ListTile(
-                  title: Text(state.phoneNumber),
-                  subtitle: Text("Phone Number"),
-                );
-              }
+  Widget _buildProfileScaffold(BuildContext context, DocsLoaded docsState) {
+    return ListView(
+      children: <Widget>[
+        BlocBuilder<AuthBloc, AuthState>(
+          bloc: AuthBloc.of(context),
+          builder: (context, state) {
+            if (state is UserAuthenticated) {
+              return ListTile(
+                title: Text(state.phoneNumber),
+                subtitle: Text("Phone Number"),
+              );
+            }
 
-              return Container();
-            },
-          ),
-          Divider(),
-          _buildDocTile<IdCard>(context, docsState),
-          Divider(),
-          _buildDocTile<IdBook>(context, docsState),
-          Divider(),
-          _buildDocTile<DriversLicense>(context, docsState),
-          Divider(),
-          // TODO: Uncomment when support for passports is added
+            return null;
+          },
+        ),
+        Divider(),
+        _buildDocTile<IdCard>(context, docsState),
+        Divider(),
+        _buildDocTile<IdBook>(context, docsState),
+        Divider(),
+        _buildDocTile<DriversLicense>(context, docsState),
+        Divider(),
+        // TODO: Uncomment when support for passports is added
 //          _buildDocTile<Passport>(context, docsState),
 //          Divider(),
-          ListTile(
-            title: OutlineButton.icon(
-              icon: Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
-              label: Text(
-                "DELETE MY PROFILE",
-                style: TextStyle(color: Colors.red),
-              ),
-              borderSide: BorderSide(color: Colors.red),
-              highlightedBorderColor: Colors.red,
-              onPressed: () {
-                // TODO: Delete all user info
-              },
+        ListTile(
+          title: OutlineButton.icon(
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
             ),
+            label: Text(
+              "DELETE MY PROFILE",
+              style: TextStyle(color: Colors.red),
+            ),
+            borderSide: BorderSide(color: Colors.red),
+            highlightedBorderColor: Colors.red,
+            onPressed: () {
+              // TODO: Delete all user info
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -115,7 +105,7 @@ class DocsPage extends StatelessWidget {
         return null;
       }),
       subtitle: Text(
-        !uploaded == null ? "Not Uploaded" : "Uploaded",
+        !uploaded ? "Not Uploaded" : "Uploaded",
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,

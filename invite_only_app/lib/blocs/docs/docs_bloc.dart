@@ -56,9 +56,9 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
   Stream<DocsState> _mapSubmitDocToState(SubmitDoc event) async* {
     yield LoadingDocs();
     try {
-      final uploaded = await _inviteOnlyRepo.addIdDocument(event.idDocument);
+      await _inviteOnlyRepo.addIdDocument(event.idDocument);
 
-      yield DocSubmitted(uploaded);
+      this.add(LoadDocs());
     } on Conflict {
       yield DocsError(
           'It looks like that document is already linked to you or someone else.');
