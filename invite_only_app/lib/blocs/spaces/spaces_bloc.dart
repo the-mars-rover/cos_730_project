@@ -21,6 +21,10 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
     if (event is LoadSpaces) {
       yield* _mapLoadSpacesToState(event);
     }
+
+    if (event is SaveSpace) {
+      yield* _mapSaveSpaceToState(event);
+    }
   }
 
   Stream<SpacesState> _mapLoadSpacesToState(LoadSpaces event) async* {
@@ -32,6 +36,29 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
     } catch (e) {
       yield SpacesError(
           "Sorry, an unexpected error occurred. Please try again later.");
+    }
+  }
+
+  Stream<SpacesState> _mapSaveSpaceToState(SaveSpace event) async* {
+    yield SavingSpace();
+
+    try {
+      final phone = await _inviteOnlyRepo.currentUser();
+      event.space.managerPhones.add(phone);
+
+      Space space;
+      if (event.space.id == null) {
+        space = await _inviteOnlyRepo.addSpace(event.space);
+      } else {
+        space = await _inviteOnlyRepo.updateSpace(event.space);
+      }
+
+      yield SpaceSaved(space);
+      this.add(LoadSpaces());
+    } catch (e) {
+      yield ErrorSavingSpace(
+          "Sorry, an unexpected error occurred. Please try again later.");
+      this.add(LoadSpaces());
     }
   }
 

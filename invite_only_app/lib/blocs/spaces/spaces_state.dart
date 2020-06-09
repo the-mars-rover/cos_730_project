@@ -27,3 +27,26 @@ class SpacesError extends SpacesState {
   @override
   List<Object> get props => [error];
 }
+
+class SavingSpace extends SpacesState {
+  @override
+  List<Object> get props => [];
+}
+
+class SpaceSaved extends SpacesState {
+  final Space space;
+
+  SpaceSaved(this.space);
+
+  @override
+  List<Object> get props => [space];
+}
+
+class ErrorSavingSpace extends SpacesState {
+  final String error;
+
+  ErrorSavingSpace(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

@@ -10,18 +10,23 @@ import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
 import 'package:invite_only_app/widgets/dialogs/permission_dialog.dart';
 import 'package:invite_only_app/widgets/search/contacts_search_delegate.dart';
 
-Future<void> editMembers(
+Future<Set<String>> editMembers(
     BuildContext context, String title, Set<String> phoneNumbers) async {
-  await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-    return MembersPage(title: title, phoneNumbers: phoneNumbers);
+  final edited =
+      await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    return MembersPage(title: title, phoneNumbers: Set.of(phoneNumbers));
   }));
+
+  if (edited == null) return phoneNumbers;
+
+  return edited;
 }
 
 class MembersPage extends StatelessWidget {
   /// The title of the type of members
   final String title;
 
-  /// The phone numbers part of members - this is directly edited
+  /// The phone numbers part of members
   final Set<String> phoneNumbers;
 
   const MembersPage(
@@ -30,104 +35,114 @@ class MembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MembersBloc>(
-      create: (context) => MembersBloc()..add(LoadMembers(phoneNumbers)),
-      child: BlocConsumer<MembersBloc, MembersState>(
-        listener: (context, state) async {
-          if (state is MembersError) {
-            await showError(context, state.error);
-            Navigator.of(context).pop();
-          }
-
-          if (state is MembersPermissionDenied) {
-            await showPermissionDenied(context, 'contacts');
-            Navigator.of(context).pop();
-          }
-        },
-        builder: (context, state) {
-          if (state is MembersLoading) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is MembersReady) {
-            return _buildMembersList(context, state);
-          }
-
-          if (state is MembersError) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is MembersPermissionDenied) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          return null;
-        },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () async {
+              final newPhone = await selectPhone(context);
+              if (newPhone != null) {
+                MembersBloc.of(context).add(AddMember(newPhone));
+              }
+            },
+          ),
+        ],
       ),
+      body: BlocProvider<MembersBloc>(
+        create: (context) => MembersBloc()..add(LoadMembers(phoneNumbers)),
+        child: BlocConsumer<MembersBloc, MembersState>(
+          listener: (context, state) async {
+            if (state is MembersError) {
+              await showError(context, state.error);
+              Navigator.of(context).pop();
+            }
+
+            if (state is MembersPermissionDenied) {
+              await showPermissionDenied(context, 'contacts');
+              Navigator.of(context).pop();
+            }
+          },
+          builder: (context, state) {
+            if (state is MembersLoading) {
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+
+            if (state is MembersReady) {
+              return _buildMembersList(context, state);
+            }
+
+            if (state is MembersError) {
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+
+            if (state is MembersPermissionDenied) {
+              return Scaffold(body: Center(child: CircularProgressIndicator()));
+            }
+
+            return null;
+          },
+        ),
+      ),
+      persistentFooterButtons: <Widget>[
+        FlatButton(
+          onPressed: () async {
+            Navigator.of(context).pop(phoneNumbers);
+          },
+          child: Text('Save'),
+        ),
+      ],
     );
   }
 
   Widget _buildMembersList(BuildContext context, MembersReady state) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: state.phoneNumbers.isEmpty
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: Text(
-                  'No $title added.\n\nAdd one using the \'Add\' button at the bottom of the page.',
-                  textAlign: TextAlign.center,
-                ),
+    return state.phoneNumbers.isEmpty
+        ? Center(
+            child: Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: Text(
+                'No $title added.\n\nAdd one using the \'Add\' button at the bottom of the page.',
+                textAlign: TextAlign.center,
               ),
-            )
-          : ListView(
-              children: state.phoneNumbers.map((p) {
-                final contact = state.contacts.firstWhere(
-                    (c) => c.phones.where((i) => i.value == p).isNotEmpty,
-                    orElse: () => null);
-                if (contact != null) {
-                  return ListTile(
-                    title: Text(contact.displayName),
-                    subtitle: Text(p),
-                    trailing: IconButton(
-                      icon: Icon(Icons.remove_circle_outline),
-                      onPressed: () {
-                        MembersBloc.of(context).add(RemoveMember(p));
-                      },
-                    ),
-                  );
+            ),
+          )
+        : ListView(
+            children: state.phoneNumbers.map((p) {
+              final contact = state.contacts.firstWhere(
+                  (c) => c.phones.where((i) => i.value == p).isNotEmpty,
+                  orElse: () => null);
+              if (contact != null) {
+                return ListTile(
+                  title: Text(contact.displayName),
+                  subtitle: Text(p),
+                  trailing: IconButton(
+                    icon: Icon(Icons.remove_circle_outline),
+                    onPressed: () {
+                      MembersBloc.of(context).add(RemoveMember(p));
+                    },
+                  ),
+                );
+              }
+
+              return BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                if (state is UserAuthenticated && state.phoneNumber == p) {
+                  return ListTile(title: Text(p), subtitle: Text('You'));
                 }
 
-                return BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                  if (state is UserAuthenticated && state.phoneNumber == p) {
-                    return ListTile(title: Text(p), subtitle: Text('You'));
-                  }
-
-                  return ListTile(
-                    title: Text(p),
-                    subtitle: Text('Not in your contact list'),
-                    trailing: IconButton(
-                      icon: Icon(Icons.remove_circle_outline),
-                      onPressed: () {
-                        MembersBloc.of(context).add(RemoveMember(p));
-                      },
-                    ),
-                  );
-                });
-              }).toList(),
-            ),
-      persistentFooterButtons: <Widget>[
-        FlatButton(
-          onPressed: () async {
-            final newPhone = await selectPhone(context);
-            if (newPhone != null) {
-              MembersBloc.of(context).add(AddMember(newPhone));
-            }
-          },
-          child: Text('Add'),
-        ),
-      ],
-    );
+                return ListTile(
+                  title: Text(p),
+                  subtitle: Text('Not in your contact list'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.remove_circle_outline),
+                    onPressed: () {
+                      MembersBloc.of(context).add(RemoveMember(p));
+                    },
+                  ),
+                );
+              });
+            }).toList(),
+          );
   }
 }

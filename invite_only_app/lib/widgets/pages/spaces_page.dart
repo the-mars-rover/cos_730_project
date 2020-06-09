@@ -41,7 +41,8 @@ class SpacesPage extends StatelessWidget {
                       onTap: () async {
                         final newSpace = await createSpace(context);
                         if (newSpace == null) return;
-                        SpacesBloc.of(context).add(LoadSpaces());
+                        SpacesBloc.of(context).add(SaveSpace(newSpace));
+                        Navigator.of(context).pop();
                       },
                     );
                   }),
@@ -67,7 +68,22 @@ class SpacesPage extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
-    return BlocBuilder<SpacesBloc, SpacesState>(
+    return BlocConsumer<SpacesBloc, SpacesState>(
+      listener: (context, state) {
+        if (state is SpaceSaved) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('${state.space.title} Saved')),
+          );
+        }
+
+        if (state is ErrorSavingSpace) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error, style: TextStyle(color: Colors.amber)),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         if (state is SpacesLoading) {
           return Center(child: CircularProgressIndicator());
@@ -81,6 +97,18 @@ class SpacesPage extends StatelessWidget {
         if (state is SpacesError) {
           return ErrorMessage(state.error,
               onRetry: () => SpacesBloc.of(context).add(LoadSpaces()));
+        }
+
+        if (state is SavingSpace) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (state is SpaceSaved) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (state is ErrorSavingSpace) {
+          return Center(child: CircularProgressIndicator());
         }
 
         return null;

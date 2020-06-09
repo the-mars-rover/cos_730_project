@@ -1,9 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only_app/blocs/space/space_bloc.dart';
-import 'package:invite_only_app/blocs/space/space_event.dart';
-import 'package:invite_only_app/blocs/space/space_state.dart';
-import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:invite_only_app/main.dart';
 import 'package:invite_only_app/widgets/pages/members_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
@@ -28,98 +29,141 @@ Future<Space> editSpace(BuildContext context, Space space) async {
 }
 
 // TODO: Add support for image and location selection
-class SpacePage extends StatelessWidget {
+class SpacePage extends StatefulWidget {
   final Space space;
-  final _formKey;
-  final _titleController;
 
-  SpacePage({Key key, this.space})
-      : _formKey = GlobalKey<FormState>(),
-        _titleController = TextEditingController(text: space.title),
-        super(key: key);
+  SpacePage({Key key, this.space}) : super(key: key);
+
+  @override
+  _SpacePageState createState() => _SpacePageState();
+}
+
+class _SpacePageState extends State<SpacePage> {
+  GlobalKey<FormState> _formKey;
+  TextEditingController _titleController;
+  Set<String> _managerPhones;
+  Set<String> _inviterPhones;
+  Set<String> _guardPhones;
+  Placemark _location;
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _titleController = TextEditingController(text: widget.space.title);
+    _managerPhones = widget.space.managerPhones;
+    _inviterPhones = widget.space.inviterPhones;
+    _guardPhones = widget.space.guardPhones;
+    if (widget.space.locationLatitude != null &&
+        widget.space.locationLongitude != null) {
+      Geolocator()
+          .placemarkFromCoordinates(
+              widget.space.locationLatitude, widget.space.locationLongitude)
+          .then((p) {
+        if (p == null) return;
+        setState(() {
+          _location = p.first;
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SpaceBloc>(
-      create: (context) => SpaceBloc(),
-      child: BlocConsumer<SpaceBloc, SpaceState>(
-        listener: (context, state) async {
-          if (state is SpaceSaved) {
-            Navigator.of(context).pop(state.space);
-          }
-
-          if (state is ErrorSavingSpace) {
-            await showError(context, state.error);
-          }
-        },
-        builder: (context, state) {
-          if (state is SpaceInitial) {
-            return _buildForm(context, state);
-          }
-
-          if (state is SavingSpace) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is SpaceSaved) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is ErrorSavingSpace) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildForm(BuildContext context, SpaceInitial state) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(space.id == null ? 'Create Space' : 'Edit Space'),
+        title: Text(widget.space.id == null ? 'Create Space' : 'Edit Space'),
         excludeHeaderSemantics: false,
       ),
+      persistentFooterButtons: [
+        RaisedButton(
+          child: Text('SAVE'),
+          color: Theme.of(context).primaryColor,
+          onPressed: () {
+            if (!_formKey.currentState.validate()) return;
+
+            Navigator.of(context).pop(widget.space.copyWith(
+              title: _titleController.text,
+              managerPhones: _managerPhones,
+              inviterPhones: _inviterPhones,
+              guardPhones: _guardPhones,
+              locationLatitude: _location?.position?.latitude,
+              locationLongitude: _location?.position?.longitude,
+            ));
+          },
+        )
+      ],
       body: Form(
         key: _formKey,
         child: ListView(
           children: <Widget>[
-            TextFormField(
-              controller: _titleController,
-              validator: (text) {
-                if (text.isEmpty) {
-                  return 'You must enter a title';
-                }
-
-                if (text.length < 3) {
-                  return 'The title must be at least 3 characters long';
-                }
-
-                return null;
-              },
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.title),
-                labelText: 'Add Title',
-              ),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.edit_location),
-                labelText: 'Add Location',
-              ),
-            ),
             ListTile(
-              title: Text('Managers, Inviters and Guards'),
-              subtitle: Text('May all enter the space'),
+              leading: Icon(Icons.title),
+              title: TextFormField(
+                controller: _titleController,
+                validator: (text) {
+                  if (text.isEmpty) {
+                    return 'You must enter a title';
+                  }
+
+                  if (text.length < 3) {
+                    return 'The title must be at least 3 characters long';
+                  }
+
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: 'Add Title',
+                  border: InputBorder.none,
+                ),
+              ),
             ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.location_on),
+              title: _location != null
+                  ? Text(
+                      '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
+                    )
+                  : Text(
+                      'Add Location',
+                      style: TextStyle(color: Theme.of(context).hintColor),
+                    ),
+              subtitle: _location != null
+                  ? Text(
+                      '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
+                    )
+                  : null,
+              onTap: () async {
+                var apiKey;
+                if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
+                if (Platform.isIOS) apiKey = kIosMapsApiKey;
+
+                final result = await showLocationPicker(context, apiKey);
+                if (result == null) return;
+
+                final placemarks = await Geolocator().placemarkFromCoordinates(
+                  result.latLng.latitude,
+                  result.latLng.longitude,
+                );
+                setState(() => _location = placemarks.first);
+              },
+            ),
+            Divider(),
             ListTile(
               leading: Icon(Icons.edit),
               title: Text('Managers'),
               subtitle: Text('May edit or delete the space'),
               trailing: Icon(Icons.navigate_next),
               onTap: () async {
-                await editMembers(context, 'Managers', space.managerPhones);
+                final edited =
+                    await editMembers(context, 'Managers', _managerPhones);
+                setState(() => _managerPhones = edited);
               },
             ),
             Divider(),
@@ -129,7 +173,9 @@ class SpacePage extends StatelessWidget {
               subtitle: Text('May create invites for the space'),
               trailing: Icon(Icons.navigate_next),
               onTap: () async {
-                await editMembers(context, 'Inviters', space.inviterPhones);
+                final edited =
+                    await editMembers(context, 'Inviters', _inviterPhones);
+                setState(() => _inviterPhones = edited);
               },
             ),
             Divider(),
@@ -139,12 +185,14 @@ class SpacePage extends StatelessWidget {
               subtitle: Text('May grant entry to the space'),
               trailing: Icon(Icons.navigate_next),
               onTap: () async {
-                await editMembers(context, 'Guards', space.guardPhones);
+                final edited =
+                    await editMembers(context, 'Guards', _guardPhones);
+                setState(() => _guardPhones = edited);
               },
             ),
             Divider(),
             Visibility(
-              visible: space.id != null,
+              visible: widget.space.id != null,
               child: ListTile(
                 title: OutlineButton.icon(
                   icon: Icon(Icons.delete, color: Colors.red),
@@ -163,18 +211,6 @@ class SpacePage extends StatelessWidget {
           ],
         ),
       ),
-      persistentFooterButtons: <Widget>[
-        RaisedButton(
-          child: Text('SAVE'),
-          color: Theme.of(context).primaryColor,
-          onPressed: () {
-            if (!_formKey.currentState.validate()) return;
-
-            final newSpace = space.copyWith(title: _titleController.text);
-            SpaceBloc.of(context).add(SaveSpace(newSpace));
-          },
-        ),
-      ],
     );
   }
 }
