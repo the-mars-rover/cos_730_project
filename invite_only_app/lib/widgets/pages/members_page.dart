@@ -6,8 +6,9 @@ import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/members/members_bloc.dart';
 import 'package:invite_only_app/blocs/members/members_event.dart';
 import 'package:invite_only_app/blocs/members/members_state.dart';
-import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
 import 'package:invite_only_app/widgets/dialogs/permission_dialog.dart';
+import 'package:invite_only_app/widgets/other/error_message.dart';
+import 'package:invite_only_app/widgets/other/permission_message.dart';
 import 'package:invite_only_app/widgets/search/contacts_search_delegate.dart';
 
 Future<Set<String>> editMembers(
@@ -35,64 +36,70 @@ class MembersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () async {
-              final newPhone = await selectPhone(context);
-              if (newPhone != null) {
-                MembersBloc.of(context).add(AddMember(newPhone));
+    return BlocProvider<MembersBloc>(
+      create: (context) => MembersBloc()..add(LoadMembers(phoneNumbers)),
+      child: BlocConsumer<MembersBloc, MembersState>(
+        listener: (context, state) async {
+          if (state is MembersPermissionDenied) {
+            await showPermissionDenied(context, 'contacts');
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(title),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () async {
+                    final newPhone = await selectPhone(context);
+                    if (newPhone != null) {
+                      MembersBloc.of(context).add(AddMember(newPhone));
+                    }
+                  },
+                ),
+              ],
+            ),
+            persistentFooterButtons: <Widget>[
+              FlatButton(
+                onPressed: () async {
+                  Navigator.of(context).pop(phoneNumbers);
+                },
+                child: Text('Save'),
+              ),
+            ],
+            body: Builder(builder: (context) {
+              if (state is MembersLoading) {
+                return Scaffold(
+                    body: Center(child: CircularProgressIndicator()));
               }
-            },
-          ),
-        ],
+
+              if (state is MembersReady) {
+                return _buildMembersList(context, state);
+              }
+
+              if (state is MembersError) {
+                return ErrorMessage(
+                  state.error,
+                  onRefresh: () => Navigator.of(context).pop(),
+                );
+              }
+
+              if (state is MembersPermissionDenied) {
+                return PermissionMessage(
+                  'contacts',
+                  onRefresh: () => MembersBloc.of(context).add(
+                    LoadMembers(phoneNumbers),
+                  ),
+                );
+              }
+
+              return null;
+            }),
+          );
+        },
       ),
-      body: BlocProvider<MembersBloc>(
-        create: (context) => MembersBloc()..add(LoadMembers(phoneNumbers)),
-        child: BlocConsumer<MembersBloc, MembersState>(
-          listener: (context, state) async {
-            if (state is MembersError) {
-              await showError(context, state.error);
-              Navigator.of(context).pop();
-            }
-
-            if (state is MembersPermissionDenied) {
-              await showPermissionDenied(context, 'contacts');
-              Navigator.of(context).pop();
-            }
-          },
-          builder: (context, state) {
-            if (state is MembersLoading) {
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
-            }
-
-            if (state is MembersReady) {
-              return _buildMembersList(context, state);
-            }
-
-            if (state is MembersError) {
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
-            }
-
-            if (state is MembersPermissionDenied) {
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
-            }
-
-            return null;
-          },
-        ),
-      ),
-      persistentFooterButtons: <Widget>[
-        FlatButton(
-          onPressed: () async {
-            Navigator.of(context).pop(phoneNumbers);
-          },
-          child: Text('Save'),
-        ),
-      ],
     );
   }
 
@@ -102,7 +109,7 @@ class MembersPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(40.0),
               child: Text(
-                'No $title added.\n\nAdd one using the \'Add\' button at the bottom of the page.',
+                'No $title added.\n\nAdd one using the \'+\' button at the top of the page.',
                 textAlign: TextAlign.center,
               ),
             ),

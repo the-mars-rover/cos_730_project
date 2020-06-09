@@ -39,7 +39,7 @@ class DocsPage extends StatelessWidget {
           if (state is DocsError) {
             return ErrorMessage(
               state.error,
-              onRetry: () => DocsBloc.of(context).add(LoadDocs()),
+              onRefresh: () => DocsBloc.of(context).add(LoadDocs()),
             );
           }
 

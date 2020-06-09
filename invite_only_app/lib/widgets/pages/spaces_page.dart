@@ -96,7 +96,7 @@ class SpacesPage extends StatelessWidget {
 
         if (state is SpacesError) {
           return ErrorMessage(state.error,
-              onRetry: () => SpacesBloc.of(context).add(LoadSpaces()));
+              onRefresh: () => SpacesBloc.of(context).add(LoadSpaces()));
         }
 
         if (state is SavingSpace) {

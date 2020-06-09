@@ -36,7 +36,7 @@ class AuthPage extends StatelessWidget {
 
         if (state is AuthFailed) {
           return ErrorMessage(state.errorMessage,
-              onRetry: () => AuthBloc.of(context).add(InitializeAuth()));
+              onRefresh: () => AuthBloc.of(context).add(InitializeAuth()));
         }
 
         return null;

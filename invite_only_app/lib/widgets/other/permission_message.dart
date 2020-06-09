@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-class ErrorMessage extends StatelessWidget {
-  final String message;
+class PermissionMessage extends StatelessWidget {
+  final String permission;
   final Function onRefresh;
 
-  const ErrorMessage(this.message, {Key key, @required this.onRefresh})
+  const PermissionMessage(this.permission, {Key key, @required this.onRefresh})
       : super(key: key);
 
   @override
@@ -19,12 +20,22 @@ class ErrorMessage extends StatelessWidget {
               Icon(Icons.error_outline, color: Colors.amber, size: 64.0),
               Container(height: 24.0),
               Text(
-                'Oops, an error occurred!',
+                'Permission Denied',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               Container(height: 16.0),
-              Text(message, textAlign: TextAlign.center),
+              Text(
+                'Access to $permission has been denied. You will need to grant the permission from the App\'s settings.',
+                textAlign: TextAlign.center,
+              ),
+              FlatButton(
+                child: Text(
+                  'Open Settings',
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
+                onPressed: () => openAppSettings(),
+              ),
               FlatButton(
                 child: Text(
                   'Refresh',
