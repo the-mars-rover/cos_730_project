@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
-import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/members/members_bloc.dart';
 import 'package:invite_only_app/blocs/members/members_event.dart';
 import 'package:invite_only_app/blocs/members/members_state.dart';
-import 'package:invite_only_app/widgets/dialogs/permission_dialog.dart';
 import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/other/permission_message.dart';
 import 'package:invite_only_app/widgets/search/contacts_search_delegate.dart';
@@ -38,41 +35,45 @@ class MembersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<MembersBloc>(
       create: (context) => MembersBloc()..add(LoadMembers(phoneNumbers)),
-      child: BlocConsumer<MembersBloc, MembersState>(
-        listener: (context, state) async {
-          if (state is MembersPermissionDenied) {
-            await showPermissionDenied(context, 'contacts');
-            Navigator.of(context).pop();
-          }
-        },
+      child: BlocBuilder<MembersBloc, MembersState>(
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
               title: Text(title),
               actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () async {
-                    final newPhone = await selectPhone(context);
-                    if (newPhone != null) {
-                      MembersBloc.of(context).add(AddMember(newPhone));
-                    }
-                  },
-                ),
+                Builder(builder: (context) {
+                  if (state is MembersReady) {
+                    return IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () async {
+                        final p = await selectPhone(context, state.contacts);
+                        if (p == null) return;
+                        MembersBloc.of(context).add(AddMember(p));
+                      },
+                    );
+                  }
+
+                  return Container();
+                }),
               ],
             ),
             persistentFooterButtons: <Widget>[
-              FlatButton(
-                onPressed: () async {
-                  Navigator.of(context).pop(phoneNumbers);
-                },
-                child: Text('Save'),
-              ),
+              Builder(builder: (context) {
+                if (state is MembersReady) {
+                  return FlatButton(
+                    onPressed: () async {
+                      Navigator.of(context).pop(state.phoneNumbers);
+                    },
+                    child: Text('Save'),
+                  );
+                }
+
+                return Container();
+              }),
             ],
             body: Builder(builder: (context) {
               if (state is MembersLoading) {
-                return Scaffold(
-                    body: Center(child: CircularProgressIndicator()));
+                return Center(child: CircularProgressIndicator());
               }
 
               if (state is MembersReady) {
@@ -104,52 +105,47 @@ class MembersPage extends StatelessWidget {
   }
 
   Widget _buildMembersList(BuildContext context, MembersReady state) {
-    return state.phoneNumbers.isEmpty
-        ? Center(
-            child: Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Text(
-                'No $title added.\n\nAdd one using the \'+\' button at the top of the page.',
-                textAlign: TextAlign.center,
-              ),
+    if (state.phoneNumbers.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: Text(
+            'No $title added.\n\nAdd one using the \'+\' button at the top of the page.',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    return ListView(
+      children: state.phoneNumbers.map((p) {
+        final contact = state.contacts.firstWhere(
+            (c) => c.phones.where((i) => i.value == p).isNotEmpty,
+            orElse: () => null);
+        if (contact != null) {
+          return ListTile(
+            title: Text(contact.displayName),
+            subtitle: Text(p),
+            trailing: IconButton(
+              icon: Icon(Icons.remove_circle_outline),
+              onPressed: () {
+                MembersBloc.of(context).add(RemoveMember(p));
+              },
             ),
-          )
-        : ListView(
-            children: state.phoneNumbers.map((p) {
-              final contact = state.contacts.firstWhere(
-                  (c) => c.phones.where((i) => i.value == p).isNotEmpty,
-                  orElse: () => null);
-              if (contact != null) {
-                return ListTile(
-                  title: Text(contact.displayName),
-                  subtitle: Text(p),
-                  trailing: IconButton(
-                    icon: Icon(Icons.remove_circle_outline),
-                    onPressed: () {
-                      MembersBloc.of(context).add(RemoveMember(p));
-                    },
-                  ),
-                );
-              }
-
-              return BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
-                if (state is UserAuthenticated && state.phoneNumber == p) {
-                  return ListTile(title: Text(p), subtitle: Text('You'));
-                }
-
-                return ListTile(
-                  title: Text(p),
-                  subtitle: Text('Not in your contact list'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.remove_circle_outline),
-                    onPressed: () {
-                      MembersBloc.of(context).add(RemoveMember(p));
-                    },
-                  ),
-                );
-              });
-            }).toList(),
           );
+        }
+
+        return ListTile(
+          title: Text(p),
+          subtitle: Text('Not in your contact list'),
+          trailing: IconButton(
+            icon: Icon(Icons.remove_circle_outline),
+            onPressed: () {
+              MembersBloc.of(context).add(RemoveMember(p));
+            },
+          ),
+        );
+      }).toList(),
+    );
   }
 }

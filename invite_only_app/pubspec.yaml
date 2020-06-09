@@ -92,6 +92,10 @@ dependencies:
   # See https://pub.dev/packages/image_picker
   image_picker: ^0.6.7+1
 
+  # This is a Flutter implementation of libphonenumber.
+  # https://pub.dev/packages/libphonenumber
+  libphonenumber: ^1.0.1
+
   invite_only_repo:
     path: ../invite_only_repo
 

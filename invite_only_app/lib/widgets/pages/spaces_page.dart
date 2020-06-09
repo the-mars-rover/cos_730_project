@@ -41,8 +41,8 @@ class SpacesPage extends StatelessWidget {
                       onTap: () async {
                         final newSpace = await createSpace(context);
                         if (newSpace == null) return;
-                        SpacesBloc.of(context).add(SaveSpace(newSpace));
                         Navigator.of(context).pop();
+                        SpacesBloc.of(context).add(SaveSpace(newSpace));
                       },
                     );
                   }),
