@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:invite_only_app/main.dart';
 import 'package:invite_only_app/widgets/pages/members_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:uuid/uuid.dart';
@@ -160,38 +159,39 @@ class _SpacePageState extends State<SpacePage> {
               ),
             ),
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.location_on),
-            trailing: Icon(Icons.chevron_right),
-            title: _location != null
-                ? Text(
-                    '${_location.subThoroughfare} ${_location.thoroughfare}',
-                  )
-                : Text(
-                    'Add Location',
-                    style: TextStyle(color: Theme.of(context).hintColor),
-                  ),
-            subtitle: _location != null
-                ? Text(
-                    '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
-                  )
-                : null,
-            onTap: () async {
-              var apiKey;
-              if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
-              if (Platform.isIOS) apiKey = kIosMapsApiKey;
-              final result = await showLocationPicker(context, apiKey);
-              FocusScope.of(context).requestFocus(new FocusNode());
-              if (result == null) return;
-
-              final placemarks = await Geolocator().placemarkFromCoordinates(
-                result.latLng.latitude,
-                result.latLng.longitude,
-              );
-              setState(() => _location = placemarks.first);
-            },
-          ),
+// TODO: uncomment to support location
+//          Divider(),
+//          ListTile(
+//            leading: Icon(Icons.location_on),
+//            trailing: Icon(Icons.chevron_right),
+//            title: _location != null
+//                ? Text(
+//                    '${_location.subThoroughfare} ${_location.thoroughfare}',
+//                  )
+//                : Text(
+//                    'Add Location',
+//                    style: TextStyle(color: Theme.of(context).hintColor),
+//                  ),
+//            subtitle: _location != null
+//                ? Text(
+//                    '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
+//                  )
+//                : null,
+//            onTap: () async {
+//              var apiKey;
+//              if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
+//              if (Platform.isIOS) apiKey = kIosMapsApiKey;
+//              final result = await showLocationPicker(context, apiKey);
+//              FocusScope.of(context).requestFocus(new FocusNode());
+//              if (result == null) return;
+//
+//              final placemarks = await Geolocator().placemarkFromCoordinates(
+//                result.latLng.latitude,
+//                result.latLng.longitude,
+//              );
+//              setState(() => _location = placemarks.first);
+//            },
+//          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.edit),
@@ -339,9 +339,8 @@ class _SpacePageState extends State<SpacePage> {
       }
     } catch (e) {
       print(e);
-      Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text('Image could not be saved')),
-      );
+      Fluttertoast.showToast(
+          msg: 'Image could not be saved', textColor: Colors.amber);
     }
     setState(() => _uploading = false);
   }

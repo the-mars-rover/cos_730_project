@@ -9,9 +9,10 @@ import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
-Future<void> grantEntry(
+/// Returns true if entry was granted, false if not.
+Future<bool> grantEntry(
     BuildContext context, Space space, RsaIdDocument scannedIdDocument) async {
-  await showDialog(
+  return await showDialog(
     context: context,
     builder: (context) {
       return EntryDialog(space: space, scannedIdDocument: scannedIdDocument);
@@ -135,10 +136,10 @@ class EntryDialog extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
+        OutlineButton(
+          child: Text('Continue'),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
       ],
@@ -163,10 +164,10 @@ class EntryDialog extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
+        OutlineButton(
+          child: Text('Continue'),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
           },
         ),
       ],

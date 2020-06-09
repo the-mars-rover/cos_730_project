@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_event.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_bloc.dart';
@@ -71,17 +72,11 @@ class SpacesPage extends StatelessWidget {
     return BlocConsumer<SpacesBloc, SpacesState>(
       listener: (context, state) {
         if (state is SpaceSaved) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text('${state.space.title} Saved')),
-          );
+          Fluttertoast.showToast(msg: '${state.space.title} Saved');
         }
 
         if (state is ErrorSavingSpace) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error, style: TextStyle(color: Colors.amber)),
-            ),
-          );
+          Fluttertoast.showToast(msg: state.error, textColor: Colors.amber);
         }
       },
       builder: (context, state) {

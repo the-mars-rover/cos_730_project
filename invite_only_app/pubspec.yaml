@@ -96,6 +96,10 @@ dependencies:
   # https://pub.dev/packages/libphonenumber
   libphonenumber: ^1.0.1
 
+  # Android and iOS Toast Library for Flutter
+  # See https://pub.dev/packages/fluttertoast
+  fluttertoast: ^4.0.1
+
   invite_only_repo:
     path: ../invite_only_repo
 

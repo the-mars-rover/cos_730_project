@@ -40,7 +40,7 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
   }
 
   Stream<SpacesState> _mapSaveSpaceToState(SaveSpace event) async* {
-    yield SavingSpace();
+    yield SavingSpace(event.space);
 
     try {
       final phone = await _inviteOnlyRepo.currentUser();
