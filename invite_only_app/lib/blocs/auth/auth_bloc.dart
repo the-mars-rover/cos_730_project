@@ -127,4 +127,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   static of(BuildContext context) => BlocProvider.of<AuthBloc>(context);
+
+  String get phoneNumber {
+    final currState = state;
+    if (currState is UserAuthenticated) {
+      return currState.phoneNumber;
+    }
+
+    return null;
+  }
 }

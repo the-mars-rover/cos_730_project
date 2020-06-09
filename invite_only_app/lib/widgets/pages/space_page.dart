@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:invite_only_app/main.dart';
 import 'package:invite_only_app/widgets/pages/members_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
@@ -28,7 +30,6 @@ Future<Space> editSpace(BuildContext context, Space space) async {
   }));
 }
 
-// TODO: Add support for image and location selection
 class SpacePage extends StatefulWidget {
   final Space space;
 
@@ -44,7 +45,9 @@ class _SpacePageState extends State<SpacePage> {
   Set<String> _managerPhones;
   Set<String> _inviterPhones;
   Set<String> _guardPhones;
+  String _imageUrl;
   Placemark _location;
+  bool _uploading;
 
   @override
   void initState() {
@@ -54,6 +57,8 @@ class _SpacePageState extends State<SpacePage> {
     _managerPhones = widget.space.managerPhones;
     _inviterPhones = widget.space.inviterPhones;
     _guardPhones = widget.space.guardPhones;
+    _imageUrl = widget.space?.imageUrl;
+    _uploading = false;
     if (widget.space.locationLatitude != null &&
         widget.space.locationLongitude != null) {
       Geolocator()
@@ -61,9 +66,7 @@ class _SpacePageState extends State<SpacePage> {
               widget.space.locationLatitude, widget.space.locationLongitude)
           .then((p) {
         if (p == null) return;
-        setState(() {
-          _location = p.first;
-        });
+        setState(() => _location = p.first);
       });
     }
   }
@@ -92,125 +95,216 @@ class _SpacePageState extends State<SpacePage> {
               managerPhones: _managerPhones,
               inviterPhones: _inviterPhones,
               guardPhones: _guardPhones,
+              imageUrl: _imageUrl,
               locationLatitude: _location?.position?.latitude,
               locationLongitude: _location?.position?.longitude,
             ));
           },
         )
       ],
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: Icon(Icons.title),
-              title: TextFormField(
-                controller: _titleController,
-                validator: (text) {
-                  if (text.isEmpty) {
-                    return 'You must enter a title';
-                  }
+      body: _buildForm(context),
+    );
+  }
 
-                  if (text.length < 3) {
-                    return 'The title must be at least 3 characters long';
-                  }
+  Form _buildForm(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: ListView(
+        children: <Widget>[
+          _buildImage(context),
+          ListTile(
+            leading: Icon(Icons.title),
+            title: TextFormField(
+              controller: _titleController,
+              validator: (text) {
+                if (text.isEmpty) {
+                  return 'You must enter a title';
+                }
 
-                  return null;
-                },
-                decoration: InputDecoration(
-                  hintText: 'Add Title',
-                  border: InputBorder.none,
-                ),
+                if (text.length < 3) {
+                  return 'The title must be at least 3 characters long';
+                }
+
+                return null;
+              },
+              decoration: InputDecoration(
+                hintText: 'Add Title',
+                border: InputBorder.none,
               ),
             ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.location_on),
-              title: _location != null
-                  ? Text(
-                      '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
-                    )
-                  : Text(
-                      'Add Location',
-                      style: TextStyle(color: Theme.of(context).hintColor),
-                    ),
-              subtitle: _location != null
-                  ? Text(
-                      '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
-                    )
-                  : null,
-              onTap: () async {
-                var apiKey;
-                if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
-                if (Platform.isIOS) apiKey = kIosMapsApiKey;
-
-                final result = await showLocationPicker(context, apiKey);
-                if (result == null) return;
-
-                final placemarks = await Geolocator().placemarkFromCoordinates(
-                  result.latLng.latitude,
-                  result.latLng.longitude,
-                );
-                setState(() => _location = placemarks.first);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('Managers'),
-              subtitle: Text('May edit or delete the space'),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () async {
-                final edited =
-                    await editMembers(context, 'Managers', _managerPhones);
-                setState(() => _managerPhones = edited);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text('Inviters'),
-              subtitle: Text('May create invites for the space'),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () async {
-                final edited =
-                    await editMembers(context, 'Inviters', _inviterPhones);
-                setState(() => _inviterPhones = edited);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.security),
-              title: Text('Guards'),
-              subtitle: Text('May grant entry to the space'),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () async {
-                final edited =
-                    await editMembers(context, 'Guards', _guardPhones);
-                setState(() => _guardPhones = edited);
-              },
-            ),
-            Divider(),
-            Visibility(
-              visible: widget.space.id != null,
-              child: ListTile(
-                title: OutlineButton.icon(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  label: Text(
-                    "DELETE SPACE",
-                    style: TextStyle(color: Colors.red),
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.location_on),
+            title: _location != null
+                ? Text(
+                    '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
+                  )
+                : Text(
+                    'Add Location',
+                    style: TextStyle(color: Theme.of(context).hintColor),
                   ),
-                  borderSide: BorderSide(color: Colors.red),
-                  highlightedBorderColor: Colors.red,
-                  onPressed: () {
-                    // TODO: Delete space
-                  },
+            subtitle: _location != null
+                ? Text(
+                    '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
+                  )
+                : null,
+            onTap: () async {
+              var apiKey;
+              if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
+              if (Platform.isIOS) apiKey = kIosMapsApiKey;
+
+              final result = await showLocationPicker(context, apiKey);
+              if (result == null) return;
+
+              final placemarks = await Geolocator().placemarkFromCoordinates(
+                result.latLng.latitude,
+                result.latLng.longitude,
+              );
+              setState(() => _location = placemarks.first);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Managers'),
+            subtitle: Text('May edit or delete the space'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () async {
+              final edited =
+                  await editMembers(context, 'Managers', _managerPhones);
+              setState(() => _managerPhones = edited);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.mail),
+            title: Text('Inviters'),
+            subtitle: Text('May create invites for the space'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () async {
+              final edited =
+                  await editMembers(context, 'Inviters', _inviterPhones);
+              setState(() => _inviterPhones = edited);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.security),
+            title: Text('Guards'),
+            subtitle: Text('May grant entry to the space'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () async {
+              final edited = await editMembers(context, 'Guards', _guardPhones);
+              setState(() => _guardPhones = edited);
+            },
+          ),
+          Divider(),
+          Visibility(
+            visible: widget.space.id != null,
+            child: ListTile(
+              title: OutlineButton.icon(
+                icon: Icon(Icons.delete, color: Colors.red),
+                label: Text(
+                  "DELETE SPACE",
+                  style: TextStyle(color: Colors.red),
                 ),
+                borderSide: BorderSide(color: Colors.red),
+                highlightedBorderColor: Colors.red,
+                onPressed: () {
+                  // TODO: Delete space
+                },
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImage(BuildContext context) {
+    if (_uploading) {
+      return Container(
+        height: 150.0,
+        decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      height: 150.0,
+      decoration: BoxDecoration(
+        image: _imageUrl != null
+            ? DecorationImage(
+                image: NetworkImage(_imageUrl),
+                fit: BoxFit.cover,
+              )
+            : null,
+        color: Colors.grey.withOpacity(0.5),
+      ),
+      child: Stack(
+        children: <Widget>[
+          _buildUploadButton(context),
+          Visibility(
+            visible: _imageUrl == null,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.image, size: 32.0),
+                  Text('No image added'),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Positioned _buildUploadButton(BuildContext context) {
+    return Positioned(
+      bottom: 8.0,
+      right: 8.0,
+      child: ClipOval(
+        child: Material(
+          color: Theme.of(context).canvasColor, // button color
+          child: InkWell(
+            splashColor: Theme.of(context).primaryColor, // inkwell color
+            child: SizedBox(
+              width: 64.0,
+              height: 64.0,
+              child: Icon(Icons.add_a_photo),
+            ),
+            onTap: () {
+              _setImage(context);
+            },
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _setImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    if (pickedFile == null) return;
+    final image = File(pickedFile.path);
+
+    setState(() => _uploading = true);
+    final storage = FirebaseStorage.instance;
+    final ref = storage.ref().child('images/');
+    final snapshot = await ref.putFile(image).onComplete;
+    if (snapshot.error == null) {
+      final url = await snapshot.ref.getDownloadURL();
+      setState(() => _imageUrl = url);
+    } else {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(content: Text('Image could not be saved')),
+      );
+    }
+    setState(() => _uploading = false);
   }
 }
