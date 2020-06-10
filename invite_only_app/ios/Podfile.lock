@@ -1,4 +1,6 @@
 PODS:
+  - android_intent (0.0.1):
+    - Flutter
   - camera (0.0.1):
     - Flutter
   - contacts_service (0.2.1):
@@ -28,6 +30,9 @@ PODS:
   - Firebase/MLVisionTextModel (6.18.0):
     - Firebase/CoreOnly
     - FirebaseMLVisionTextModel (~> 0.19.0)
+  - Firebase/Storage (6.18.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 3.5.0)
   - firebase_analytics (0.0.1):
     - Firebase/Analytics (~> 6.0)
     - Firebase/Core
@@ -46,6 +51,9 @@ PODS:
   - firebase_ml_vision_raw_bytes (0.1.1):
     - Firebase/Core
     - Firebase/MLVision
+    - Flutter
+  - firebase_storage (0.0.1):
+    - Firebase/Storage
     - Flutter
   - FirebaseAnalytics (6.3.0):
     - FirebaseCore (~> 6.6)
@@ -110,7 +118,24 @@ PODS:
     - FirebaseMLVision (~> 0.19)
   - FirebaseMLVisionTextModel (0.19.0):
     - FirebaseMLVision (~> 0.19)
+  - FirebaseStorage (3.5.0):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - Flutter (1.0.0)
+  - flutter_plugin_android_lifecycle (0.0.1):
+    - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+  - "geolocator (5.3.2+2)":
+    - Flutter
+  - google_api_availability (2.0.4):
+    - Flutter
+  - google_map_location_picker (2.1.1):
+    - Flutter
+  - google_maps_flutter (0.0.1):
+    - Flutter
+    - GoogleMaps
   - GoogleAPIClientForREST/Core (1.3.11):
     - GTMSessionFetcher (>= 1.1.7)
   - GoogleAPIClientForREST/Vision (1.3.11):
@@ -126,6 +151,11 @@ PODS:
   - GoogleDataTransportCCTSupport (1.4.1):
     - GoogleDataTransport (~> 4.0)
     - nanopb (~> 0.3.901)
+  - GoogleMaps (3.8.0):
+    - GoogleMaps/Maps (= 3.8.0)
+  - GoogleMaps/Base (3.8.0)
+  - GoogleMaps/Maps (3.8.0):
+    - GoogleMaps/Base
   - GoogleToolboxForMac/DebugUtils (2.2.2):
     - GoogleToolboxForMac/Defines (= 2.2.2)
   - GoogleToolboxForMac/Defines (2.2.2)
@@ -161,21 +191,28 @@ PODS:
   - GTMSessionFetcher/Core (1.3.1)
   - GTMSessionFetcher/Full (1.3.1):
     - GTMSessionFetcher/Core (= 1.3.1)
+  - image_picker (0.0.1):
+    - Flutter
   - libphonenumber (0.0.1):
     - Flutter
     - libPhoneNumber-iOS
   - libPhoneNumber-iOS (0.9.15)
+  - location_permissions (3.0.0):
+    - Flutter
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
+  - package_info (0.0.1):
+    - Flutter
   - "permission_handler (5.0.0+hotfix.8)":
     - Flutter
   - PromisesObjC (1.2.8)
   - Protobuf (3.11.4)
 
 DEPENDENCIES:
+  - android_intent (from `.symlinks/plugins/android_intent/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - Firebase/Analytics
@@ -189,8 +226,18 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
   - firebase_ml_vision_raw_bytes (from `.symlinks/plugins/firebase_ml_vision_raw_bytes/ios`)
+  - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_plugin_android_lifecycle (from `.symlinks/plugins/flutter_plugin_android_lifecycle/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - google_api_availability (from `.symlinks/plugins/google_api_availability/ios`)
+  - google_map_location_picker (from `.symlinks/plugins/google_map_location_picker/ios`)
+  - google_maps_flutter (from `.symlinks/plugins/google_maps_flutter/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
+  - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 SPEC REPOS:
@@ -210,10 +257,12 @@ SPEC REPOS:
     - FirebaseMLVisionFaceModel
     - FirebaseMLVisionLabelModel
     - FirebaseMLVisionTextModel
+    - FirebaseStorage
     - GoogleAPIClientForREST
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
+    - GoogleMaps
     - GoogleToolboxForMac
     - GoogleUtilities
     - GTMSessionFetcher
@@ -223,6 +272,8 @@ SPEC REPOS:
     - Protobuf
 
 EXTERNAL SOURCES:
+  android_intent:
+    :path: ".symlinks/plugins/android_intent/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
   contacts_service:
@@ -239,14 +290,35 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core_web/ios"
   firebase_ml_vision_raw_bytes:
     :path: ".symlinks/plugins/firebase_ml_vision_raw_bytes/ios"
+  firebase_storage:
+    :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_plugin_android_lifecycle:
+    :path: ".symlinks/plugins/flutter_plugin_android_lifecycle/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
+  geolocator:
+    :path: ".symlinks/plugins/geolocator/ios"
+  google_api_availability:
+    :path: ".symlinks/plugins/google_api_availability/ios"
+  google_map_location_picker:
+    :path: ".symlinks/plugins/google_map_location_picker/ios"
+  google_maps_flutter:
+    :path: ".symlinks/plugins/google_maps_flutter/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   libphonenumber:
     :path: ".symlinks/plugins/libphonenumber/ios"
+  location_permissions:
+    :path: ".symlinks/plugins/location_permissions/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
+  android_intent: 367df2f1277a74e4a90e14a8ab3df3112d087052
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   contacts_service: d212985196c101372bb55c42f41dae7be59ab811
   Firebase: 0490eca762a72e4f1582319539153897f1508dee
@@ -256,6 +328,7 @@ SPEC CHECKSUMS:
   firebase_core: 335c02abd48672b7c83c683df833d0488a72e73e
   firebase_core_web: d501d8b946b60c8af265428ce483b0fff5ad52d1
   firebase_ml_vision_raw_bytes: 091b91d47f4b92ebd2129f8b94e84473f4efea90
+  firebase_storage: 22966fce4aa6e8848cbaa017df62107cee29f327
   FirebaseAnalytics: 058d71e714a1a6804d9e0f25e3bb18e377a51579
   FirebaseAuth: 5ce2b03a3d7fe56b7a6e4c5ec7ff1522890b1d6f
   FirebaseAuthInterop: a0f37ae05833af156e72028f648d313f7e7592e9
@@ -270,21 +343,32 @@ SPEC CHECKSUMS:
   FirebaseMLVisionFaceModel: d6ba42000f263df52187aee936262bc2002b3389
   FirebaseMLVisionLabelModel: 7638a20d27219d5baa4b534a62375fc1d5bd077d
   FirebaseMLVisionTextModel: c264caa3100ca804580bf2a7c1cb9ff390d1f471
+  FirebaseStorage: 6c5263796af3b1be82ed173598aade47535fe125
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_plugin_android_lifecycle: dc0b544e129eebb77a6bfb1239d4d1c673a60a35
+  fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
+  geolocator: f7622e0e7e2a24718285b73916d60c4a54b9f5b6
+  google_api_availability: 15fa42a8cd83c0a6738507ffe6e87096f12abcb8
+  google_map_location_picker: 01403f2fb025f6aedf0b36b5f15eccc9415a55f1
+  google_maps_flutter: df4e7de95264aa0a2f11aac0fc7e313acb8ffc7e
   GoogleAPIClientForREST: 0f19a8280dfe6471f76016645d26eb5dae305101
   GoogleAppMeasurement: 39ecba10918b21c83877d392246157f65db351cf
   GoogleDataTransport: 653963cf5be60fb59cf051e070f0836fdc305f81
   GoogleDataTransportCCTSupport: 84e4d4bbab642f2e9d83ee65d78aca2b5527d314
+  GoogleMaps: 7c8d66d70e4e8c300f43a7219d8fdaad7b325a9a
   GoogleToolboxForMac: 800648f8b3127618c1b59c7f97684427630c5ea3
   GoogleUtilities: 06eb53bb579efe7099152735900dd04bf09e7275
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  image_picker: 66aa71bc96850a90590a35d4c4a2907b0d823109
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
+  location_permissions: 42abd62dcc866b92e06506772d2cc42d14be7bb0
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   permission_handler: c2a19c5cb3ed2d7054fc4baa8ff1b86f5dcfedfd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Protobuf: 176220c526ad8bd09ab1fb40a978eac3fef665f7
 
-PODFILE CHECKSUM: 772b5572bbc9ad404bee1bdd929b53269bd115b6
+PODFILE CHECKSUM: 241f31b9040ffe32b4fc5dc11664305305b45306
 
 COCOAPODS: 1.8.4
