@@ -23,7 +23,7 @@ Future<Space> createSpace(BuildContext context) async {
 /// If the space has been deleted, return null.
 Future<Space> editSpace(BuildContext context, Space space) async {
   return await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-    return SpacePage(space: space);
+    return SpacePage(space: space.copyWith());
   }));
 }
 

@@ -60,9 +60,8 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
       yield SpaceSaved(space);
       this.add(LoadSpaces());
     } catch (e) {
-      yield ErrorSavingSpace(
+      yield SpacesError(
           "Sorry, an unexpected error occurred. Please try again later.");
-      this.add(LoadSpaces());
     }
   }
 
@@ -75,9 +74,8 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
       yield SpaceDeleted(event.space);
       this.add(LoadSpaces());
     } catch (e) {
-      yield ErrorSavingSpace(
+      yield SpacesError(
           "Sorry, an unexpected error occurred. Please try again later.");
-      this.add(LoadSpaces());
     }
   }
 

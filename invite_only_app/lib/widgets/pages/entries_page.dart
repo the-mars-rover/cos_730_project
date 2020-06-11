@@ -37,8 +37,9 @@ class EntriesPage extends StatelessWidget {
           Fluttertoast.showToast(msg: '${state.space.title} Saved');
         }
 
-        if (state is ErrorSavingSpace) {
-          Fluttertoast.showToast(msg: state.error, textColor: Colors.amber);
+        if (state is SpaceDeleted) {
+          Fluttertoast.showToast(msg: '${state.space.title} Deleted');
+          Navigator.of(context).pop();
         }
       },
       builder: (context, state) {
@@ -64,7 +65,11 @@ class EntriesPage extends StatelessWidget {
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         }
 
-        if (state is ErrorSavingSpace) {
+        if (state is DeletingSpace) {
+          return Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        if (state is SpaceDeleted) {
           return Scaffold(body: Center(child: CircularProgressIndicator()));
         }
 
@@ -164,18 +169,15 @@ class EntriesPage extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         label: 'Manage',
         onTap: () async {
-          final updated = await editSpace(
-            context,
-            loadedSpace.copyWith(),
-          );
+          final updated = await editSpace(context, loadedSpace);
 
-          // if updated didn't change, nothing to do here
-          if (updated == loadedSpace) return;
+          // if space was deleted, add delete event.
+          if (updated == null)
+            SpacesBloc.of(context).add(DeleteSpace(loadedSpace));
 
-          //TODO: delete space if updated space is null
-          if (updated == null) return;
-
-          SpacesBloc.of(context).add(SaveSpace(updated));
+          // if space was changed, save space.
+          if (updated != loadedSpace)
+            SpacesBloc.of(context).add(SaveSpace(updated));
         },
       ));
     }

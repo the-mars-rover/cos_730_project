@@ -75,8 +75,8 @@ class SpacesPage extends StatelessWidget {
           Fluttertoast.showToast(msg: '${state.space.title} Saved');
         }
 
-        if (state is ErrorSavingSpace) {
-          Fluttertoast.showToast(msg: state.error, textColor: Colors.amber);
+        if (state is SpaceDeleted) {
+          Fluttertoast.showToast(msg: '${state.space.title} Deleted');
         }
       },
       builder: (context, state) {
@@ -102,7 +102,7 @@ class SpacesPage extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
 
-        if (state is ErrorSavingSpace) {
+        if (state is SpaceDeleted) {
           return Center(child: CircularProgressIndicator());
         }
 
