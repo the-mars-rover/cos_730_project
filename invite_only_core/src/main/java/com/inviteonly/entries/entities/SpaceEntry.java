@@ -26,7 +26,7 @@ public class SpaceEntry {
 	@NotNull
 	private LocalDateTime entryDate;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@NotNull
 	private IdDocument idDocument;
 

@@ -2,6 +2,7 @@ package com.inviteonly;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.gson.Gson;
+import com.inviteonly.docs.entities.DriversLicense;
 import com.inviteonly.docs.entities.IdBook;
 import com.inviteonly.docs.entities.IdCard;
 import com.inviteonly.docs.repositories.IDocsRepository;
@@ -34,6 +35,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -643,7 +645,6 @@ public class InviteOnlyCoreIntegrationTest {
 		Invite testInvite = invitesRepository.save(getTestInvite(testSpace));
 		SpaceEntry testEntry = entryRepository.save(getTestEntry(testSpace));
 
-
 		// When
 		mvc.perform(MockMvcRequestBuilders.delete("/spaces/" + savedSpace.getId()).with(csrf())
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
@@ -946,6 +947,30 @@ public class InviteOnlyCoreIntegrationTest {
 
 	//region < Helper Methods >
 
+	private DriversLicense getTestDrivers() {
+		DriversLicense drivers = new DriversLicense();
+		drivers.setPhoneNumber(PHONE);
+		drivers.setIdNumber("5409145800080");
+		drivers.setFirstNames("John");
+		drivers.setSurname("Snow");
+		drivers.setGender("M");
+		drivers.setBirthDate(LocalDate.of(1954, 9, 14));
+		drivers.setDriverRestrictions("");
+		drivers.setIdCountryOfIssue("ZA");
+		drivers.setIdNumberType("ZA");
+		drivers.setLicenseCountryOfIssue("ZA");
+		drivers.setLicenseIssueNumber("000000");
+		drivers.setLicenseNumber("000000");
+		drivers.setValidFrom(LocalDate.now().minus(Period.ofDays(365)));
+		drivers.setValidTo(LocalDate.now().minus(Period.ofDays(365)));
+		drivers.setPrdpCode("prdpCode");
+		drivers.setPrdpExpiry(LocalDate.now().minus(Period.ofDays(365)));
+		drivers.setVehicleCodes(List.of("B"));
+		drivers.setVehicleRestrictions(List.of("0000"));
+
+		return drivers;
+	}
+
 	private IdCard getTestIdCard() {
 		IdCard idCard = new IdCard();
 		idCard.setPhoneNumber(PHONE);
@@ -995,7 +1020,7 @@ public class InviteOnlyCoreIntegrationTest {
 		SpaceEntry entry = new SpaceEntry();
 		entry.setSpace(space);
 		entry.setEntryDate(LocalDateTime.now());
-		entry.setIdDocument(getTestIdBook());
+		entry.setIdDocument(getTestDrivers());
 		entry.setGuardPhone("+27817778888");
 		return entry;
 	}
