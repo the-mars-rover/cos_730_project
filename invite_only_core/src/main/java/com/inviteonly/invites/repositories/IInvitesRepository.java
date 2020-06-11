@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface IInvitesRepository extends JpaRepository<Invite, String> {
+public interface IInvitesRepository extends JpaRepository<Invite, Long> {
 	@Query("select i from Invite i " +
 			"left join i.entry e " +
 			"where e is null " +

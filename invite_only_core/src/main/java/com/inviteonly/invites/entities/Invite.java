@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Invite {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private int id;
+	private Long id;
 
 	@NotNull
 	private String code;
