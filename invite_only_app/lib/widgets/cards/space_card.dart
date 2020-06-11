@@ -14,7 +14,7 @@ class SpaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
       bloc: AuthBloc.of(context),
-      builder: (_, state) {
+      builder: (context, state) {
         if (state is UserAuthenticated) {
           final phone = state.phoneNumber;
 

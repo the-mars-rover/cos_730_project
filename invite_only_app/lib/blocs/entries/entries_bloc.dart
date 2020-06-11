@@ -29,7 +29,7 @@ class EntriesBloc extends Bloc<EntriesEvent, EntriesState> {
     try {
       final entries = await _inviteOnlyRepo.fetchEntries(event.space, 20, 0);
 
-      yield EntriesLoaded(event.space, entries);
+      yield EntriesLoaded(entries);
     } on NotFound {
       yield EntriesError("This space no longer exists.");
     } catch (e) {

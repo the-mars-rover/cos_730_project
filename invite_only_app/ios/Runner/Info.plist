@@ -54,5 +54,15 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs your location to test the location feature of the Google Maps location picker plugin.</string>
+    <key>io.flutter.embedded_views_preview</key>
+    <true/>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires access to the photo library to function properly.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera to function properly.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires access to the microphone to function properly.</string>
 </dict>
 </plist>

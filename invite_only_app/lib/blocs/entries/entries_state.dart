@@ -11,13 +11,12 @@ class EntriesLoading extends EntriesState {
 }
 
 class EntriesLoaded extends EntriesState {
-  final Space space;
   final List<Entry> entries;
 
-  EntriesLoaded(this.space, this.entries);
+  EntriesLoaded(this.entries);
 
   @override
-  List<Object> get props => [this.space, this.entries];
+  List<Object> get props => [this.entries];
 }
 
 class EntriesError extends EntriesState {

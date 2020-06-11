@@ -86,7 +86,6 @@ class _$IdDocumentTearOff {
       @required String surname,
       @required String gender,
       @required DateTime birthDate,
-      @required List<DateTime> issueDates,
       @required String licenseNumber,
       @required List<String> vehicleCodes,
       String prdpCode,
@@ -108,7 +107,6 @@ class _$IdDocumentTearOff {
       surname: surname,
       gender: gender,
       birthDate: birthDate,
-      issueDates: issueDates,
       licenseNumber: licenseNumber,
       vehicleCodes: vehicleCodes,
       prdpCode: prdpCode,
@@ -177,7 +175,6 @@ mixin _$IdDocument {
             String surname,
             String gender,
             DateTime birthDate,
-            List<DateTime> issueDates,
             String licenseNumber,
             List<String> vehicleCodes,
             String prdpCode,
@@ -221,7 +218,6 @@ mixin _$IdDocument {
         String surname,
         String gender,
         DateTime birthDate,
-        List<DateTime> issueDates,
         String licenseNumber,
         List<String> vehicleCodes,
         String prdpCode,
@@ -459,7 +455,6 @@ class _$IdBook with DiagnosticableTreeMixin implements IdBook {
             String surname,
             String gender,
             DateTime birthDate,
-            List<DateTime> issueDates,
             String licenseNumber,
             List<String> vehicleCodes,
             String prdpCode,
@@ -512,7 +507,6 @@ class _$IdBook with DiagnosticableTreeMixin implements IdBook {
         String surname,
         String gender,
         DateTime birthDate,
-        List<DateTime> issueDates,
         String licenseNumber,
         List<String> vehicleCodes,
         String prdpCode,
@@ -851,7 +845,6 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
             String surname,
             String gender,
             DateTime birthDate,
-            List<DateTime> issueDates,
             String licenseNumber,
             List<String> vehicleCodes,
             String prdpCode,
@@ -916,7 +909,6 @@ class _$IdCard with DiagnosticableTreeMixin implements IdCard {
         String surname,
         String gender,
         DateTime birthDate,
-        List<DateTime> issueDates,
         String licenseNumber,
         List<String> vehicleCodes,
         String prdpCode,
@@ -1043,7 +1035,6 @@ abstract class $DriversLicenseCopyWith<$Res>
       String surname,
       String gender,
       DateTime birthDate,
-      List<DateTime> issueDates,
       String licenseNumber,
       List<String> vehicleCodes,
       String prdpCode,
@@ -1077,7 +1068,6 @@ class _$DriversLicenseCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
     Object surname = freezed,
     Object gender = freezed,
     Object birthDate = freezed,
-    Object issueDates = freezed,
     Object licenseNumber = freezed,
     Object vehicleCodes = freezed,
     Object prdpCode = freezed,
@@ -1103,9 +1093,6 @@ class _$DriversLicenseCopyWithImpl<$Res> extends _$IdDocumentCopyWithImpl<$Res>
       gender: gender == freezed ? _value.gender : gender as String,
       birthDate:
           birthDate == freezed ? _value.birthDate : birthDate as DateTime,
-      issueDates: issueDates == freezed
-          ? _value.issueDates
-          : issueDates as List<DateTime>,
       licenseNumber: licenseNumber == freezed
           ? _value.licenseNumber
           : licenseNumber as String,
@@ -1151,7 +1138,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
       @required this.surname,
       @required this.gender,
       @required this.birthDate,
-      @required this.issueDates,
       @required this.licenseNumber,
       @required this.vehicleCodes,
       this.prdpCode,
@@ -1170,7 +1156,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
         assert(surname != null),
         assert(gender != null),
         assert(birthDate != null),
-        assert(issueDates != null),
         assert(licenseNumber != null),
         assert(vehicleCodes != null),
         assert(idCountryOfIssue != null),
@@ -1203,8 +1188,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
   @override
   final DateTime birthDate;
   @override
-  final List<DateTime> issueDates;
-  @override
   final String licenseNumber;
   @override
   final List<String> vehicleCodes;
@@ -1231,7 +1214,7 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'IdDocument.driversLicense(type: $type, id: $id, idNumber: $idNumber, phoneNumber: $phoneNumber, firstNames: $firstNames, surname: $surname, gender: $gender, birthDate: $birthDate, issueDates: $issueDates, licenseNumber: $licenseNumber, vehicleCodes: $vehicleCodes, prdpCode: $prdpCode, idCountryOfIssue: $idCountryOfIssue, licenseCountryOfIssue: $licenseCountryOfIssue, vehicleRestrictions: $vehicleRestrictions, idNumberType: $idNumberType, driverRestrictions: $driverRestrictions, prdpExpiry: $prdpExpiry, licenseIssueNumber: $licenseIssueNumber, validFrom: $validFrom, validTo: $validTo)';
+    return 'IdDocument.driversLicense(type: $type, id: $id, idNumber: $idNumber, phoneNumber: $phoneNumber, firstNames: $firstNames, surname: $surname, gender: $gender, birthDate: $birthDate, licenseNumber: $licenseNumber, vehicleCodes: $vehicleCodes, prdpCode: $prdpCode, idCountryOfIssue: $idCountryOfIssue, licenseCountryOfIssue: $licenseCountryOfIssue, vehicleRestrictions: $vehicleRestrictions, idNumberType: $idNumberType, driverRestrictions: $driverRestrictions, prdpExpiry: $prdpExpiry, licenseIssueNumber: $licenseIssueNumber, validFrom: $validFrom, validTo: $validTo)';
   }
 
   @override
@@ -1247,7 +1230,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
       ..add(DiagnosticsProperty('surname', surname))
       ..add(DiagnosticsProperty('gender', gender))
       ..add(DiagnosticsProperty('birthDate', birthDate))
-      ..add(DiagnosticsProperty('issueDates', issueDates))
       ..add(DiagnosticsProperty('licenseNumber', licenseNumber))
       ..add(DiagnosticsProperty('vehicleCodes', vehicleCodes))
       ..add(DiagnosticsProperty('prdpCode', prdpCode))
@@ -1287,9 +1269,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
             (identical(other.birthDate, birthDate) ||
                 const DeepCollectionEquality()
                     .equals(other.birthDate, birthDate)) &&
-            (identical(other.issueDates, issueDates) ||
-                const DeepCollectionEquality()
-                    .equals(other.issueDates, issueDates)) &&
             (identical(other.licenseNumber, licenseNumber) ||
                 const DeepCollectionEquality()
                     .equals(other.licenseNumber, licenseNumber)) &&
@@ -1338,7 +1317,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
       const DeepCollectionEquality().hash(surname) ^
       const DeepCollectionEquality().hash(gender) ^
       const DeepCollectionEquality().hash(birthDate) ^
-      const DeepCollectionEquality().hash(issueDates) ^
       const DeepCollectionEquality().hash(licenseNumber) ^
       const DeepCollectionEquality().hash(vehicleCodes) ^
       const DeepCollectionEquality().hash(prdpCode) ^
@@ -1387,7 +1365,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
             String surname,
             String gender,
             DateTime birthDate,
-            List<DateTime> issueDates,
             String licenseNumber,
             List<String> vehicleCodes,
             String prdpCode,
@@ -1417,7 +1394,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
         surname,
         gender,
         birthDate,
-        issueDates,
         licenseNumber,
         vehicleCodes,
         prdpCode,
@@ -1460,7 +1436,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
         String surname,
         String gender,
         DateTime birthDate,
-        List<DateTime> issueDates,
         String licenseNumber,
         List<String> vehicleCodes,
         String prdpCode,
@@ -1487,7 +1462,6 @@ class _$DriversLicense with DiagnosticableTreeMixin implements DriversLicense {
           surname,
           gender,
           birthDate,
-          issueDates,
           licenseNumber,
           vehicleCodes,
           prdpCode,
@@ -1551,7 +1525,6 @@ abstract class DriversLicense implements IdDocument {
       @required String surname,
       @required String gender,
       @required DateTime birthDate,
-      @required List<DateTime> issueDates,
       @required String licenseNumber,
       @required List<String> vehicleCodes,
       String prdpCode,
@@ -1580,7 +1553,6 @@ abstract class DriversLicense implements IdDocument {
   String get surname;
   String get gender;
   DateTime get birthDate;
-  List<DateTime> get issueDates;
   String get licenseNumber;
   List<String> get vehicleCodes;
   String get prdpCode;
@@ -1727,7 +1699,6 @@ class _$Passport with DiagnosticableTreeMixin implements Passport {
             String surname,
             String gender,
             DateTime birthDate,
-            List<DateTime> issueDates,
             String licenseNumber,
             List<String> vehicleCodes,
             String prdpCode,
@@ -1779,7 +1750,6 @@ class _$Passport with DiagnosticableTreeMixin implements Passport {
         String surname,
         String gender,
         DateTime birthDate,
-        List<DateTime> issueDates,
         String licenseNumber,
         List<String> vehicleCodes,
         String prdpCode,

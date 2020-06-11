@@ -52,6 +52,10 @@ dependencies:
   # See https://pub.dev/packages/firebase_analytics
   firebase_analytics: ^5.0.11
 
+  # A Flutter plugin to use the Firebase Cloud Storage API.
+  # See https://pub.dev/packages/firebase_storage
+  firebase_storage: ^3.1.6
+
   # A Flutter package that helps implement the BLoC pattern.
   # See https://pub.dev/packages/flutter_bloc
   flutter_bloc: ^4.0.0
@@ -75,6 +79,26 @@ dependencies:
   # Flutter package to render a Material Design Speed Dial.
   # See https://pub.dev/packages/flutter_speed_dial
   flutter_speed_dial: ^1.2.5
+
+  # Location picker using the official google_maps_flutter.
+  # See https://pub.dev/packages/google_map_location_picker
+  google_map_location_picker: ^3.3.2
+
+  # A Flutter geolocation plugin which provides easy access to platform specific location services
+  # See https://pub.dev/packages/geolocator
+  geolocator: ^5.3.2+2
+
+  # A Flutter plugin for iOS and Android for picking images from the image library, and taking new pictures with the camera.
+  # See https://pub.dev/packages/image_picker
+  image_picker: ^0.6.7+1
+
+  # This is a Flutter implementation of libphonenumber.
+  # https://pub.dev/packages/libphonenumber
+  libphonenumber: ^1.0.1
+
+  # Android and iOS Toast Library for Flutter
+  # See https://pub.dev/packages/fluttertoast
+  fluttertoast: ^4.0.1
 
   invite_only_repo:
     path: ../invite_only_repo

@@ -9,6 +9,13 @@ class AuthInProgress extends AuthState {}
 
 class UserUnauthenticated extends AuthState {}
 
+class SmsCodeSent extends AuthState {
+  final String phoneNumber;
+  final String verificationId;
+
+  SmsCodeSent(this.phoneNumber, this.verificationId);
+}
+
 class UserAuthenticated extends AuthState {
   final String phoneNumber;
 

@@ -1,91 +1,146 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only_app/blocs/space/space_bloc.dart';
-import 'package:invite_only_app/blocs/space/space_event.dart';
-import 'package:invite_only_app/blocs/space/space_state.dart';
-import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:invite_only_app/widgets/pages/members_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
+import 'package:uuid/uuid.dart';
 
 /// Create a new space and return the space that was created, or null if no space was created.
 Future<Space> createSpace(BuildContext context) async {
-  return await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-    return SpacePage(
-      space: Space(
-          title: '',
-          guardPhones: Set(),
-          inviterPhones: Set(),
-          managerPhones: Set()),
-    );
+  return Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+    return SpacePage();
   }));
 }
 
-/// Update the space and return the updated space, or null if no space was created.
+/// Update the space and return the updated space.
+///
+/// If no updates were made to the space, return the original space.
+/// If the space has been deleted, return null.
 Future<Space> editSpace(BuildContext context, Space space) async {
   return await Navigator.of(context).push(MaterialPageRoute(builder: (context) {
     return SpacePage(space: space);
   }));
 }
 
-// TODO: Add support for image and location selection
-class SpacePage extends StatelessWidget {
+/// This page is used to edit a single [Space]. If [space] is null this page will create
+/// a new space.
+///
+/// The page will pop with the updated space if the space was changed; or,
+/// with null if the changes to the given space (or null) was not saved.
+class SpacePage extends StatefulWidget {
   final Space space;
-  final _formKey;
-  final _titleController;
 
-  SpacePage({Key key, this.space})
-      : _formKey = GlobalKey<FormState>(),
-        _titleController = TextEditingController(text: space.title),
-        super(key: key);
+  SpacePage({Key key, this.space}) : super(key: key);
+
+  @override
+  _SpacePageState createState() => _SpacePageState();
+}
+
+class _SpacePageState extends State<SpacePage> {
+  GlobalKey<FormState> _formKey;
+  TextEditingController _titleController;
+  Set<String> _managerPhones;
+  Set<String> _inviterPhones;
+  Set<String> _guardPhones;
+  String _imageUrl;
+  Placemark _location;
+  bool _uploading;
+
+  @override
+  void initState() {
+    super.initState();
+    _initMembers();
+  }
+
+  Future<void> _initMembers() async {
+    _formKey = GlobalKey<FormState>();
+    _titleController = TextEditingController(text: widget.space?.title);
+    _managerPhones = widget.space?.managerPhones ?? Set();
+    _inviterPhones = widget.space?.inviterPhones ?? Set();
+    _guardPhones = widget.space?.guardPhones ?? Set();
+    _imageUrl = widget.space?.imageUrl;
+    _uploading = false;
+    try {
+      final placemarks = await Geolocator().placemarkFromCoordinates(
+        widget.space.locationLatitude,
+        widget.space.locationLongitude,
+      );
+      setState(() => _location = placemarks.first);
+    } catch (e) {
+      setState(() => _location = null);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<SpaceBloc>(
-      create: (context) => SpaceBloc(),
-      child: BlocConsumer<SpaceBloc, SpaceState>(
-        listener: (context, state) async {
-          if (state is SpaceSaved) {
-            Navigator.of(context).pop(state.space);
-          }
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.of(context).pop(widget.space);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.space == null ? 'Create Space' : 'Edit Space'),
+          excludeHeaderSemantics: false,
+        ),
+        persistentFooterButtons: [
+          RaisedButton(
+            child: Text('SAVE'),
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              if (!_formKey.currentState.validate()) return;
 
-          if (state is ErrorSavingSpace) {
-            await showError(context, state.error);
-          }
-        },
-        builder: (context, state) {
-          if (state is SpaceInitial) {
-            return _buildForm(context, state);
-          }
+              var newSpace;
+              if (widget.space != null) {
+                newSpace = widget.space.copyWith(
+                  title: _titleController.text,
+                  managerPhones: _managerPhones,
+                  inviterPhones: _inviterPhones,
+                  guardPhones: _guardPhones,
+                  imageUrl: _imageUrl,
+                  locationLatitude: _location?.position?.latitude,
+                  locationLongitude: _location?.position?.longitude,
+                );
+              } else {
+                newSpace = Space(
+                  title: _titleController.text,
+                  managerPhones: _managerPhones,
+                  inviterPhones: _inviterPhones,
+                  guardPhones: _guardPhones,
+                  imageUrl: _imageUrl,
+                  locationLatitude: _location?.position?.latitude,
+                  locationLongitude: _location?.position?.longitude,
+                );
+              }
 
-          if (state is SavingSpace) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is SpaceSaved) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          if (state is ErrorSavingSpace) {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
-          }
-
-          return null;
-        },
+              Navigator.of(context).pop(newSpace);
+            },
+          )
+        ],
+        body: _buildForm(context),
       ),
     );
   }
 
-  Widget _buildForm(BuildContext context, SpaceInitial state) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(space.id == null ? 'Create Space' : 'Edit Space'),
-        excludeHeaderSemantics: false,
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: <Widget>[
-            TextFormField(
+  Form _buildForm(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: ListView(
+        children: <Widget>[
+          _buildImage(context),
+          ListTile(
+            leading: Icon(Icons.title),
+            title: TextFormField(
               controller: _titleController,
               validator: (text) {
                 if (text.isEmpty) {
@@ -99,82 +154,194 @@ class SpacePage extends StatelessWidget {
                 return null;
               },
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.title),
-                labelText: 'Add Title',
+                hintText: 'Add Title',
+                border: InputBorder.none,
               ),
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.edit_location),
-                labelText: 'Add Location',
-              ),
-            ),
-            ListTile(
-              title: Text('Managers, Inviters and Guards'),
-              subtitle: Text('May all enter the space'),
-            ),
-            ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('Managers'),
-              subtitle: Text('May edit or delete the space'),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () async {
-                await editMembers(context, 'Managers', space.managerPhones);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text('Inviters'),
-              subtitle: Text('May create invites for the space'),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () async {
-                await editMembers(context, 'Inviters', space.inviterPhones);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.security),
-              title: Text('Guards'),
-              subtitle: Text('May grant entry to the space'),
-              trailing: Icon(Icons.navigate_next),
-              onTap: () async {
-                await editMembers(context, 'Guards', space.guardPhones);
-              },
-            ),
-            Divider(),
-            Visibility(
-              visible: space.id != null,
-              child: ListTile(
-                title: OutlineButton.icon(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  label: Text(
-                    "DELETE SPACE",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  borderSide: BorderSide(color: Colors.red),
-                  highlightedBorderColor: Colors.red,
-                  onPressed: () {
-                    // TODO: Delete space
-                  },
+          ),
+// TODO: uncomment to support location
+//          Divider(),
+//          ListTile(
+//            leading: Icon(Icons.location_on),
+//            trailing: Icon(Icons.chevron_right),
+//            title: _location != null
+//                ? Text(
+//                    '${_location.subThoroughfare} ${_location.thoroughfare}',
+//                  )
+//                : Text(
+//                    'Add Location',
+//                    style: TextStyle(color: Theme.of(context).hintColor),
+//                  ),
+//            subtitle: _location != null
+//                ? Text(
+//                    '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
+//                  )
+//                : null,
+//            onTap: () async {
+//              var apiKey;
+//              if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
+//              if (Platform.isIOS) apiKey = kIosMapsApiKey;
+//              final result = await showLocationPicker(context, apiKey);
+//              FocusScope.of(context).requestFocus(new FocusNode());
+//              if (result == null) return;
+//
+//              final placemarks = await Geolocator().placemarkFromCoordinates(
+//                result.latLng.latitude,
+//                result.latLng.longitude,
+//              );
+//              setState(() => _location = placemarks.first);
+//            },
+//          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Managers'),
+            subtitle: Text('May edit or delete the space'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () async {
+              final edited =
+                  await editMembers(context, 'Managers', _managerPhones);
+              setState(() => _managerPhones = edited);
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.mail),
+            title: Text('Inviters'),
+            subtitle: Text('May create invites for the space'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () async {
+              final edited =
+                  await editMembers(context, 'Inviters', _inviterPhones);
+              setState(() => _inviterPhones = edited);
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.security),
+            title: Text('Guards'),
+            subtitle: Text('May grant entry to the space'),
+            trailing: Icon(Icons.navigate_next),
+            onTap: () async {
+              final edited = await editMembers(context, 'Guards', _guardPhones);
+              setState(() => _guardPhones = edited);
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+          ),
+          Divider(),
+          Visibility(
+            visible: widget.space != null,
+            child: ListTile(
+              title: OutlineButton.icon(
+                icon: Icon(Icons.delete, color: Colors.red),
+                label: Text(
+                  "DELETE SPACE",
+                  style: TextStyle(color: Colors.red),
                 ),
+                borderSide: BorderSide(color: Colors.red),
+                highlightedBorderColor: Colors.red,
+                onPressed: () {
+                  Navigator.of(context).pop(null);
+                },
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildImage(BuildContext context) {
+    if (_uploading) {
+      return Container(
+        height: 150.0,
+        decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+        child: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      height: 150.0,
+      decoration: BoxDecoration(
+        image: _imageUrl != null
+            ? DecorationImage(
+                image: NetworkImage(_imageUrl),
+                fit: BoxFit.cover,
+              )
+            : null,
+        color: Colors.grey.withOpacity(0.5),
+      ),
+      child: Stack(
+        children: <Widget>[
+          _buildUploadButton(context),
+          Visibility(
+            visible: _imageUrl == null,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.image, size: 32.0),
+                  Text('No image added'),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUploadButton(BuildContext context) {
+    return Builder(
+      builder: (context) => Positioned(
+        bottom: 8.0,
+        right: 8.0,
+        child: ClipOval(
+          child: Material(
+            color: Theme.of(context).canvasColor, // button color
+            child: InkWell(
+              splashColor: Theme.of(context).primaryColor, // inkwell color
+              child: SizedBox(
+                width: 64.0,
+                height: 64.0,
+                child: Icon(Icons.add_a_photo),
+              ),
+              onTap: () {
+                _setImage(context);
+              },
+            ),
+          ),
         ),
       ),
-      persistentFooterButtons: <Widget>[
-        RaisedButton(
-          child: Text('SAVE'),
-          color: Theme.of(context).primaryColor,
-          onPressed: () {
-            if (!_formKey.currentState.validate()) return;
-
-            final newSpace = space.copyWith(title: _titleController.text);
-            SpaceBloc.of(context).add(SaveSpace(newSpace));
-          },
-        ),
-      ],
     );
+  }
+
+  Future<void> _setImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.getImage(source: ImageSource.gallery, imageQuality: 25);
+    if (pickedFile == null) return;
+    final image = File(pickedFile.path);
+
+    setState(() => _uploading = true);
+    try {
+      final storage = FirebaseStorage.instance;
+      final ref = storage.ref().child('images/${Uuid().v4()}');
+      final snapshot = await ref.putFile(image).onComplete;
+      if (snapshot.error == null) {
+        final url = await snapshot.ref.getDownloadURL();
+        setState(() => _imageUrl = url);
+      } else {
+        throw Exception('Firebase storage error: ${snapshot.error}');
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(
+          msg: 'Image could not be saved', textColor: Colors.amber);
+    }
+    setState(() => _uploading = false);
   }
 }

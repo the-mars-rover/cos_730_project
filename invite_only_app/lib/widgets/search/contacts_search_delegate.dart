@@ -1,22 +1,21 @@
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
-import 'package:invite_only_app/blocs/auth/auth_state.dart';
-import 'package:invite_only_app/blocs/contacts/contacts_bloc.dart';
-import 'package:invite_only_app/blocs/contacts/contacts_event.dart';
-import 'package:invite_only_app/blocs/contacts/contacts_state.dart';
-import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
-import 'package:invite_only_app/widgets/dialogs/permission_dialog.dart';
 
-Future<String> selectPhone(BuildContext context) async {
+/// Select a phone number from a list of given contacts.
+Future<String> selectPhone(BuildContext context, List<Contact> contacts) async {
   // Select and return contacts through a search using ContactsSearchDelegate
   return await showSearch<String>(
     context: context,
-    delegate: ContactsSearchDelegate(),
+    delegate: ContactsSearchDelegate(contacts),
   );
 }
 
+/// Search for a phone number from a list of given contacts.
 class ContactsSearchDelegate extends SearchDelegate<String> {
+  final List<Contact> contacts;
+
+  ContactsSearchDelegate(this.contacts);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return <Widget>[
@@ -41,75 +40,14 @@ class ContactsSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider<ContactsBloc>(
-        create: (_) => ContactsBloc()..add(LoadContacts(query)),
-        child: BlocConsumer<ContactsBloc, ContactsState>(
-          listener: (_, state) async {
-            if (state is ContactsError) {
-              await showError(context, state.error);
-              close(context, null);
-            }
-
-            if (state is ContactsPermissionDenied) {
-              await showPermissionDenied(context, 'contacts');
-              close(context, null);
-            }
-          },
-          builder: (_, state) {
-            if (state is ContactsLoading) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            if (state is ContactsLoaded) {
-              return _buildContactsList(state);
-            }
-
-            if (state is ContactsPermissionDenied) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            if (state is ContactsError) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-            return null;
-          },
-        ),
-      ),
-      persistentFooterButtons: <Widget>[
-        BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-          if (state is UserAuthenticated) {
-            return FlatButton(
-              onPressed: () => close(context, state.phoneNumber),
-              child: Text('Add yourself'),
-            );
-          }
-
-          return Container();
-        })
-      ],
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return buildResults(context);
-  }
-
-  @override
-  String get searchFieldLabel => 'Search Contacts';
-
-  Widget _buildContactsList(ContactsLoaded state) {
+    final searched = contacts.where(
+        (c) => c.displayName.toLowerCase().contains(query.toLowerCase()));
     return ListView.separated(
-      itemCount: state.contacts.length,
+      itemCount: searched.length,
       separatorBuilder: (context, index) => Container(),
       itemBuilder: (context, index) {
-        var contact = state.contacts.elementAt(index);
-        if (contact.phones.isEmpty) {
-          return Container();
-        }
-
+        var contact = searched.elementAt(index);
+        if (contact.phones.isEmpty) return Container();
         if (contact.phones.length == 1) {
           return ListTile(
             title: Text(contact.displayName),
@@ -132,4 +70,15 @@ class ContactsSearchDelegate extends SearchDelegate<String> {
       },
     );
   }
+
+  @override
+  TextInputAction get textInputAction => super.textInputAction;
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return buildResults(context);
+  }
+
+  @override
+  String get searchFieldLabel => 'Search Contacts';
 }

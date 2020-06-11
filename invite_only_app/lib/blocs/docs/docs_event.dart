@@ -27,3 +27,8 @@ class DeleteDoc extends DocsEvent {
   @override
   List<Object> get props => [idDocument];
 }
+
+class DeleteAll extends DocsEvent {
+  @override
+  List<Object> get props => [];
+}

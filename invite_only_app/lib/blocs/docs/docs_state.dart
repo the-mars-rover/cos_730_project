@@ -41,11 +41,7 @@ class DocsError extends DocsState {
   List<Object> get props => [error];
 }
 
-class DocSubmitted extends DocsState {
-  final IdDocument idDocument;
-
-  DocSubmitted(this.idDocument);
-
+class AllDeleted extends DocsState {
   @override
-  List<Object> get props => [idDocument];
+  List<Object> get props => [];
 }
