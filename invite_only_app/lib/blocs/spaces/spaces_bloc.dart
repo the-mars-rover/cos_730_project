@@ -25,6 +25,10 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
     if (event is SaveSpace) {
       yield* _mapSaveSpaceToState(event);
     }
+
+    if (event is DeleteSpace) {
+      yield* _mapDeleteSpaceToState(event);
+    }
   }
 
   Stream<SpacesState> _mapLoadSpacesToState(LoadSpaces event) async* {
@@ -54,6 +58,21 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
       }
 
       yield SpaceSaved(space);
+      this.add(LoadSpaces());
+    } catch (e) {
+      yield ErrorSavingSpace(
+          "Sorry, an unexpected error occurred. Please try again later.");
+      this.add(LoadSpaces());
+    }
+  }
+
+  Stream<SpacesState> _mapDeleteSpaceToState(DeleteSpace event) async* {
+    yield SavingSpace(event.space);
+
+    try {
+      await _inviteOnlyRepo.deleteSpace(event.space);
+
+      yield SpaceDeleted(event.space);
       this.add(LoadSpaces());
     } catch (e) {
       yield ErrorSavingSpace(

@@ -18,5 +18,14 @@ class SaveSpace extends SpacesEvent {
   SaveSpace(this.space);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [space];
+}
+
+class DeleteSpace extends SpacesEvent {
+  final Space space;
+
+  DeleteSpace(this.space);
+
+  @override
+  List<Object> get props => [space];
 }

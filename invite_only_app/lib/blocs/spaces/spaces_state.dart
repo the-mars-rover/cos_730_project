@@ -46,6 +46,24 @@ class SpaceSaved extends SpacesState {
   List<Object> get props => [space];
 }
 
+class DeletingSpace extends SpacesState {
+  final Space space;
+
+  DeletingSpace(this.space);
+
+  @override
+  List<Object> get props => [space];
+}
+
+class SpaceDeleted extends SpacesState {
+  final Space space;
+
+  SpaceDeleted(this.space);
+
+  @override
+  List<Object> get props => [space];
+}
+
 class ErrorSavingSpace extends SpacesState {
   final String error;
 
