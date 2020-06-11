@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:invite_only_app/widgets/dialogs/confirmation_dialog.dart';
 import 'package:invite_only_app/widgets/pages/members_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:uuid/uuid.dart';
@@ -243,7 +244,11 @@ class _SpacePageState extends State<SpacePage> {
                 borderSide: BorderSide(color: Colors.red),
                 highlightedBorderColor: Colors.red,
                 onPressed: () {
-                  Navigator.of(context).pop(null);
+                  showConfirmationDialog(
+                    context,
+                    'All information associated with the space will be irrecoverably deleted.',
+                    () => Navigator.of(context).pop(null),
+                  );
                 },
               ),
             ),
