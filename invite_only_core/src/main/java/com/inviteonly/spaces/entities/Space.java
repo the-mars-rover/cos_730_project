@@ -1,11 +1,14 @@
 package com.inviteonly.spaces.entities;
 
+import com.inviteonly.entries.entities.SpaceEntry;
+import com.inviteonly.invites.entities.Invite;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,6 +41,12 @@ public class Space {
 
 	@Nullable
 	private BigDecimal locationLongitude;
+
+	@OneToMany(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<SpaceEntry> entries;
+
+	@OneToMany(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Invite> invites;
 
 	public boolean hasManager(String phoneNumber) {
 		return managerPhones.contains(phoneNumber);

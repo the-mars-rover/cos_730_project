@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.inviteonly.docs.entities.IdBook;
 import com.inviteonly.docs.entities.IdCard;
 import com.inviteonly.docs.repositories.IDocsRepository;
+import com.inviteonly.entries.entities.SpaceEntry;
 import com.inviteonly.entries.repositories.IEntryRepository;
 import com.inviteonly.invites.entities.Invite;
 import com.inviteonly.invites.repositories.IInvitesRepository;
@@ -634,11 +635,14 @@ public class InviteOnlyCoreIntegrationTest {
 	}
 
 	@Test
-	public void givenManagedSpace_whenDeleteSpace_thenSpaceDeleted() throws Exception {
+	public void givenSpaceAndEntryAndInvite_whenDeleteSpace_thenAllDeleted() throws Exception {
 		// Given
 		Space testSpace = getTestSpace();
 		testSpace.setManagerPhones(Set.of(PHONE));
 		Space savedSpace = spaceRepository.save(testSpace);
+		Invite testInvite = invitesRepository.save(getTestInvite(testSpace));
+		SpaceEntry testEntry = entryRepository.save(getTestEntry(testSpace));
+
 
 		// When
 		mvc.perform(MockMvcRequestBuilders.delete("/spaces/" + savedSpace.getId()).with(csrf())
@@ -646,6 +650,8 @@ public class InviteOnlyCoreIntegrationTest {
 				// Then
 				.andExpect(status().isOk());
 		assert spaceRepository.findById(savedSpace.getId()).orElse(null) == null;
+		assert invitesRepository.findById(testInvite.getId()).orElse(null) == null;
+		assert entryRepository.findById(testEntry.getId()).orElse(null) == null;
 	}
 
 	//endregion
@@ -983,6 +989,15 @@ public class InviteOnlyCoreIntegrationTest {
 		invite.setExpiryDate(LocalDateTime.now().plus(Duration.ofHours(48)));
 		invite.setCode("000000");
 		return invite;
+	}
+
+	private SpaceEntry getTestEntry(Space space) {
+		SpaceEntry entry = new SpaceEntry();
+		entry.setSpace(space);
+		entry.setEntryDate(LocalDateTime.now());
+		entry.setIdDocument(getTestIdBook());
+		entry.setGuardPhone("+27817778888");
+		return entry;
 	}
 
 	//endregion
