@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only_app/blocs/invite/invite_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:invite_only_app/blocs/invite/invite_event.dart';
 import 'package:invite_only_app/blocs/invite/invite_state.dart';
 import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
+import 'package:share/share.dart';
 
 /// Creates and displays an invite for the given space.
 Future<void> createInvite(BuildContext context, Space space) async {
@@ -46,9 +48,10 @@ class InviteDialog extends StatelessWidget {
 
   Widget _buildCreatedDialog(BuildContext context, InviteCreated state) {
     return AlertDialog(
-      title: Text(state.inviteCode, textAlign: TextAlign.center),
+      title: Text(state.invite.code, textAlign: TextAlign.center),
       content: Text(
-        'Share this code with someone for them to be allowed entry',
+        'Share this code with someone for them to be allowed entry. '
+        'This code may only be used once and will expire on ${_formattedDate(state.invite.expiryDate)}.',
         textAlign: TextAlign.center,
       ),
       actions: <Widget>[
@@ -62,11 +65,23 @@ class InviteDialog extends StatelessWidget {
           icon: Icon(Icons.share),
           label: Text('Share'),
           onPressed: () {
-            // TODO Open share menu
-            Navigator.of(context).pop();
+            try {
+              Share.share(
+                'Present code ${state.invite.code} to gain access to ${space.title}. '
+                'This code may only be used once and will expire on ${_formattedDate(state.invite.expiryDate)}.'
+                '\nShared with love by Invite Only.',
+                subject: 'Entry Code for ${space.title}',
+              );
+            } catch (e) {
+              Navigator.of(context).pop();
+            }
           },
         ),
       ],
     );
+  }
+
+  String _formattedDate(DateTime dateTime) {
+    return formatDate(dateTime, [d, ' ', MM, ' at ', HH, ':', nn]);
   }
 }

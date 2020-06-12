@@ -27,7 +27,7 @@ class InviteBloc extends Bloc<InviteEvent, InviteState> {
     try {
       yield CreatingInvite();
       final invite = await _inviteOnlyRepo.createInvite(event.space);
-      yield InviteCreated(invite.code);
+      yield InviteCreated(invite);
     } on NotFound {
       yield InviteCreationError("This space no longer exists.");
     } on Unauthorized {

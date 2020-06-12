@@ -21,13 +21,13 @@ class ConfirmationDialog extends StatelessWidget {
       title: Text('Are you sure?'),
       content: Text(message),
       actions: <Widget>[
-        FlatButton(
+        OutlineButton(
           child: Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        FlatButton(
+        OutlineButton(
           child: Text('Confirm'),
           onPressed: () {
             Navigator.of(context).pop();
