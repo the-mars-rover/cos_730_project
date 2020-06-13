@@ -111,50 +111,56 @@ class _EntriesPageState extends State<EntriesPage> {
       create: (context) => EntriesBloc()..add(LoadInitialEntries(widget.space)),
       child: BlocBuilder<EntriesBloc, EntriesState>(builder: (context, state) {
         return Scaffold(
-          body: CustomScrollView(
-            controller: _scrollController
-              ..removeListener(() => _onScroll(context))
-              ..addListener(() => _onScroll(context)),
-            slivers: <Widget>[
-              SliverAppBar(
-                expandedHeight: 150.0,
-                floating: true,
-                pinned: true,
-                snap: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Image(
-                    image: loadedSpace.imageUrl == null
-                        ? AssetImage('assets/logo.png')
-                        : NetworkImage(widget.space.imageUrl),
-                    fit: BoxFit.cover,
-                    color: Colors.black54,
-                    colorBlendMode: BlendMode.darken,
+          body: RefreshIndicator(
+            onRefresh: () {
+              EntriesBloc.of(context).add(LoadInitialEntries(widget.space));
+              return Future.value();
+            },
+            child: CustomScrollView(
+              controller: _scrollController
+                ..removeListener(() => _onScroll(context))
+                ..addListener(() => _onScroll(context)),
+              slivers: <Widget>[
+                SliverAppBar(
+                  expandedHeight: 150.0,
+                  floating: true,
+                  pinned: true,
+                  snap: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Image(
+                      image: loadedSpace.imageUrl == null
+                          ? AssetImage('assets/logo.png')
+                          : NetworkImage(widget.space.imageUrl),
+                      fit: BoxFit.cover,
+                      color: Colors.black54,
+                      colorBlendMode: BlendMode.darken,
+                    ),
+                    title: Text(loadedSpace.title),
                   ),
-                  title: Text(loadedSpace.title),
                 ),
-              ),
-              Builder(
-                builder: (context) {
-                  if (state is InitialEntriesLoading) {
-                    return SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
+                Builder(
+                  builder: (context) {
+                    if (state is InitialEntriesLoading) {
+                      return SliverFillRemaining(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
 
-                  if (state is EntriesLoaded) {
-                    return _buildEntries(context, state);
-                  }
+                    if (state is EntriesLoaded) {
+                      return _buildEntries(context, state);
+                    }
 
-                  if (state is EntriesError) {
-                    return SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
+                    if (state is EntriesError) {
+                      return SliverFillRemaining(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }
 
-                  return null;
-                },
-              ),
-            ],
+                    return null;
+                  },
+                ),
+              ],
+            ),
           ),
           floatingActionButton: BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
