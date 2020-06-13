@@ -14,7 +14,8 @@ public interface IEntryRepository extends JpaRepository<SpaceEntry, Long> {
 			"where e.id = :spaceId " +
 			"and (e.idDocument.phoneNumber = :phoneNumber " +
 			"or e.guardPhone = :phoneNumber " +
-			"or e.invite.inviterPhone = :phoneNumber)")
+			"or e.invite.inviterPhone = :phoneNumber)" +
+			"order by e.entryDate desc")
 	Page<SpaceEntry> findAllBySpaceIdAndPhoneNumber(
 			@Param("spaceId") Long spaceId,
 			@Param("phoneNumber") String phoneNumber,
