@@ -39,7 +39,6 @@ class EntryCard extends StatelessWidget {
   }
 
   String _formattedEntryDate() {
-    return formatDate(
-        entry.entryDate, [D, ' ', mm, ' ', M, ' @ ', HH, ':', nn]);
+    return formatDate(entry.entryDate, [D, ' ', d, ' ', M, ' @ ', HH, ':', nn]);
   }
 }

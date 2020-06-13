@@ -240,7 +240,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
       Space space, int pageSize, int pageNum) async {
     final token = await _authToken();
     String url =
-        "$_coreUrl/spaces/${space.id}/entries?page=$pageNum&size=$pageSize";
+        "$_coreUrl/spaces/${space.id}/entries?page=$pageNum&size=$pageSize&sort=entryDate,DESC";
     final response =
         await _client.get(url, headers: {'Authorization': 'Bearer $token'});
 

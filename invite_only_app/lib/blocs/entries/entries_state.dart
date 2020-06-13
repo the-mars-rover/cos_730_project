@@ -5,18 +5,22 @@ abstract class EntriesState extends Equatable {
   const EntriesState();
 }
 
-class EntriesLoading extends EntriesState {
+class InitialEntriesLoading extends EntriesState {
   @override
   List<Object> get props => [];
 }
 
 class EntriesLoaded extends EntriesState {
+  final Space space;
+  final int page;
   final List<Entry> entries;
+  final bool hasReachedMax;
 
-  EntriesLoaded(this.entries);
+  EntriesLoaded(this.space, this.page, this.entries, this.hasReachedMax);
 
   @override
-  List<Object> get props => [this.entries];
+  List<Object> get props =>
+      [this.space, this.page, this.entries, this.hasReachedMax];
 }
 
 class EntriesError extends EntriesState {

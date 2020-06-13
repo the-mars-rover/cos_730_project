@@ -5,11 +5,16 @@ abstract class EntriesEvent extends Equatable {
   const EntriesEvent();
 }
 
-class LoadEntries extends EntriesEvent {
+class LoadInitialEntries extends EntriesEvent {
   final Space space;
 
-  LoadEntries(this.space);
+  LoadInitialEntries(this.space);
 
   @override
   List<Object> get props => [space];
+}
+
+class LoadMoreEntries extends EntriesEvent {
+  @override
+  List<Object> get props => [];
 }

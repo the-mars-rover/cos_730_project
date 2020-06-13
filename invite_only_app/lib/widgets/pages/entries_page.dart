@@ -24,10 +24,37 @@ Future<void> showEntries(BuildContext context, Space space) async {
   ));
 }
 
-class EntriesPage extends StatelessWidget {
+class EntriesPage extends StatefulWidget {
   final Space space;
 
   const EntriesPage({Key key, @required this.space}) : super(key: key);
+
+  @override
+  _EntriesPageState createState() => _EntriesPageState();
+}
+
+class _EntriesPageState extends State<EntriesPage> {
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll(BuildContext context) {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      EntriesBloc.of(context).add(LoadMoreEntries());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +75,8 @@ class EntriesPage extends StatelessWidget {
         }
 
         if (state is SpacesLoaded) {
-          final space = state.spaces.firstWhere((s) => s.id == this.space.id);
+          final space =
+              state.spaces.firstWhere((s) => s.id == this.widget.space.id);
           return _buildSpaceScaffold(context, space);
         }
 
@@ -80,74 +108,90 @@ class EntriesPage extends StatelessWidget {
 
   Widget _buildSpaceScaffold(BuildContext context, Space loadedSpace) {
     return BlocProvider<EntriesBloc>(
-      create: (context) => EntriesBloc()..add(LoadEntries(space)),
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              expandedHeight: 150.0,
-              floating: true,
-              pinned: true,
-              snap: true,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Image(
-                  image: loadedSpace.imageUrl == null
-                      ? AssetImage('assets/logo.png')
-                      : NetworkImage(space.imageUrl),
-                  fit: BoxFit.cover,
-                  color: Colors.black54,
-                  colorBlendMode: BlendMode.darken,
+      create: (context) => EntriesBloc()..add(LoadInitialEntries(widget.space)),
+      child: BlocBuilder<EntriesBloc, EntriesState>(builder: (context, state) {
+        return Scaffold(
+          body: CustomScrollView(
+            controller: _scrollController
+              ..removeListener(() => _onScroll(context))
+              ..addListener(() => _onScroll(context)),
+            slivers: <Widget>[
+              SliverAppBar(
+                expandedHeight: 150.0,
+                floating: true,
+                pinned: true,
+                snap: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Image(
+                    image: loadedSpace.imageUrl == null
+                        ? AssetImage('assets/logo.png')
+                        : NetworkImage(widget.space.imageUrl),
+                    fit: BoxFit.cover,
+                    color: Colors.black54,
+                    colorBlendMode: BlendMode.darken,
+                  ),
+                  title: Text(loadedSpace.title),
                 ),
-                title: Text(loadedSpace.title),
               ),
-            ),
-            BlocConsumer<EntriesBloc, EntriesState>(
-              listener: (context, state) async {},
-              builder: (context, state) {
-                if (state is EntriesLoading) {
-                  return SliverFillRemaining(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
+              Builder(
+                builder: (context) {
+                  if (state is InitialEntriesLoading) {
+                    return SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
 
-                if (state is EntriesLoaded) {
-                  return _buildEntries(context, state.entries);
-                }
+                  if (state is EntriesLoaded) {
+                    return _buildEntries(context, state);
+                  }
 
-                if (state is EntriesError) {
-                  return SliverFillRemaining(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
+                  if (state is EntriesError) {
+                    return SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
 
-                return null;
-              },
-            ),
-          ],
-        ),
-        floatingActionButton: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is UserAuthenticated) {
-              return _buildActions(context, loadedSpace, state.phoneNumber);
-            }
+                  return null;
+                },
+              ),
+            ],
+          ),
+          floatingActionButton: BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is UserAuthenticated) {
+                return _buildActions(context, loadedSpace, state.phoneNumber);
+              }
 
-            return Container();
-          },
-        ),
-      ),
+              return Container();
+            },
+          ),
+        );
+      }),
     );
   }
 
-  Widget _buildEntries(BuildContext context, List<Entry> entries) {
-    if (entries.isEmpty) {
+  Widget _buildEntries(BuildContext context, EntriesLoaded state) {
+    if (state.entries.isEmpty) {
       return SliverFillRemaining(
         child: Center(child: Text('No entries')),
       );
     }
 
     return SliverList(
-      delegate: SliverChildListDelegate(
-        entries.map((access) {
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index >= state.entries.length) {
+            return Center(
+              child: Container(
+                height: 40.0,
+                width: 32.0,
+                padding: EdgeInsetsDirectional.only(bottom: 8.0),
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          final access = state.entries.elementAt(index);
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -155,7 +199,10 @@ class EntriesPage extends StatelessWidget {
               Divider(),
             ],
           );
-        }).toList(),
+        },
+        childCount: state.hasReachedMax
+            ? state.entries.length
+            : state.entries.length + 1,
       ),
     );
   }
@@ -182,7 +229,7 @@ class EntriesPage extends StatelessWidget {
       ));
     }
 
-    if (space.canInvite(phoneNumber)) {
+    if (widget.space.canInvite(phoneNumber)) {
       actions.add(SpeedDialChild(
         child: Icon(Icons.mail),
         backgroundColor: Theme.of(context).primaryColor,
@@ -191,7 +238,7 @@ class EntriesPage extends StatelessWidget {
       ));
     }
 
-    if (space.canGuard(phoneNumber)) {
+    if (widget.space.canGuard(phoneNumber)) {
       actions.add(SpeedDialChild(
         child: Icon(Icons.security),
         backgroundColor: Theme.of(context).primaryColor,
@@ -204,7 +251,7 @@ class EntriesPage extends StatelessWidget {
               await grantEntry(context, loadedSpace, scannedIdDocument);
           if (!granted) return;
 
-          EntriesBloc.of(context).add(LoadEntries(loadedSpace));
+          EntriesBloc.of(context).add(LoadInitialEntries(loadedSpace));
         },
       ));
     }
