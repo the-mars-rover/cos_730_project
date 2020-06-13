@@ -152,7 +152,12 @@ class _EntriesPageState extends State<EntriesPage> {
 
                     if (state is EntriesError) {
                       return SliverFillRemaining(
-                        child: Center(child: CircularProgressIndicator()),
+                        child: ErrorMessage(
+                          state.error,
+                          onRefresh: () => EntriesBloc.of(context).add(
+                            LoadInitialEntries(widget.space),
+                          ),
+                        ),
                       );
                     }
 

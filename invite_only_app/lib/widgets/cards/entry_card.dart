@@ -1,5 +1,9 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
+import 'package:invite_only_app/blocs/auth/auth_state.dart';
+import 'package:invite_only_app/widgets/pages/entry_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 class EntryCard extends StatelessWidget {
@@ -10,35 +14,46 @@ class EntryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.arrow_forward, color: Colors.green),
+      dense: true,
       title: _buildTitle(),
-      subtitle: Text('Entered on ${_formattedEntryDate()}'),
+      subtitle: _buildSubtitle(),
+      trailing: Icon(Icons.chevron_right),
+      onTap: () => showEntryDetails(context, entry),
     );
   }
 
   Widget _buildTitle() {
-    final document = entry.idDocument;
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is UserAuthenticated) {
+          final entryDoc = entry.idDocument;
 
-    if (document is IdBook) {
-      return Text(document.idNumber);
-    }
+          if (entryDoc is IdBook) {
+            return Text('ID Number: ${entryDoc.idNumber}');
+          }
 
-    if (document is IdCard) {
-      return Text('${document.firstNames} ${document.surname}');
-    }
+          if (entryDoc is IdCard) {
+            return Text('${entryDoc.firstNames} ${entryDoc.surname}');
+          }
 
-    if (document is DriversLicense) {
-      return Text('${document.firstNames} ${document.surname}');
-    }
+          if (entryDoc is DriversLicense) {
+            return Text('${entryDoc.firstNames} ${entryDoc.surname}');
+          }
 
-    if (document is Passport) {
-      return Text(document.idNumber);
-    }
+          if (entryDoc is Passport) {
+            return Text('ID Number: ${entryDoc.idNumber}');
+          }
+        }
 
-    return null;
+        return null;
+      },
+    );
   }
 
-  String _formattedEntryDate() {
-    return formatDate(entry.entryDate, [D, ' ', d, ' ', M, ' @ ', HH, ':', nn]);
+  Widget _buildSubtitle() {
+    return Text('Entered on ${formatDate(
+      entry.entryDate,
+      [D, ' ', d, ' ', M, ' at ', HH, ':', nn],
+    )}');
   }
 }
