@@ -104,6 +104,10 @@ dependencies:
   # See https://pub.dev/packages/share
   share: ^0.6.4+3
 
+  # Flutter package to simplify pagination of list of items from the internet.
+  # See https://pub.dev/packages/pagination_view
+  pagination_view: ^1.0.1
+
   invite_only_repo:
     path: ../invite_only_repo
 
