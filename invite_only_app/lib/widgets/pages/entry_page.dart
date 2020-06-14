@@ -59,8 +59,7 @@ class EntryPage extends StatelessWidget {
               ),
               Container(height: 8.0),
               Text(
-                formatDate(
-                    entry.entryDate, [D, ' ', d, ' ', M, ' at ', HH, ':', nn]),
+                formatDate(entry.entryDate, [d, ' ', M, ' at ', HH, ':', nn]),
               ),
             ],
           ),
@@ -95,7 +94,7 @@ class EntryPage extends StatelessWidget {
             ],
           ),
           subtitle: Text(
-            'Guard Phone Number',
+            'Guard Phone',
             textAlign: TextAlign.center,
           ),
           onTap: () => launch('tel://${entry.guardPhone}'),
@@ -150,10 +149,10 @@ class EntryPage extends StatelessWidget {
             ],
           ),
           subtitle: Text(
-            'Inviter Phone Number',
+            'Inviter Phone',
             textAlign: TextAlign.center,
           ),
-          onTap: () => launch('tel://${entry.guardPhone}'),
+          onTap: () => launch('tel://${entry.invite.inviterPhone}'),
         ),
       ),
     );
