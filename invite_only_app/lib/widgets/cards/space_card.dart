@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
@@ -20,9 +22,7 @@ class SpaceCard extends StatelessWidget {
 
           return Card(
             child: ListTile(
-              leading: space.imageUrl == null
-                  ? CircleAvatar(backgroundImage: AssetImage('assets/logo.png'))
-                  : CircleAvatar(backgroundImage: NetworkImage(space.imageUrl)),
+              leading: _buildAvatar(),
               title: Text(space.title),
               subtitle: Text('Tap to open'),
               trailing: Row(
@@ -52,6 +52,32 @@ class SpaceCard extends StatelessWidget {
 
         return Container();
       },
+    );
+  }
+
+  Widget _buildAvatar() {
+    if (space.imageUrl == null) {
+      return CircleAvatar(
+        backgroundImage: AssetImage('assets/place_placeholder.jpg'),
+        backgroundColor: Colors.white,
+      );
+    }
+
+    return CachedNetworkImage(
+      imageUrl: space.imageUrl,
+      fadeInDuration: Duration(seconds: 3),
+      imageBuilder: (context, imageProvider) => CircleAvatar(
+        backgroundImage: imageProvider,
+        backgroundColor: Colors.white,
+      ),
+      progressIndicatorBuilder: (context, url, progress) => CircleAvatar(
+        child: CircularProgressIndicator(),
+        backgroundColor: Colors.white,
+      ),
+      errorWidget: (context, url, error) => CircleAvatar(
+        child: CircularProgressIndicator(),
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }

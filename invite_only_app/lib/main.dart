@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,8 +19,9 @@ import 'package:invite_only_app/widgets/pages/spaces_page.dart';
 final kAndroidMapsApiKey = 'AIzaSyAXTDtFj3Dk0J61YcT9QlhXiCzWmDKvC4c';
 final kIosMapsApiKey = 'AIzaSyAd9ja782qKYxLpWADesbPryXrf8WdukDI';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await loadImage('assets/place_placeholder.jpg');
 
   runApp(InviteOnlyApp());
 }
@@ -61,4 +66,33 @@ class InviteOnlyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+/// A helper method to preload asset images. Prevents the wait period when asset
+/// images are loaded.
+Future<Uint8List> loadImage(String url) {
+  ImageStreamListener listener;
+
+  final Completer<Uint8List> completer = Completer<Uint8List>();
+  final ImageStream imageStream =
+      AssetImage(url).resolve(ImageConfiguration.empty);
+
+  listener = ImageStreamListener(
+    (ImageInfo imageInfo, bool synchronousCall) {
+      imageInfo.image
+          .toByteData(format: ImageByteFormat.png)
+          .then((ByteData byteData) {
+        imageStream.removeListener(listener);
+        completer.complete(byteData.buffer.asUint8List());
+      });
+    },
+    onError: (dynamic exception, StackTrace stackTrace) {
+      imageStream.removeListener(listener);
+      completer.completeError(exception);
+    },
+  );
+
+  imageStream.addListener(listener);
+
+  return completer.future;
 }

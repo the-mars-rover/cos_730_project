@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -127,14 +130,7 @@ class _EntriesPageState extends State<EntriesPage> {
                   pinned: true,
                   snap: true,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image(
-                      image: loadedSpace.imageUrl == null
-                          ? AssetImage('assets/logo.png')
-                          : NetworkImage(widget.space.imageUrl),
-                      fit: BoxFit.cover,
-                      color: Colors.black54,
-                      colorBlendMode: BlendMode.darken,
-                    ),
+                    background: _buildHeaderImage(loadedSpace),
                     title: Text(loadedSpace.title),
                   ),
                 ),
@@ -272,6 +268,44 @@ class _EntriesPageState extends State<EntriesPage> {
       overlayColor: Colors.black,
       overlayOpacity: 0.5,
       children: actions,
+    );
+  }
+
+  Widget _buildHeaderImage(Space space) {
+    if (space.imageUrl == null) {
+      return Image(
+        image: AssetImage('assets/place_placeholder.jpg'),
+        fit: BoxFit.cover,
+        color: Colors.black54,
+        colorBlendMode: BlendMode.darken,
+      );
+    }
+
+    return CachedNetworkImage(
+      imageUrl: space.imageUrl,
+      fadeInDuration: Duration(seconds: 3),
+      imageBuilder: (context, imageProvider) => Image(
+        image: imageProvider,
+        fit: BoxFit.cover,
+        color: Colors.black54,
+        colorBlendMode: BlendMode.darken,
+      ),
+      progressIndicatorBuilder: (context, url, progress) => Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.grey,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      errorWidget: (context, url, error) => Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.grey,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }

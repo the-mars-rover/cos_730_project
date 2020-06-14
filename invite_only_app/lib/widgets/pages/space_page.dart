@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -262,39 +263,45 @@ class _SpacePageState extends State<SpacePage> {
     if (_uploading) {
       return Container(
         height: 150.0,
-        decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)),
+        decoration: BoxDecoration(color: Colors.grey),
         child: Center(child: CircularProgressIndicator()),
       );
     }
 
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      height: 150.0,
-      decoration: BoxDecoration(
-        image: _imageUrl != null
-            ? DecorationImage(
-                image: NetworkImage(_imageUrl),
-                fit: BoxFit.cover,
-              )
-            : null,
-        color: Colors.grey.withOpacity(0.5),
-      ),
-      child: Stack(
-        children: <Widget>[
-          _buildUploadButton(context),
-          Visibility(
-            visible: _imageUrl == null,
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(Icons.image, size: 32.0),
-                  Text('No image added'),
-                ],
-              ),
-            ),
+    if (_imageUrl == null) {
+      return Container(
+        padding: EdgeInsets.all(8.0),
+        height: 150.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/place_placeholder.jpg'),
+            fit: BoxFit.cover,
           ),
-        ],
+        ),
+        child: Stack(children: <Widget>[_buildUploadButton(context)]),
+      );
+    }
+
+    return CachedNetworkImage(
+      imageUrl: _imageUrl,
+      fadeInDuration: Duration(seconds: 3),
+      imageBuilder: (context, imageProvider) => Container(
+        padding: EdgeInsets.all(8.0),
+        height: 150.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+        ),
+        child: Stack(children: <Widget>[_buildUploadButton(context)]),
+      ),
+      progressIndicatorBuilder: (context, url, progress) => Container(
+        height: 150.0,
+        decoration: BoxDecoration(color: Colors.grey),
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      errorWidget: (context, url, error) => Container(
+        height: 150.0,
+        decoration: BoxDecoration(color: Colors.grey),
+        child: Center(child: CircularProgressIndicator()),
       ),
     );
   }
