@@ -1002,7 +1002,7 @@ main() {
       // when
       final space = kSpace.copyWith(id: 0);
       when(client.get(
-        '$kUrl/spaces/${space.id}/entries?page=0&size=10',
+        '$kUrl/spaces/${space.id}/entries?page=0&size=10&sort=entryDate,DESC',
         headers: {'Authorization': 'Bearer $kToken'},
       )).thenAnswer((_) async => http.Response('', HttpStatus.notFound));
       try {
@@ -1022,7 +1022,7 @@ main() {
       // when
       final space = kSpace.copyWith(id: 0);
       when(client.get(
-        '$kUrl/spaces/${space.id}/entries?page=0&size=10',
+        '$kUrl/spaces/${space.id}/entries?page=0&size=10&sort=entryDate,DESC',
         headers: {'Authorization': 'Bearer $kToken'},
       )).thenAnswer((_) async => http.Response('', HttpStatus.badRequest));
       try {
@@ -1048,7 +1048,7 @@ main() {
             guardPhone: kPhone, entryDate: DateTime.now(), idDocument: kIdBook),
       ];
       when(client.get(
-        '$kUrl/spaces/${space.id}/entries?page=0&size=10',
+        '$kUrl/spaces/${space.id}/entries?page=0&size=10&sort=entryDate,DESC',
         headers: {'Authorization': 'Bearer $kToken'},
       )).thenAnswer((_) async =>
           http.Response(json.encode({'content': entries}), HttpStatus.ok));
