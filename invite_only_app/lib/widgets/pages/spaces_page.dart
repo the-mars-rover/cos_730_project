@@ -7,6 +7,7 @@ import 'package:invite_only_app/blocs/spaces/spaces_bloc.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_event.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_state.dart';
 import 'package:invite_only_app/widgets/cards/space_card.dart';
+import 'package:invite_only_app/widgets/icons/i_o_icons_icons.dart';
 import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/pages/docs_page.dart';
 import 'package:invite_only_app/widgets/pages/space_page.dart';
@@ -22,8 +23,12 @@ class SpacesPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 24.0, right: 24.0),
-                child: Image.asset("assets/logo_v5.png"),
+                padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 8.0),
+                child: Icon(
+                  IOIcons.icon_logo,
+                  size: 156.0,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
               Divider(),
               ListView(
