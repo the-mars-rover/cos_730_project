@@ -100,7 +100,10 @@ class AuthPage extends StatelessWidget {
                 height: 200.0,
               ),
               Container(height: 32.0),
-              Text('Enter the code sent to ${state.phoneNumber}'),
+              Text(
+                'Enter the code sent to ${state.phoneNumber}',
+                textAlign: TextAlign.center,
+              ),
               TextFormField(
                 controller: _otpController,
                 autofocus: true,
@@ -124,6 +127,16 @@ class AuthPage extends StatelessWidget {
                     AuthBloc.of(context).add(
                       SubmitSmsCode(_otpController.text),
                     );
+                  },
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: OutlineButton(
+                  child: Text("CANCEL"),
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () {
+                    AuthBloc.of(context).add(InitializeAuth());
                   },
                 ),
               ),
