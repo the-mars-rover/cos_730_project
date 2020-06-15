@@ -17,7 +17,7 @@ abstract class InviteOnlyRepo {
   ///
   /// If [initialize] has not been called, this will be null.
   static InviteOnlyRepo get instance =>
-      InviteOnlyRepoImpl.getInstance('https://core.inviteonly.co.za');
+      InviteOnlyRepoImpl.getInstance('https://core.inviteonly.born.dev');
 
   /// Returns the current user's phone number, or null if there is no authenticated user.
   Future<String> currentUser();

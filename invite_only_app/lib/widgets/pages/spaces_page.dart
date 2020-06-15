@@ -12,6 +12,7 @@ import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/pages/docs_page.dart';
 import 'package:invite_only_app/widgets/pages/space_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SpacesPage extends StatelessWidget {
   @override
@@ -56,6 +57,9 @@ class SpacesPage extends StatelessWidget {
                   ListTile(
                     leading: Icon(Icons.info),
                     title: Text("About Us"),
+                    onTap: () => launch(
+                      'https://inviteonly.born.dev/about-invite-only',
+                    ),
                   ),
                   Divider(),
                   ListTile(

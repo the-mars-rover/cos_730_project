@@ -42,6 +42,7 @@ class InviteOnlyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "Invite Only",
         theme: ThemeData(primarySwatch: Colors.green),
         home: BlocConsumer<AuthBloc, AuthState>(

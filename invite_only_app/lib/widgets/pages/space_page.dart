@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:invite_only_app/widgets/dialogs/confirmation_dialog.dart';
 import 'package:invite_only_app/widgets/pages/members_page.dart';
@@ -50,7 +49,6 @@ class _SpacePageState extends State<SpacePage> {
   Set<String> _inviterPhones;
   Set<String> _guardPhones;
   String _imageUrl;
-  Placemark _location;
   bool _uploading;
 
   @override
@@ -67,15 +65,6 @@ class _SpacePageState extends State<SpacePage> {
     _guardPhones = widget.space?.guardPhones ?? Set();
     _imageUrl = widget.space?.imageUrl;
     _uploading = false;
-    try {
-      final placemarks = await Geolocator().placemarkFromCoordinates(
-        widget.space.locationLatitude,
-        widget.space.locationLongitude,
-      );
-      setState(() => _location = placemarks.first);
-    } catch (e) {
-      setState(() => _location = null);
-    }
   }
 
   @override
@@ -110,8 +99,8 @@ class _SpacePageState extends State<SpacePage> {
                   inviterPhones: _inviterPhones,
                   guardPhones: _guardPhones,
                   imageUrl: _imageUrl,
-                  locationLatitude: _location?.position?.latitude,
-                  locationLongitude: _location?.position?.longitude,
+                  locationLatitude: null,
+                  locationLongitude: null,
                 );
               } else {
                 newSpace = Space(
@@ -120,8 +109,8 @@ class _SpacePageState extends State<SpacePage> {
                   inviterPhones: _inviterPhones,
                   guardPhones: _guardPhones,
                   imageUrl: _imageUrl,
-                  locationLatitude: _location?.position?.latitude,
-                  locationLongitude: _location?.position?.longitude,
+                  locationLatitude: null,
+                  locationLongitude: null,
                 );
               }
 
@@ -161,39 +150,6 @@ class _SpacePageState extends State<SpacePage> {
               ),
             ),
           ),
-// TODO: uncomment to support location
-//          Divider(),
-//          ListTile(
-//            leading: Icon(Icons.location_on),
-//            trailing: Icon(Icons.chevron_right),
-//            title: _location != null
-//                ? Text(
-//                    '${_location.subThoroughfare} ${_location.thoroughfare}',
-//                  )
-//                : Text(
-//                    'Add Location',
-//                    style: TextStyle(color: Theme.of(context).hintColor),
-//                  ),
-//            subtitle: _location != null
-//                ? Text(
-//                    '${_location.subThoroughfare} ${_location.thoroughfare}, ${_location.subLocality}, ${_location.locality}, ${_location.administrativeArea}',
-//                  )
-//                : null,
-//            onTap: () async {
-//              var apiKey;
-//              if (Platform.isAndroid) apiKey = kAndroidMapsApiKey;
-//              if (Platform.isIOS) apiKey = kIosMapsApiKey;
-//              final result = await showLocationPicker(context, apiKey);
-//              FocusScope.of(context).requestFocus(new FocusNode());
-//              if (result == null) return;
-//
-//              final placemarks = await Geolocator().placemarkFromCoordinates(
-//                result.latLng.latitude,
-//                result.latLng.longitude,
-//              );
-//              setState(() => _location = placemarks.first);
-//            },
-//          ),
           Divider(),
           ListTile(
             leading: Icon(Icons.edit),

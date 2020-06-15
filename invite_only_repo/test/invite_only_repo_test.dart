@@ -9,7 +9,7 @@ import 'package:invite_only_repo/src/models/invite/invite.dart';
 import 'package:invite_only_repo/src/repositories/invite_only_repo_impl.dart';
 import 'package:mockito/mockito.dart';
 
-final kUrl = 'https://core.inviteonly.co.za';
+final kUrl = 'https://core.inviteonly.born.dev';
 
 final kPhone = '+27823335555';
 

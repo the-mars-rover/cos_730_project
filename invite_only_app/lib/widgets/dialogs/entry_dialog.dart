@@ -9,7 +9,7 @@ import 'package:invite_only_app/widgets/dialogs/error_dialog.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
-/// Returns true if entry was granted, false if not.
+/// Returns true if entry was granted, false if not and null if cancelled.
 Future<bool> grantEntry(
     BuildContext context, Space space, RsaIdDocument scannedIdDocument) async {
   return await showDialog(

@@ -236,7 +236,7 @@ class _EntriesPageState extends State<EntriesPage> {
       ));
     }
 
-    if (widget.space.canInvite(phoneNumber)) {
+    if (loadedSpace.canInvite(phoneNumber)) {
       actions.add(SpeedDialChild(
         child: Icon(Icons.mail),
         backgroundColor: Theme.of(context).primaryColor,
@@ -245,7 +245,7 @@ class _EntriesPageState extends State<EntriesPage> {
       ));
     }
 
-    if (widget.space.canGuard(phoneNumber)) {
+    if (loadedSpace.canGuard(phoneNumber)) {
       actions.add(SpeedDialChild(
         child: Icon(Icons.security),
         backgroundColor: Theme.of(context).primaryColor,
@@ -256,7 +256,7 @@ class _EntriesPageState extends State<EntriesPage> {
 
           final granted =
               await grantEntry(context, loadedSpace, scannedIdDocument);
-          if (!granted) return;
+          if (granted == null || !granted) return;
 
           EntriesBloc.of(context).add(LoadInitialEntries(loadedSpace));
         },
