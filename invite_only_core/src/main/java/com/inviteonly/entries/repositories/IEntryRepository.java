@@ -11,7 +11,7 @@ public interface IEntryRepository extends JpaRepository<SpaceEntry, Long> {
 	Page<SpaceEntry> findAllBySpaceId(Long spaceId, Pageable pageable);
 
 	@Query("select e from SpaceEntry e " +
-			"where e.id = :spaceId " +
+			"where e.space.id = :spaceId " +
 			"and (e.idDocument.phoneNumber = :phoneNumber " +
 			"or e.guardPhone = :phoneNumber " +
 			"or e.invite.inviterPhone = :phoneNumber)")
