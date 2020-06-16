@@ -43,6 +43,16 @@
 	<string>This app requires access to the microphone to function properly.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires access to the photo library to function properly.</string>
+	<key>NSCalendarsUsageDescription</key>
+    <string>This app requires access to the calendar to function properly.</string>
+    <key>NSAppleMusicUsageDescription</key>
+    <string>This app requires access to apple music to function properly.</string>
+    <key>NSMotionUsageDescription</key>
+    <string>This app requires access to motion detection to function properly.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>This app requires access to speech detection to function properly.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>This app requires access to location to function properly.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
