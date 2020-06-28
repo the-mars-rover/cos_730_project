@@ -40,8 +40,10 @@ class ContactsSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final searched = contacts.where(
-        (c) => c.displayName.toLowerCase().contains(query.toLowerCase()));
+    final searched = contacts.where((c) {
+      if (c.displayName == null) return false;
+      return c.displayName.toLowerCase().contains(query.toLowerCase());
+    });
     return ListView.separated(
       itemCount: searched.length,
       separatorBuilder: (context, index) => Container(),
