@@ -38,4 +38,16 @@ public class SpaceEntry {
 	@JoinColumn
 	@Nullable
 	private Invite invite;
+
+	@Override
+	public String toString() {
+		return "SpaceEntry{" +
+				"id=" + id +
+				", spaceId=" + space.getId() +
+				", entryDate=" + entryDate +
+				", idDocument=" + idDocument +
+				", guardPhone='" + guardPhone + '\'' +
+				", inviteId=" + invite +
+				'}';
+	}
 }
