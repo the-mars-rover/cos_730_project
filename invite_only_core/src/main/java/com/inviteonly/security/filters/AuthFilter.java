@@ -5,6 +5,7 @@ import com.inviteonly.security.services.FirebaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthFilter extends OncePerRequestFilter {
 	private final FirebaseService firebaseService;
+
+	private final Environment environment;
 
 	@Override
 	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
@@ -50,12 +53,14 @@ public class AuthFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		String path = request.getRequestURI().substring(request.getContextPath().length());
+		if (environment.getActiveProfiles()[0].equals("dev")) {
+			return true;
+		}
 
+		String path = request.getRequestURI().substring(request.getContextPath().length());
 		boolean requiresPhoneAuth;
 		requiresPhoneAuth = path.startsWith("/docs");
 		requiresPhoneAuth = requiresPhoneAuth || path.startsWith("/spaces");
-
 		return !requiresPhoneAuth;
 	}
 }
