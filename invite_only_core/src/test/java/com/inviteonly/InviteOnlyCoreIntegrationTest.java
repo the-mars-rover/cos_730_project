@@ -32,10 +32,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
+import java.time.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -941,6 +938,84 @@ public class InviteOnlyCoreIntegrationTest {
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
 				// Then
 				.andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	public void givenNoDateConstraints_whenGetEntries_thenAllEntries() throws Exception {
+		// Given
+		Space testSpace = getTestSpace();
+		testSpace.setManagerPhones(Set.of(PHONE));
+		Space savedSpace = spaceRepository.save(testSpace);
+		SpaceEntry testEntryOne = getTestEntry(testSpace);
+		testEntryOne.setEntryDate(LocalDateTime.of(2020, 1, 1, 0, 0));
+		SpaceEntry savedEntryOne = entryRepository.save(testEntryOne);
+		SpaceEntry testEntryTwo = getTestEntry(testSpace);
+		testEntryTwo.setEntryDate(LocalDateTime.of(2020, 2, 1, 0, 0));
+		SpaceEntry savedEntryTwo = entryRepository.save(testEntryTwo);
+		SpaceEntry testEntryThree = getTestEntry(testSpace);
+		testEntryThree.setEntryDate(LocalDateTime.of(2020, 3, 1, 0, 0));
+		SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
+
+		// When
+		mvc.perform(MockMvcRequestBuilders.get("/spaces/"+ savedSpace.getId() +"/entries").with(csrf())
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+				// Then
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryOne.getId() + ")]").exists())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryTwo.getId() + ")]").exists())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryThree.getId() + ")]").exists());
+	}
+
+	@Test
+	public void givenFromDateConstraint_whenGetEntries_thenAllEntriesAfterFromDate() throws Exception {
+		// Given
+		Space testSpace = getTestSpace();
+		testSpace.setManagerPhones(Set.of(PHONE));
+		Space savedSpace = spaceRepository.save(testSpace);
+		SpaceEntry testEntryOne = getTestEntry(testSpace);
+		testEntryOne.setEntryDate(LocalDateTime.of(2020, 1, 1, 0, 0));
+		SpaceEntry savedEntryOne = entryRepository.save(testEntryOne);
+		SpaceEntry testEntryTwo = getTestEntry(testSpace);
+		testEntryTwo.setEntryDate(LocalDateTime.of(2020, 2, 1, 0, 0));
+		SpaceEntry savedEntryTwo = entryRepository.save(testEntryTwo);
+		SpaceEntry testEntryThree = getTestEntry(testSpace);
+		testEntryThree.setEntryDate(LocalDateTime.of(2020, 3, 1, 0, 0));
+		SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
+
+		// When
+		mvc.perform(MockMvcRequestBuilders.get("/spaces/"+ savedSpace.getId() +"/entries?from=2020-01-15T00:00:00").with(csrf())
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+				// Then
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryOne.getId() + ")]").doesNotExist())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryTwo.getId() + ")]").exists())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryThree.getId() + ")]").exists());
+	}
+
+	@Test
+	public void givenToDateConstraint_whenGetEntries_thenAllEntriesBeforeToDate() throws Exception {
+		// Given
+		Space testSpace = getTestSpace();
+		testSpace.setManagerPhones(Set.of(PHONE));
+		Space savedSpace = spaceRepository.save(testSpace);
+		SpaceEntry testEntryOne = getTestEntry(testSpace);
+		testEntryOne.setEntryDate(LocalDateTime.of(2020, 1, 1, 0, 0));
+		SpaceEntry savedEntryOne = entryRepository.save(testEntryOne);
+		SpaceEntry testEntryTwo = getTestEntry(testSpace);
+		testEntryTwo.setEntryDate(LocalDateTime.of(2020, 2, 1, 0, 0));
+		SpaceEntry savedEntryTwo = entryRepository.save(testEntryTwo);
+		SpaceEntry testEntryThree = getTestEntry(testSpace);
+		testEntryThree.setEntryDate(LocalDateTime.of(2020, 3, 1, 0, 0));
+		SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
+
+		// When
+		mvc.perform(MockMvcRequestBuilders.get("/spaces/"+ savedSpace.getId() +"/entries?to=2020-02-15T00:00:00").with(csrf())
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+				// Then
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryOne.getId() + ")]").exists())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryTwo.getId() + ")]").exists())
+				.andExpect(jsonPath("$.content.[?(@.id == " + savedEntryThree.getId() + ")]").doesNotExist());
 	}
 
 	//endregion

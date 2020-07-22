@@ -13,12 +13,14 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -32,7 +34,9 @@ public class EntryController {
 	@Operation(summary = "Add an Entry to the space with the given ID",
 			description = "Only guards of the space will be authorized to call this endpoint. " +
 					"An inviteCode is optional if the person with the given idDocument has access to the space" +
-					"(ie. has been added as a manager, inviter or guard for the space) however, an inviteCode must be " +
+					"(ie. has been added as a manager, inviter or guard for the space) however, an inviteCode must " +
+					"be" +
+					" " +
 					"provided if not.",
 			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@PostMapping
@@ -62,14 +66,21 @@ public class EntryController {
 
 	@Operation(summary = "Retrieve entries for the space with the given ID",
 			description = "If the user with the authenticated phone number is a manager for the space this response" +
-					" will include all entries for the space. Otherwise, it will only include entries relevant to the user.",
+					" will include all entries for the space. Otherwise, it will only include entries relevant to the" +
+					" " +
+					"user.",
 			security = @SecurityRequirement(name = "Phone Number Auth"))
 	@GetMapping
-	Page<SpaceEntry> getEntries(@PathVariable Long spaceId, @NotNull Pageable pageable) {
+	Page<SpaceEntry> getEntries(@PathVariable Long spaceId,
+	                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Validated @RequestParam(required
+			                            = false) LocalDateTime from,
+	                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Validated @RequestParam(required
+			                            = false) LocalDateTime to,
+	                            @NotNull Pageable pageable) {
 		try {
 			String phoneNumber = securityService.authenticatedPhone();
 
-			return entryService.findEntries(phoneNumber, spaceId, pageable);
+			return entryService.findEntries(phoneNumber, spaceId, from, to, pageable);
 		} catch (SpaceNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id");
 		} catch (Exception e) {

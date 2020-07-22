@@ -75,12 +75,23 @@ public class EntryService implements IEntryService {
 	}
 
 	@Override
-	public Page<SpaceEntry> findEntries(String phoneNumber, Long spaceId, Pageable pageable) throws SpaceNotFoundException {
+	public Page<SpaceEntry> findEntries(String phoneNumber, Long spaceId, LocalDateTime from, LocalDateTime to, Pageable pageable) throws SpaceNotFoundException {
 		Space space = spaceRepository.findById(spaceId).orElseThrow(SpaceNotFoundException::new);
-		if (space.hasManager(phoneNumber)) {
-			return entryRepository.findAllBySpaceId(spaceId, pageable);
+
+		if (from == null) {
+			// would prefer to use LocalDateTime.MIN but causes problem in SQL query. See https://stackoverflow.com/questions/60884477/spring-boot-data-jpa-query-doesnt-work-with-localdatetime-max
+			from = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
 		}
 
-		return entryRepository.findAllBySpaceIdAndPhoneNumber(spaceId, phoneNumber, pageable);
+		if (to == null) {
+			// would prefer to use LocalDateTime.MAX but causes problem in SQL query. See https://stackoverflow.com/questions/60884477/spring-boot-data-jpa-query-doesnt-work-with-localdatetime-max
+			to = LocalDateTime.of(3000, 1, 1, 0, 0, 0);
+		}
+
+		if (space.hasManager(phoneNumber)) {
+			return entryRepository.findAllBySpaceId(spaceId, from, to, pageable);
+		}
+
+		return entryRepository.findAllBySpaceIdAndPhoneNumber(spaceId, phoneNumber, from, to, pageable);
 	}
 }
