@@ -236,11 +236,11 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   }
 
   @override
-  Future<List<Entry>> fetchEntries(
-      Space space, int pageSize, int pageNum) async {
+  Future<List<Entry>> fetchEntries(Space space, int pageSize, int pageNum,
+      {DateTime from, DateTime to}) async {
     final token = await _authToken();
     String url =
-        "$_coreUrl/spaces/${space.id}/entries?page=$pageNum&size=$pageSize&sort=entryDate,DESC";
+        "$_coreUrl/spaces/${space.id}/entries?from=${from?.toIso8601String() ?? null}&to=${to?.toIso8601String() ?? null}&page=$pageNum&size=$pageSize&sort=entryDate,DESC";
     final response =
         await _client.get(url, headers: {'Authorization': 'Bearer $token'});
 

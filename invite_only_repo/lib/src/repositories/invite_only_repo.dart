@@ -145,7 +145,8 @@ abstract class InviteOnlyRepo {
   /// Throws [Unauthenticated] if there is no authenticated user.
   /// Throws [NotFound] if the space could not be found.
   /// Throws [UnknownError] if an unknown error occurred.
-  Future<List<Entry>> fetchEntries(Space space, int pageSize, int pageNum);
+  Future<List<Entry>> fetchEntries(Space space, int pageSize, int pageNum,
+      {DateTime from, DateTime to});
 }
 
 class InviteOnlyCredential {
