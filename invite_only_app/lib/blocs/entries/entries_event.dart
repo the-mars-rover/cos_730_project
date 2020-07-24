@@ -7,11 +7,13 @@ abstract class EntriesEvent extends Equatable {
 
 class LoadInitialEntries extends EntriesEvent {
   final Space space;
+  final DateTime from;
+  final DateTime to;
 
-  LoadInitialEntries(this.space);
+  LoadInitialEntries(this.space, {this.from, this.to});
 
   @override
-  List<Object> get props => [space];
+  List<Object> get props => [space, from, to];
 }
 
 class LoadMoreEntries extends EntriesEvent {
