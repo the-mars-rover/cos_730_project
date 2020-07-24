@@ -240,7 +240,9 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
       {DateTime from, DateTime to}) async {
     final token = await _authToken();
     String url =
-        "$_coreUrl/spaces/${space.id}/entries?from=${from?.toIso8601String() ?? null}&to=${to?.toIso8601String() ?? null}&page=$pageNum&size=$pageSize&sort=entryDate,DESC";
+        "$_coreUrl/spaces/${space.id}/entries?page=$pageNum&size=$pageSize&sort=entryDate,DESC";
+    if (from != null) url += '&from=${from.toIso8601String()}';
+    if (to != null) url += '&to=${to.toIso8601String()}';
     final response =
         await _client.get(url, headers: {'Authorization': 'Bearer $token'});
 
