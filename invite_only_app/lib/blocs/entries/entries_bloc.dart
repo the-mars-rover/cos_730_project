@@ -45,9 +45,22 @@ class EntriesBloc extends Bloc<EntriesEvent, EntriesState> {
       LoadInitialEntries event) async* {
     try {
       yield InitialEntriesLoading();
-      final fetched = await _repo.fetchEntries(event.space, pageSize, 0);
+      final fetched = await _repo.fetchEntries(
+        event.space,
+        pageSize,
+        0,
+        from: event.from,
+        to: event.to,
+      );
 
-      yield EntriesLoaded(event.space, 0, fetched, fetched.length < pageSize);
+      yield EntriesLoaded(
+        event.space,
+        0,
+        fetched,
+        fetched.length < pageSize,
+        event.from,
+        event.to,
+      );
     } on NotFound {
       yield EntriesError("This space no longer exists.");
     } catch (e) {
@@ -64,12 +77,16 @@ class EntriesBloc extends Bloc<EntriesEvent, EntriesState> {
         final space = currentState.space;
         final page = currentState.page + 1;
         var entries = currentState.entries;
+        final from = currentState.from;
+        final to = currentState.to;
 
-        final fetched = await _repo.fetchEntries(space, pageSize, page);
+        final fetched =
+            await _repo.fetchEntries(space, pageSize, page, from: from, to: to);
 
         entries.addAll(fetched);
         entries = entries.toSet().toList(); // remove duplicates
-        yield EntriesLoaded(space, page, entries, fetched.length < pageSize);
+        yield EntriesLoaded(
+            space, page, entries, fetched.length < pageSize, from, to);
       } on NotFound {
         yield EntriesError("This space no longer exists.");
       } catch (e) {

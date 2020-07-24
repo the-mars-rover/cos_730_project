@@ -9,6 +9,8 @@ import com.inviteonly.spaces.errors.SpaceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
+
 public interface IEntryService {
 	/**
 	 * @param phoneNumber the phone number of the user granting the entry
@@ -43,5 +45,5 @@ public interface IEntryService {
 	 * @return a page of entries that have relevance to the given phone number, or an empty list.
 	 * @throws SpaceNotFoundException if the space with the given ID could not be found
 	 */
-	Page<SpaceEntry> findEntries(String phoneNumber, Long spaceId, Pageable pageable) throws SpaceNotFoundException;
+	Page<SpaceEntry> findEntries(String phoneNumber, Long spaceId, LocalDateTime from, LocalDateTime to, Pageable pageable) throws SpaceNotFoundException;
 }

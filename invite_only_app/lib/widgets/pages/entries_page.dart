@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:date_range_picker/date_range_picker.dart' as DateRangePicker;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -133,6 +134,28 @@ class _EntriesPageState extends State<EntriesPage> {
                     background: _buildHeaderImage(loadedSpace),
                     title: Text(loadedSpace.title),
                   ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.date_range),
+                      onPressed: () async {
+                        final List<DateTime> picked =
+                            await DateRangePicker.showDatePicker(
+                          context: context,
+                          initialFirstDate: DateTime.now(),
+                          initialLastDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                        );
+                        if (picked == null || picked.length != 2) return;
+
+                        EntriesBloc.of(context).add(LoadInitialEntries(
+                          widget.space,
+                          from: picked[0],
+                          to: picked[1],
+                        ));
+                      },
+                    ),
+                  ],
                 ),
                 Builder(
                   builder: (context) {

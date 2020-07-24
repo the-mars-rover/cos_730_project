@@ -5,6 +5,7 @@ import com.inviteonly.security.services.FirebaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,17 +28,22 @@ import java.io.IOException;
 public class AuthFilter extends OncePerRequestFilter {
 	private final FirebaseService firebaseService;
 
+	private final Environment environment;
+
 	@Override
-	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
+	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
+	                                @NotNull FilterChain filterChain)
 			throws IOException, ServletException {
 		try {
 			// Get token and validate it with Firebase
 			Cookie cookieToken = WebUtils.getCookie(request, "token");
-			String token = cookieToken == null ? request.getHeader(HttpHeaders.AUTHORIZATION).substring(7) : cookieToken.getValue();
+			String token = cookieToken == null ? request.getHeader(HttpHeaders.AUTHORIZATION).substring(7) :
+					cookieToken.getValue();
 			String phoneNumber = firebaseService.phoneNumberForToken(token);
 
 			// Set authentication details
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(phoneNumber, token, null);
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(phoneNumber,
+					token, null);
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -50,12 +56,14 @@ public class AuthFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
-		String path = request.getRequestURI().substring(request.getContextPath().length());
+		if (environment.getActiveProfiles().length > 0 && environment.getActiveProfiles()[0].equals("dev")) {
+			return true;
+		}
 
+		String path = request.getRequestURI().substring(request.getContextPath().length());
 		boolean requiresPhoneAuth;
 		requiresPhoneAuth = path.startsWith("/docs");
 		requiresPhoneAuth = requiresPhoneAuth || path.startsWith("/spaces");
-
 		return !requiresPhoneAuth;
 	}
 }

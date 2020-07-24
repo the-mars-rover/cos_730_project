@@ -12,15 +12,30 @@ class InitialEntriesLoading extends EntriesState {
 
 class EntriesLoaded extends EntriesState {
   final Space space;
+  final DateTime from;
+  final DateTime to;
   final int page;
   final List<Entry> entries;
   final bool hasReachedMax;
 
-  EntriesLoaded(this.space, this.page, this.entries, this.hasReachedMax);
+  EntriesLoaded(
+    this.space,
+    this.page,
+    this.entries,
+    this.hasReachedMax,
+    this.from,
+    this.to,
+  );
 
   @override
-  List<Object> get props =>
-      [this.space, this.page, this.entries, this.hasReachedMax];
+  List<Object> get props => [
+        this.space,
+        this.page,
+        this.entries,
+        this.hasReachedMax,
+        this.from,
+        this.to,
+      ];
 }
 
 class EntriesError extends EntriesState {
