@@ -12,7 +12,7 @@ public class SecurityService {
 	private final Environment environment;
 
 	public String authenticatedPhone() {
-		if (environment.getActiveProfiles()[0].equals("dev")) {
+		if (environment.getActiveProfiles().length > 0 && environment.getActiveProfiles()[0].equals("dev")) {
 			return "+27823456789";
 		}
 
