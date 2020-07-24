@@ -116,6 +116,10 @@ dependencies:
   # See https://pub.dev/packages/cached_network_image
   cached_network_image: ^2.2.0+1
 
+  # Flutter date range pickers use a dialog window to select a range of date on mobile.
+  # See https://pub.dev/packages/date_range_picker
+  date_range_picker: ^1.0.5
+
   invite_only_repo:
     path: ../invite_only_repo
 
