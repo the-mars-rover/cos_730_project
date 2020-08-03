@@ -6,8 +6,8 @@ import 'package:invite_only_app/blocs/auth/auth_state.dart';
 import 'package:invite_only_app/blocs/docs/docs_bloc.dart';
 import 'package:invite_only_app/blocs/docs/docs_event.dart';
 import 'package:invite_only_app/blocs/docs/docs_state.dart';
-import 'package:invite_only_app/widgets/dialogs/confirmation_dialog.dart';
 import 'package:invite_only_app/widgets/other/error_message.dart';
+import 'package:invite_only_app/widgets/pages/doc_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:rsa_scan/rsa_scan.dart';
 
@@ -102,69 +102,75 @@ class DocsPage extends StatelessWidget {
 
   ListTile _buildDocTile<T extends IdDocument>(
       BuildContext context, DocsLoaded state) {
-    bool uploaded = false;
-    if (T == IdCard) uploaded = state.idCard != null;
-    if (T == IdBook) uploaded = state.idBook != null;
-    if (T == DriversLicense) uploaded = state.driversLicense != null;
-    if (T == Passport) uploaded = state.passport != null;
+    if (T == IdCard) return _buildIdCardTile(state, context);
+    if (T == IdBook) return _buildIdBookTile(state, context);
+    if (T == DriversLicense) return _buildDriversTile(state, context);
+    return null;
+  }
 
+  ListTile _buildIdCardTile(DocsLoaded state, BuildContext context) {
     return ListTile(
-      leading: Builder(builder: (context) {
-        if (T == IdCard) return Icon(Icons.credit_card);
-        if (T == IdBook) return Icon(Icons.book);
-        if (T == DriversLicense) return Icon(Icons.drive_eta);
-        if (T == Passport) return Icon(Icons.airplanemode_active);
-        return null;
-      }),
-      title: Builder(builder: (context) {
-        if (T == IdCard) return Text('ID Card');
-        if (T == IdBook) return Text('ID Book');
-        if (T == DriversLicense) return Text('Drivers License');
-        if (T == Passport) return Text('Passport');
-        return null;
-      }),
+      leading: Icon(Icons.credit_card),
+      title: Text('ID Card'),
       subtitle: Text(
-        uploaded ? 'Remove the existing document' : 'Scan a new document',
+        state.idCard != null ? 'View Document Details' : 'Scan a new document',
       ),
-      trailing: Builder(builder: (context) {
-        if (uploaded) {
-          return IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () async {
-              showConfirmationDialog(
-                context,
-                'Deleting this document will remove it from your account.',
-                () {
-                  if (T == IdCard)
-                    DocsBloc.of(context).add(DeleteDoc(state.idCard));
-                  if (T == IdBook)
-                    DocsBloc.of(context).add(DeleteDoc(state.idBook));
-                  if (T == DriversLicense)
-                    DocsBloc.of(context).add(DeleteDoc(state.driversLicense));
-                  if (T == Passport)
-                    DocsBloc.of(context).add(DeleteDoc(state.passport));
-                },
-              );
-            },
-          );
+      trailing: state.idCard != null
+          ? Icon(Icons.chevron_right)
+          : Icon(Icons.camera_alt),
+      onTap: () async {
+        if (state.idCard != null) {
+          showDocDetails(context, state.idCard);
         } else {
-          return IconButton(
-            icon: Icon(Icons.camera_alt),
-            onPressed: () async {
-              var rsa;
-              if (T == IdCard) rsa = await scanIdCard(context);
-              if (T == IdBook) rsa = await scanIdBook(context);
-              if (T == DriversLicense) rsa = await scanDrivers(context);
-              if (T == Passport) rsa = await scanId(context);
-
-              if (rsa == null) return;
-              DocsBloc.of(context).add(
-                SubmitDoc(DocsBloc.rsaToDocs(rsa)),
-              );
-            },
-          );
+          final rsa = await scanIdCard(context);
+          if (rsa != null)
+            DocsBloc.of(context).add(SubmitDoc(DocsBloc.rsaToDocs(rsa)));
         }
-      }),
+      },
+    );
+  }
+
+  ListTile _buildIdBookTile(DocsLoaded state, BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.book),
+      title: Text('ID Book'),
+      subtitle: Text(
+        state.idBook != null ? 'View Document Details' : 'Scan a new document',
+      ),
+      trailing: state.idBook != null
+          ? Icon(Icons.chevron_right)
+          : Icon(Icons.camera_alt),
+      onTap: () async {
+        if (state.idBook != null) {
+          showDocDetails(context, state.idBook);
+        } else {
+          final rsa = await scanIdBook(context);
+          if (rsa != null)
+            DocsBloc.of(context).add(SubmitDoc(DocsBloc.rsaToDocs(rsa)));
+        }
+      },
+    );
+  }
+
+  ListTile _buildDriversTile(DocsLoaded state, BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.drive_eta),
+      title: Text('Driver\'s License'),
+      subtitle: Text(
+        state.drivers != null ? 'View Document Details' : 'Scan a new document',
+      ),
+      trailing: state.drivers != null
+          ? Icon(Icons.chevron_right)
+          : Icon(Icons.camera_alt),
+      onTap: () async {
+        if (state.drivers != null) {
+          showDocDetails(context, state.drivers);
+        } else {
+          final rsa = await scanDrivers(context);
+          if (rsa != null)
+            DocsBloc.of(context).add(SubmitDoc(DocsBloc.rsaToDocs(rsa)));
+        }
+      },
     );
   }
 }
