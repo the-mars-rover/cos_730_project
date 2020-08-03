@@ -55,6 +55,14 @@ class SpacesPage extends StatelessWidget {
                   }),
                   Divider(),
                   ListTile(
+                    leading: Icon(Icons.help),
+                    title: Text("Getting Started"),
+                    onTap: () => launch(
+                      'https://inviteonly.born.dev/getting-started',
+                    ),
+                  ),
+                  Divider(),
+                  ListTile(
                     leading: Icon(Icons.info),
                     title: Text("About Us"),
                     onTap: () => launch(
