@@ -13,13 +13,13 @@ class LoadingDocs extends DocsState {
 class DocsLoaded extends DocsState {
   final IdCard idCard;
   final IdBook idBook;
-  final DriversLicense driversLicense;
+  final DriversLicense drivers;
   final Passport passport;
 
   DocsLoaded(
     this.idCard,
     this.idBook,
-    this.driversLicense,
+    this.drivers,
     this.passport,
   );
 
@@ -27,7 +27,7 @@ class DocsLoaded extends DocsState {
   List<Object> get props => [
         this.idCard,
         this.idBook,
-        this.driversLicense,
+        this.drivers,
         this.passport,
       ];
 }

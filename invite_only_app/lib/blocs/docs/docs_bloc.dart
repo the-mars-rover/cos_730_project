@@ -94,8 +94,8 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
           await _inviteOnlyRepo.deleteIdDocument(currState.idCard);
         if (currState.idBook != null)
           await _inviteOnlyRepo.deleteIdDocument(currState.idBook);
-        if (currState.driversLicense != null)
-          await _inviteOnlyRepo.deleteIdDocument(currState.driversLicense);
+        if (currState.drivers != null)
+          await _inviteOnlyRepo.deleteIdDocument(currState.drivers);
         if (currState.passport != null)
           await _inviteOnlyRepo.deleteIdDocument(currState.passport);
 
