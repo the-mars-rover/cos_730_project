@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_event.dart';
 import 'package:invite_only_app/blocs/auth/auth_state.dart';
@@ -22,6 +23,10 @@ class DocsPage extends StatelessWidget {
       appBar: AppBar(title: Text('My Profile')),
       body: BlocConsumer<DocsBloc, DocsState>(
         listener: (context, state) {
+          if (state is DocDeleted) {
+            Fluttertoast.showToast(msg: 'Document Deleted');
+          }
+
           if (state is AllDeleted) {
             AuthBloc.of(context).add(SignOut());
             Navigator.of(context).pop();

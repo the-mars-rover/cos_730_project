@@ -41,6 +41,11 @@ class DocsError extends DocsState {
   List<Object> get props => [error];
 }
 
+class DocDeleted extends DocsState {
+  @override
+  List<Object> get props => [];
+}
+
 class AllDeleted extends DocsState {
   @override
   List<Object> get props => [];

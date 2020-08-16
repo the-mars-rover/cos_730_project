@@ -76,6 +76,7 @@ class DocsBloc extends Bloc<DocsEvent, DocsState> {
     try {
       yield LoadingDocs();
       await _inviteOnlyRepo.deleteIdDocument(event.idDocument);
+      yield DocDeleted();
 
       this.add(LoadDocs());
     } catch (e) {
