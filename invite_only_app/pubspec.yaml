@@ -120,23 +120,12 @@ dependencies:
   # See https://pub.dev/packages/date_range_picker
   date_range_picker: ^1.0.5
 
+  # A Flutter plugin to assist in leaving user reviews/ratings in Google Play Store and Apple App Store.
+  # See https://pub.dev/packages/launch_review
+  launch_review: ^2.0.0
+
   invite_only_repo:
     path: ../invite_only_repo
-
-#  # A Flutter package providing the means to work Invite Only users.
-#  # See https://github.com/marcus-bornman/invite_only_users
-#  invite_only_auth:
-#      path: ../invite_only_auth
-#
-#  # Access and manage identity document information for Invite Only users.
-#  # See https://github.com/marcus-bornman/invite_only_docs
-#  invite_only_docs:
-#    path: ../invite_only_docs
-#
-#  # Manage or control access to Invite Only access-controlled Spaces
-#  # See https://github.com/marcus-bornman/invite_only_spaces
-#  invite_only_spaces:
-#    path: ../invite_only_spaces
 
 dev_dependencies:
   flutter_test:
