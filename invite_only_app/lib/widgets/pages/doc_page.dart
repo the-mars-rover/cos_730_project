@@ -41,7 +41,10 @@ class DocPage extends StatelessWidget {
               ),
               borderSide: BorderSide(color: Colors.orange),
               highlightedBorderColor: Colors.orange,
-              onPressed: () => DocsBloc.of(context).add(DeleteDoc(document)),
+              onPressed: () {
+                DocsBloc.of(context).add(DeleteDoc(document));
+                Navigator.of(context).pop();
+              },
             ),
           ),
         ],
