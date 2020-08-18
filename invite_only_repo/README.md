@@ -17,7 +17,7 @@ authenticate a user.
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 final _inviteOnlyRepo = InviteOnlyRepo.instance;
-final currentPhoneNumber = await _inviteOnlyRepo.currentUser();
+final currentPhoneNumber = _inviteOnlyRepo.currentUser();
 if (currentPhoneNumber != null) {
   // user is already signed in, currentPhoneNumber is the current user's phone number.
 }

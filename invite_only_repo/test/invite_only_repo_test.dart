@@ -69,10 +69,10 @@ main() {
         'given no currently authenticated user - when called - then return null',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
-      String currentPhone = await inviteOnlyRepo.currentUser();
+      String currentPhone = inviteOnlyRepo.currentUser();
 
       // then
       expect(currentPhone, isNull);
@@ -82,12 +82,10 @@ main() {
         'given there is an authenticated user - when called - then return user phone',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer(
-        (_) => Future.value(firebaseUser),
-      );
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
-      String currentPhone = await inviteOnlyRepo.currentUser();
+      String currentPhone = inviteOnlyRepo.currentUser();
 
       // then
       expect(currentPhone, equals(kPhone));
@@ -130,7 +128,7 @@ main() {
 
       // then
       final firebaseCred =
-          PhoneAuthProvider.getCredential(verificationId: verId, smsCode: code);
+          PhoneAuthProvider.credential(verificationId: verId, smsCode: code);
       expect(cred.credential.toString(), firebaseCred.toString());
     });
   });
@@ -188,7 +186,7 @@ main() {
       final idDoc = kIdBook;
 
       // when
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
       try {
         await inviteOnlyRepo.addIdDocument(idDoc);
       } catch (e) {
@@ -204,9 +202,7 @@ main() {
       final idDoc = kIdBook;
 
       // when
-      when(firebaseAuth.currentUser()).thenAnswer(
-        (_) async => firebaseUser,
-      );
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
       when(client.post(
         '$kUrl/docs',
         headers: {
@@ -230,9 +226,7 @@ main() {
       final idDoc = kIdBook;
 
       // when
-      when(firebaseAuth.currentUser()).thenAnswer(
-        (_) async => firebaseUser,
-      );
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
       when(client.post(
         '$kUrl/docs',
         headers: {
@@ -256,7 +250,7 @@ main() {
       final idDoc = kIdBook;
 
       // when
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
       final resp = idDoc.copyWith(id: 0, phoneNumber: kPhone);
       when(client.post('$kUrl/docs',
               headers: {
@@ -278,7 +272,7 @@ main() {
         'given no authenticated user - when fetch ID documents - then throw Unauthenticated',
         () async {
       // given when
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
       try {
         await inviteOnlyRepo.fetchIdDocuments();
       } catch (e) {
@@ -291,7 +285,7 @@ main() {
         'given authenticated user - when fetch ID documents and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       when(client.get(
@@ -310,7 +304,7 @@ main() {
         'given authenticated user - when fetch ID documents - then return documents',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final resp = [
@@ -334,7 +328,7 @@ main() {
         'given no authenticated user - when delete document - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       try {
         // when
@@ -349,7 +343,7 @@ main() {
         'given authenticated user - when delete document and document not found - then throw NotFound',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final idBook = kIdBook.copyWith(id: 0, phoneNumber: kPhone);
@@ -369,7 +363,7 @@ main() {
         'given authenticated user - when delete document and user unauthorized - then throw Unauthorized',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final idBook = kIdBook.copyWith(id: 0, phoneNumber: kPhone);
@@ -389,7 +383,7 @@ main() {
         'given authenticated user - when delete document and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final idBook = kIdBook.copyWith(id: 0, phoneNumber: kPhone);
@@ -409,7 +403,7 @@ main() {
         'given authenticated user - when delete document - then no error is thrown',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when then
       final idBook = kIdBook.copyWith(id: 0, phoneNumber: kPhone);
@@ -426,7 +420,7 @@ main() {
         'given no authenticated user - when add space - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
       try {
@@ -441,7 +435,7 @@ main() {
         'given authenticated user - when add space and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       when(client.post(
@@ -464,7 +458,7 @@ main() {
         'given authenticated user - when add space - then return created space',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final created = kSpace.copyWith(id: 0);
@@ -488,7 +482,7 @@ main() {
         'given no authenticated user - when fetch spaces - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
       try {
@@ -503,7 +497,7 @@ main() {
         'given authenticated user - when fetch spaces and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       when(client.get(
@@ -522,7 +516,7 @@ main() {
         'given authenticated user - when fetch spaces - then return list of spaces',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final resp = [
@@ -546,7 +540,7 @@ main() {
         'given no authenticated user - when update space - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
       try {
@@ -561,7 +555,7 @@ main() {
         'given authenticated user - when update space and space not found - then throw NotFound',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final updating = kSpace.copyWith(id: 0);
@@ -585,7 +579,7 @@ main() {
         'given authenticated user - when update space and user unauthorized - then throw Unauthorized',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final updating = kSpace.copyWith(id: 0);
@@ -609,7 +603,7 @@ main() {
         'given authenticated user - when update space and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final updating = kSpace.copyWith(id: 0);
@@ -633,7 +627,7 @@ main() {
         'given authenticated user - when update space - then return updated space',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final updating = kSpace.copyWith(id: 0);
@@ -657,7 +651,7 @@ main() {
         'given no authenticated user - when delete space - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       try {
         // when
@@ -672,7 +666,7 @@ main() {
         'given authenticated user - when delete space and space not found - then throw NotFound',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final deleting = kSpace.copyWith(id: 0);
@@ -692,7 +686,7 @@ main() {
         'given authenticated user - when delete space and user unauthorized - then throw Unauthorized',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final deleting = kSpace.copyWith(id: 0);
@@ -712,7 +706,7 @@ main() {
         'given authenticated user - when delete space and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final deleting = kSpace.copyWith(id: 0);
@@ -732,7 +726,7 @@ main() {
         'given authenticated user - when delete space - then no errors are thrown',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when then
       final deleting = kSpace.copyWith(id: 0);
@@ -749,7 +743,7 @@ main() {
         'given no authenticated user - when create invite - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
       try {
@@ -764,7 +758,7 @@ main() {
         'given authenticated user - when create invite and space not found - then throw NotFound',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -784,7 +778,7 @@ main() {
         'given authenticated user - when create invite and user unauthorized - then throw Unauthorized',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -804,7 +798,7 @@ main() {
         'given authenticated user - when create invite and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -824,7 +818,7 @@ main() {
         'given authenticated user - when create invite - then return created invite',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -844,7 +838,7 @@ main() {
         'given no authenticated user - when add entry - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
       try {
@@ -859,7 +853,7 @@ main() {
         'given authenticated user - when add entry and space not found - then throw NotFound',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -883,7 +877,7 @@ main() {
         'given authenticated user - when add entry and user unauthorized - then throw Unauthorized',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -907,7 +901,7 @@ main() {
         'given authenticated user - when add entry invite invite code - then throw InvalidInvite',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -931,7 +925,7 @@ main() {
         'given authenticated user - when add entry and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -955,7 +949,7 @@ main() {
         'given authenticated user - when add entry - then return entry that was added',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -982,7 +976,7 @@ main() {
         'given no authenticated user - when fetch entries - then throw Unauthenticated',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) => Future.value(null));
+      when(firebaseAuth.currentUser).thenReturn(null);
 
       // when
       try {
@@ -997,7 +991,7 @@ main() {
         'given authenticated user - when fetch entries and apce not found - then throw NotFound',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -1017,7 +1011,7 @@ main() {
         'given authenticated user - when fetch entries and unknown or unhandled error - then throw UnknownError',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -1037,7 +1031,7 @@ main() {
         'given authenticated user - when fetch entries - then return list of entries',
         () async {
       // given
-      when(firebaseAuth.currentUser()).thenAnswer((_) async => firebaseUser);
+      when(firebaseAuth.currentUser).thenReturn(firebaseUser);
 
       // when
       final space = kSpace.copyWith(id: 0);
@@ -1062,12 +1056,12 @@ main() {
 
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
-class MockFirebaseUser extends Mock implements FirebaseUser {
+class MockFirebaseUser extends Mock implements User {
   @override
   String get phoneNumber => kPhone;
 
   @override
-  Future<IdTokenResult> getIdToken({bool refresh = false}) {
+  Future<IdTokenResult> getIdTokenResult([bool forceRefresh = false]) {
     return Future.value(MockIdTokenResult());
   }
 }

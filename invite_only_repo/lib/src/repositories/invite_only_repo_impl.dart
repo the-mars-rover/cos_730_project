@@ -83,7 +83,7 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   InviteOnlyCredential getAuthCredential(
       String phoneVerificationId, String smsCode) {
     return InviteOnlyCredential(
-      PhoneAuthProvider.getCredential(
+      PhoneAuthProvider.credential(
         verificationId: phoneVerificationId,
         smsCode: smsCode,
       ),
@@ -316,18 +316,18 @@ class InviteOnlyRepoImpl implements InviteOnlyRepo {
   }
 
   Future<String> _authToken() async {
-    final user = await _fireAuth.currentUser();
+    final user = _fireAuth.currentUser;
     if (user == null) throw Unauthenticated();
-    IdTokenResult tokenResult = await user.getIdToken();
+    IdTokenResult tokenResult = await user.getIdTokenResult();
     if (tokenResult.expirationTime.isBefore(DateTime.now())) {
-      tokenResult = await user.getIdToken(refresh: true);
+      tokenResult = await user.getIdTokenResult(true);
     }
     return tokenResult.token;
   }
 
   @override
-  Future<String> currentUser() async {
-    final user = await _fireAuth.currentUser();
+  String currentUser() {
+    final user = _fireAuth.currentUser;
 
     if (user == null) return null;
 

@@ -19,10 +19,10 @@ abstract class InviteOnlyRepo {
   static InviteOnlyRepo get instance =>
       InviteOnlyRepoImpl.getInstance(kReleaseMode
           ? 'https://core.inviteonly.born.dev'
-          : 'http://localhost:8080');
+          : 'https://core.inviteonly.born.dev');
 
   /// Returns the current user's phone number, or null if there is no authenticated user.
-  Future<String> currentUser();
+  String currentUser();
 
   /// Starts the phone number verification process for a given phone number.
   ///
