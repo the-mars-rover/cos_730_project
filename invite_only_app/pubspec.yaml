@@ -124,6 +124,10 @@ dependencies:
   # See https://pub.dev/packages/launch_review
   launch_review: ^2.0.0
 
+  # Flutter plugin for playing or streaming YouTube videos inline using the official iFrame Player API.
+  # See https://pub.dev/packages/youtube_player_flutter
+  youtube_player_flutter: ^7.0.0+7
+
   invite_only_repo:
     path: ../invite_only_repo
 
