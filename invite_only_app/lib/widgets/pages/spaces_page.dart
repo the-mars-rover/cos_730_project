@@ -23,7 +23,7 @@ class SpacesPage extends StatelessWidget {
       appBar: AppBar(title: Text("Invite Only")),
       drawer: Drawer(
         child: SafeArea(
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(left: 24.0, right: 24.0, top: 8.0),
@@ -34,64 +34,59 @@ class SpacesPage extends StatelessWidget {
                 ),
               ),
               Divider(),
-              ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text("My Profile"),
-                    onTap: () => showDocsPage(context),
-                  ),
-                  Divider(),
-                  Builder(builder: (context) {
-                    return ListTile(
-                      leading: Icon(Icons.add_location),
-                      title: Text("Create Space"),
-                      onTap: () async {
-                        final newSpace = await createSpace(context);
-                        if (newSpace == null) return;
-                        Navigator.of(context).pop();
-                        SpacesBloc.of(context).add(SaveSpace(newSpace));
-                      },
-                    );
-                  }),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.help),
-                    title: Text("Getting Started"),
-                    onTap: () => showTutorial(context),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.star),
-                    title: Text("Leave a Review"),
-                    onTap: () => LaunchReview.launch(
-                        androidAppId: "com.inviteonly.invite_only_app",
-                        iOSAppId: "1518528715"),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text("About Us"),
-                    onTap: () => launch(
-                      'https://inviteonly.born.dev/about-invite-only',
-                    ),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.call),
-                    title: Text("Contact Us"),
-                    onTap: () => launch(
-                      'https://inviteonly.born.dev/contact-us',
-                    ),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(Icons.exit_to_app),
-                    title: Text("Sign Out"),
-                    onTap: () => AuthBloc.of(context).add(SignOut()),
-                  ),
-                ],
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text("My Profile"),
+                onTap: () => showDocsPage(context),
+              ),
+              Divider(),
+              Builder(builder: (context) {
+                return ListTile(
+                  leading: Icon(Icons.add_location),
+                  title: Text("Create Space"),
+                  onTap: () async {
+                    final newSpace = await createSpace(context);
+                    if (newSpace == null) return;
+                    Navigator.of(context).pop();
+                    SpacesBloc.of(context).add(SaveSpace(newSpace));
+                  },
+                );
+              }),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.help),
+                title: Text("Getting Started"),
+                onTap: () => showTutorial(context),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.star),
+                title: Text("Leave a Review"),
+                onTap: () => LaunchReview.launch(
+                    androidAppId: "com.inviteonly.invite_only_app",
+                    iOSAppId: "1518528715"),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.info),
+                title: Text("About Us"),
+                onTap: () => launch(
+                  'https://inviteonly.born.dev/about-invite-only',
+                ),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.call),
+                title: Text("Contact Us"),
+                onTap: () => launch(
+                  'https://inviteonly.born.dev/contact-us',
+                ),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text("Sign Out"),
+                onTap: () => AuthBloc.of(context).add(SignOut()),
               ),
             ],
           ),

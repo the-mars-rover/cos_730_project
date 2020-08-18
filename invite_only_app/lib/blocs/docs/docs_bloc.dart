@@ -12,8 +12,7 @@ import 'docs_state.dart';
 class DocsBloc extends Bloc<DocsEvent, DocsState> {
   final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
-  @override
-  DocsState get initialState => LoadingDocs();
+  DocsBloc() : super(LoadingDocs());
 
   @override
   Stream<DocsState> mapEventToState(

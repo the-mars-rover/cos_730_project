@@ -11,8 +11,7 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
-  @override
-  AuthState get initialState => AuthUninitialized();
+  AuthBloc() : super(AuthUninitialized());
 
   @override
   Stream<AuthState> mapEventToState(
@@ -50,7 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapInitializeAuthToState(InitializeAuth event) async* {
     yield AuthInProgress();
 
-    String phone = await _inviteOnlyRepo.currentUser();
+    String phone = _inviteOnlyRepo.currentUser();
     if (phone == null) {
       yield UserUnauthenticated();
     } else {
@@ -86,7 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       await _inviteOnlyRepo.signInWithCredential(event.authCredential);
-      String phoneNumber = await _inviteOnlyRepo.currentUser();
+      String phoneNumber = _inviteOnlyRepo.currentUser();
 
       yield UserAuthenticated(phoneNumber, true);
     } on AuthFailure {

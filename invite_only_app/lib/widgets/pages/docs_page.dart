@@ -62,7 +62,7 @@ class DocsPage extends StatelessWidget {
     return ListView(
       children: <Widget>[
         BlocBuilder<AuthBloc, AuthState>(
-          bloc: AuthBloc.of(context),
+          cubit: AuthBloc.of(context),
           builder: (context, state) {
             if (state is UserAuthenticated) {
               return ListTile(

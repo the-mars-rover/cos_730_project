@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +24,7 @@ final kIosMapsApiKey = 'AIzaSyAd9ja782qKYxLpWADesbPryXrf8WdukDI';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
   await loadImage('assets/place_placeholder.jpg');
 
   runApp(InviteOnlyApp());

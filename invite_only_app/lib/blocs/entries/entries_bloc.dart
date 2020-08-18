@@ -14,8 +14,7 @@ class EntriesBloc extends Bloc<EntriesEvent, EntriesState> {
 
   final _repo = InviteOnlyRepo.instance;
 
-  @override
-  EntriesState get initialState => InitialEntriesLoading();
+  EntriesBloc() : super(InitialEntriesLoading());
 
   @override
   Stream<Transition<EntriesEvent, EntriesState>> transformEvents(

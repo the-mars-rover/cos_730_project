@@ -11,8 +11,7 @@ import 'invite_state.dart';
 class InviteBloc extends Bloc<InviteEvent, InviteState> {
   final InviteOnlyRepo _inviteOnlyRepo = InviteOnlyRepo.instance;
 
-  @override
-  InviteState get initialState => CreatingInvite();
+  InviteBloc() : super(CreatingInvite());
 
   @override
   Stream<InviteState> mapEventToState(

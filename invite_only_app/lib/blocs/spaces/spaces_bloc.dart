@@ -11,8 +11,7 @@ import 'spaces_state.dart';
 class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
   final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
-  @override
-  SpacesState get initialState => SpacesLoading();
+  SpacesBloc() : super(SpacesLoading());
 
   @override
   Stream<SpacesState> mapEventToState(
@@ -47,7 +46,7 @@ class SpacesBloc extends Bloc<SpacesEvent, SpacesState> {
     yield SavingSpace(event.space);
 
     try {
-      final phone = await _inviteOnlyRepo.currentUser();
+      final phone = _inviteOnlyRepo.currentUser();
       event.space.managerPhones.add(phone);
 
       Space space;

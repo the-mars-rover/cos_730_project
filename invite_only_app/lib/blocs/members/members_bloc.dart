@@ -14,8 +14,7 @@ import 'members_state.dart';
 class MembersBloc extends Bloc<MembersEvent, MembersState> {
   final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
-  @override
-  MembersState get initialState => MembersLoading();
+  MembersBloc() : super(MembersLoading());
 
   @override
   Stream<MembersState> mapEventToState(
@@ -55,7 +54,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
       );
 
       // add self to contacts
-      final self = await _inviteOnlyRepo.currentUser();
+      final self = _inviteOnlyRepo.currentUser();
       final selfContact = Contact(
           displayName: 'You', phones: [Item(label: 'Phone', value: self)]);
       final contactsWithSelf = contacts.toList();

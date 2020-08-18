@@ -11,8 +11,7 @@ import 'entry_state.dart';
 class EntryBloc extends Bloc<EntryEvent, EntryState> {
   final _inviteOnlyRepo = InviteOnlyRepo.instance;
 
-  @override
-  EntryState get initialState => GrantingEntry();
+  EntryBloc() : super(GrantingEntry());
 
   @override
   Stream<EntryState> mapEventToState(

@@ -15,7 +15,7 @@ class SpaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthState>(
-      bloc: AuthBloc.of(context),
+      cubit: AuthBloc.of(context),
       builder: (context, state) {
         if (state is UserAuthenticated) {
           final phone = state.phoneNumber;
