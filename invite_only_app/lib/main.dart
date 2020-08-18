@@ -15,6 +15,7 @@ import 'package:invite_only_app/blocs/spaces/spaces_bloc.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_event.dart';
 import 'package:invite_only_app/widgets/pages/auth_page.dart';
 import 'package:invite_only_app/widgets/pages/spaces_page.dart';
+import 'package:invite_only_app/widgets/pages/tutorial_page.dart';
 
 // These keys are restricted - they won't work without the necessary signing keys - so no harm in exposing them.
 final kAndroidMapsApiKey = 'AIzaSyAXTDtFj3Dk0J61YcT9QlhXiCzWmDKvC4c';
@@ -52,6 +53,10 @@ class InviteOnlyApp extends StatelessWidget {
             if (state is UserAuthenticated) {
               SpacesBloc.of(context).add(LoadSpaces());
               DocsBloc.of(context).add(LoadDocs());
+
+              if (state.isFirstTimeUser) {
+                showTutorial(context);
+              }
             }
           },
           builder: (context, state) {
