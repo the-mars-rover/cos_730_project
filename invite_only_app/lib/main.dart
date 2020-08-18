@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_bloc.dart';
 import 'package:invite_only_app/blocs/auth/auth_event.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
 class InviteOnlyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
