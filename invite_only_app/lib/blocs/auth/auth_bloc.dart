@@ -54,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (phone == null) {
       yield UserUnauthenticated();
     } else {
-      yield UserAuthenticated(phone);
+      yield UserAuthenticated(phone, false);
     }
   }
 
@@ -88,7 +88,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _inviteOnlyRepo.signInWithCredential(event.authCredential);
       String phoneNumber = await _inviteOnlyRepo.currentUser();
 
-      yield UserAuthenticated(phoneNumber);
+      yield UserAuthenticated(phoneNumber, true);
     } on AuthFailure {
       yield AuthFailed(
           'The phone number could not be verified. Please try again.');

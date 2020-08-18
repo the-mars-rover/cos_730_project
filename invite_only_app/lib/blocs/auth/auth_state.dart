@@ -18,8 +18,9 @@ class SmsCodeSent extends AuthState {
 
 class UserAuthenticated extends AuthState {
   final String phoneNumber;
+  final bool isFirstTimeUser;
 
-  UserAuthenticated(this.phoneNumber);
+  UserAuthenticated(this.phoneNumber, this.isFirstTimeUser);
 }
 
 class AuthFailed extends AuthState {
