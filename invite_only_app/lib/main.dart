@@ -19,11 +19,15 @@ import 'package:invite_only_app/widgets/pages/spaces_page.dart';
 import 'package:invite_only_app/widgets/pages/tutorial_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
+class EnvironmentConfig {
+  static const CORE_URL = String.fromEnvironment('CORE_URL');
+}
+
 Future<void> main() async {
   // Necessary initializations
   WidgetsFlutterBinding.ensureInitialized();
   Firebase.initializeApp();
-  InviteOnlyRepo.initialize(String.fromEnvironment('CORE_URL'));
+  InviteOnlyRepo.initialize(EnvironmentConfig.CORE_URL);
 
   // Load assets before moving past splash screen
   await loadImage('assets/place_placeholder.jpg');
