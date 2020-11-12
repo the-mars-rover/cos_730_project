@@ -12,8 +12,6 @@ import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/pages/docs_page.dart';
 import 'package:invite_only_app/widgets/pages/space_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
-import 'package:launch_review/launch_review.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SpacesPage extends StatelessWidget {
   @override
@@ -51,30 +49,6 @@ class SpacesPage extends StatelessWidget {
                   },
                 );
               }),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.star),
-                title: Text("Leave a Review"),
-                onTap: () => LaunchReview.launch(
-                    androidAppId: "com.inviteonly.invite_only_app",
-                    iOSAppId: "1518528715"),
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.info),
-                title: Text("About Us"),
-                onTap: () => launch(
-                  'https://inviteonly.born.dev/about-invite-only',
-                ),
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.call),
-                title: Text("Contact Us"),
-                onTap: () => launch(
-                  'https://inviteonly.born.dev/contact-us',
-                ),
-              ),
               Divider(),
               ListTile(
                 leading: Icon(Icons.exit_to_app),
