@@ -1,5 +1,6 @@
 package com.inviteonly;
 
+import com.google.firebase.ErrorCode;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.gson.Gson;
 import com.inviteonly.docs.entities.DriversLicense;
@@ -82,7 +83,7 @@ public class InviteOnlyCoreIntegrationTest {
 		Mockito.when(securityService.phoneNumberForToken(VALID_TOKEN)).thenReturn(PHONE);
 		Mockito.when(securityService.authenticatedPhone()).thenReturn(PHONE);
 		Mockito.when(securityService.phoneNumberForToken(INVALID_TOKEN)).thenThrow(
-				new AuthenticationException("Error verifying token with firebase.", new FirebaseAuthException("errorCode", "Invalid Token"))
+				new AuthenticationException("Error verifying token with firebase.", new FirebaseAuthException(ErrorCode.ABORTED, "Invalid Token", null, null, null))
 		);
 	}
 
