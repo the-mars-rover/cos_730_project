@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:invite_only_repo/src/errors/auth_failure.dart';
 import 'package:invite_only_repo/src/errors/conflict.dart';
 import 'package:invite_only_repo/src/errors/not_found.dart';
-import 'package:invite_only_repo/src/errors/uknown_error.dart';
 import 'package:invite_only_repo/src/errors/unauthenticated.dart';
 import 'package:invite_only_repo/src/errors/unauthorized.dart';
+import 'package:invite_only_repo/src/errors/unknown_error.dart';
 import 'package:invite_only_repo/src/models/entry/entry.dart';
 import 'package:invite_only_repo/src/models/id_document/id_document.dart';
 import 'package:invite_only_repo/src/models/invite/invite.dart';
@@ -13,13 +14,20 @@ import 'package:invite_only_repo/src/models/space/space.dart';
 import 'invite_only_repo_impl.dart';
 
 abstract class InviteOnlyRepo {
+  static String _coreUrl;
+
+  /// Initializes the InviteOnlyRepo with the URL of the Invite Only Core API.
+  static void initialize(String coreUrl) => _coreUrl = coreUrl;
+
   /// Just a simple getter to retrieve the singleton instance of the  class.
   ///
   /// If [initialize] has not been called, this will be null.
-  static InviteOnlyRepo get instance =>
-      InviteOnlyRepoImpl.getInstance(kReleaseMode
-          ? 'https://core.inviteonly.born.dev'
-          : 'https://core.inviteonly.born.dev');
+  static InviteOnlyRepo get instance {
+    if (_coreUrl == null)
+      throw Uninitialized(
+          'Make sure you have called InviteOnlyRepo.init at the start of your main method.');
+    return InviteOnlyRepoImpl.getInstance(_coreUrl);
+  }
 
   /// Returns the current user's phone number, or null if there is no authenticated user.
   String currentUser();
