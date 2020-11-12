@@ -10,7 +10,8 @@ import com.inviteonly.entries.entities.SpaceEntry;
 import com.inviteonly.entries.repositories.IEntryRepository;
 import com.inviteonly.invites.entities.Invite;
 import com.inviteonly.invites.repositories.IInvitesRepository;
-import com.inviteonly.security.services.FirebaseService;
+import com.inviteonly.security.errors.AuthenticationException;
+import com.inviteonly.security.services.SecurityService;
 import com.inviteonly.spaces.entities.Space;
 import com.inviteonly.spaces.repositories.ISpaceRepository;
 import org.json.JSONObject;
@@ -32,7 +33,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,15 +71,19 @@ public class InviteOnlyCoreIntegrationTest {
 	@Autowired
 	private IEntryRepository entryRepository;
 
-	// Unfortunately, we need to mock firebase because there are no means to perform test interactions with the interface.
+	// Unfortunately, we need to mock the security service because it makes use of Firebase
+	// which does not cater for testing
 	@MockBean
-	FirebaseService firebaseService;
+	SecurityService securityService;
 
 	@Before
-	public void setUp() throws FirebaseAuthException {
+	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-		Mockito.when(firebaseService.phoneNumberForToken("token")).thenReturn(PHONE);
-		Mockito.when(firebaseService.phoneNumberForToken(INVALID_TOKEN)).thenThrow(new FirebaseAuthException("errorCode", "Invalid Token"));
+		Mockito.when(securityService.phoneNumberForToken(VALID_TOKEN)).thenReturn(PHONE);
+		Mockito.when(securityService.authenticatedPhone()).thenReturn(PHONE);
+		Mockito.when(securityService.phoneNumberForToken(INVALID_TOKEN)).thenThrow(
+				new AuthenticationException("Error verifying token with firebase.", new FirebaseAuthException("errorCode", "Invalid Token"))
+		);
 	}
 
 	@After
@@ -957,7 +965,7 @@ public class InviteOnlyCoreIntegrationTest {
 		SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
 
 		// When
-		mvc.perform(MockMvcRequestBuilders.get("/spaces/"+ savedSpace.getId() +"/entries").with(csrf())
+		mvc.perform(MockMvcRequestBuilders.get("/spaces/" + savedSpace.getId() + "/entries").with(csrf())
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
 				// Then
 				.andExpect(status().isOk())
@@ -983,7 +991,7 @@ public class InviteOnlyCoreIntegrationTest {
 		SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
 
 		// When
-		mvc.perform(MockMvcRequestBuilders.get("/spaces/"+ savedSpace.getId() +"/entries?from=2020-01-15T00:00:00").with(csrf())
+		mvc.perform(MockMvcRequestBuilders.get("/spaces/" + savedSpace.getId() + "/entries?from=2020-01-15T00:00:00").with(csrf())
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
 				// Then
 				.andExpect(status().isOk())
@@ -1009,7 +1017,7 @@ public class InviteOnlyCoreIntegrationTest {
 		SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
 
 		// When
-		mvc.perform(MockMvcRequestBuilders.get("/spaces/"+ savedSpace.getId() +"/entries?to=2020-02-15T00:00:00").with(csrf())
+		mvc.perform(MockMvcRequestBuilders.get("/spaces/" + savedSpace.getId() + "/entries?to=2020-02-15T00:00:00").with(csrf())
 				.header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
 				// Then
 				.andExpect(status().isOk())
