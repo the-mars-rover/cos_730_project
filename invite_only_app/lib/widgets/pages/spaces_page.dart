@@ -11,7 +11,6 @@ import 'package:invite_only_app/widgets/icons/i_o_icons_icons.dart';
 import 'package:invite_only_app/widgets/other/error_message.dart';
 import 'package:invite_only_app/widgets/pages/docs_page.dart';
 import 'package:invite_only_app/widgets/pages/space_page.dart';
-import 'package:invite_only_app/widgets/pages/tutorial_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -52,12 +51,6 @@ class SpacesPage extends StatelessWidget {
                   },
                 );
               }),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.help),
-                title: Text("Getting Started"),
-                onTap: () => showTutorial(context),
-              ),
               Divider(),
               ListTile(
                 leading: Icon(Icons.star),

@@ -16,7 +16,6 @@ import 'package:invite_only_app/blocs/spaces/spaces_bloc.dart';
 import 'package:invite_only_app/blocs/spaces/spaces_event.dart';
 import 'package:invite_only_app/widgets/pages/auth_page.dart';
 import 'package:invite_only_app/widgets/pages/spaces_page.dart';
-import 'package:invite_only_app/widgets/pages/tutorial_page.dart';
 import 'package:invite_only_repo/invite_only_repo.dart';
 
 class EnvironmentConfig {
@@ -60,10 +59,6 @@ class InviteOnlyApp extends StatelessWidget {
             if (state is UserAuthenticated) {
               SpacesBloc.of(context).add(LoadSpaces());
               DocsBloc.of(context).add(LoadDocs());
-
-              if (state.isFirstTimeUser) {
-                showTutorial(context);
-              }
             }
           },
           builder: (context, state) {
