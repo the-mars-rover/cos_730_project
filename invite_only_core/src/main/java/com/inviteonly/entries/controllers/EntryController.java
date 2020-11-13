@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/spaces/{spaceId}/entries")
@@ -38,16 +37,20 @@ public class EntryController {
 
   private final EntryServiceInterface entryService;
 
-  @Operation(summary = "Add an Entry to the space with the given ID",
-      description = "Only guards of the space will be authorized to call this endpoint. An "
-          + "inviteCode is optional if the person with the given idDocument has access to the "
-          + "space (ie. has been added as a manager, inviter or guard for the space) however, an "
-          + "inviteCode must be provided if not.",
+  @Operation(
+      summary = "Add an Entry to the space with the given ID",
+      description =
+          "Only guards of the space will be authorized to call this endpoint. An "
+              + "inviteCode is optional if the person with the given idDocument has access to the "
+              + "space (ie. has been added as a manager, inviter or guard for the space) however, "
+              + "an inviteCode must be provided if not.",
       security = @SecurityRequirement(name = "Phone Number Auth"))
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  SpaceEntry postEntry(@PathVariable Long spaceId, @Validated @RequestBody IdDocument idDocument,
-                       @Validated @RequestParam(required = false) String inviteCode) {
+  SpaceEntry postEntry(
+      @PathVariable Long spaceId,
+      @Validated @RequestBody IdDocument idDocument,
+      @Validated @RequestParam(required = false) String inviteCode) {
     try {
       String phoneNumber = securityService.authenticatedPhone();
 
@@ -56,43 +59,44 @@ public class EntryController {
       }
 
       return entryService.addResidentEntry(phoneNumber, spaceId, idDocument);
-    } catch (DocNotFoundException e) {
+    } catch (DocNotFoundException error) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user with matching ID Document");
-    } catch (SpaceNotFoundException e) {
+    } catch (SpaceNotFoundException error) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id");
-    } catch (SpaceAuthorizationException e) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
-    } catch (InvalidInviteCode e) {
+    } catch (SpaceAuthorizationException error) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, error.getMessage());
+    } catch (InvalidInviteCode error) {
       throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Invalid invite code");
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "An unexpected error occurred.");
+    } catch (Exception error) {
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
   }
 
-  @Operation(summary = "Retrieve entries for the space with the given ID",
-      description = "If the user with the authenticated phone number is a manager for the space "
-          + "this response will include all entries for the space. Otherwise, it will only "
-          + "include entries relevant to the user.",
+  @Operation(
+      summary = "Retrieve entries for the space with the given ID",
+      description =
+          "If the user with the authenticated phone number is a manager for the space "
+              + "this response will include all entries for the space. Otherwise, it will only "
+              + "include entries relevant to the user.",
       security = @SecurityRequirement(name = "Phone Number Auth"))
   @GetMapping
-  Page<SpaceEntry> getEntries(@PathVariable Long spaceId,
-                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Validated
-                              @RequestParam(required
-                                  = false) LocalDateTime from,
-                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Validated
-                              @RequestParam(required
-                                  = false) LocalDateTime to,
-                              @NotNull Pageable pageable) {
+  Page<SpaceEntry> getEntries(
+      @PathVariable Long spaceId,
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Validated @RequestParam(required = false)
+          LocalDateTime from,
+      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) @Validated @RequestParam(required = false)
+          LocalDateTime to,
+      @NotNull Pageable pageable) {
     try {
       String phoneNumber = securityService.authenticatedPhone();
 
       return entryService.findEntries(phoneNumber, spaceId, from, to, pageable);
-    } catch (SpaceNotFoundException e) {
+    } catch (SpaceNotFoundException error) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No space with the given Id");
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "An unexpected error occurred.");
+    } catch (Exception error) {
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
   }
 }

@@ -28,28 +28,29 @@ public class AuthFilter extends OncePerRequestFilter {
   private final SecurityService securityService;
 
   @Override
-  protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                  @NotNull HttpServletResponse response,
-                                  @NotNull FilterChain filterChain)
+  protected void doFilterInternal(
+      @NotNull HttpServletRequest request,
+      @NotNull HttpServletResponse response,
+      @NotNull FilterChain filterChain)
       throws IOException, ServletException {
     try {
       // Get token and validate it with Firebase
       Cookie cookieToken = WebUtils.getCookie(request, "token");
       String token =
-          cookieToken == null ? request.getHeader(HttpHeaders.AUTHORIZATION).substring(7) :
-              cookieToken.getValue();
+          cookieToken == null
+              ? request.getHeader(HttpHeaders.AUTHORIZATION).substring(7)
+              : cookieToken.getValue();
       String phoneNumber = securityService.phoneNumberForToken(token);
 
       // Set authentication details
-      UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-          phoneNumber,
-          token, null);
+      UsernamePasswordAuthenticationToken authentication =
+          new UsernamePasswordAuthenticationToken(phoneNumber, token, null);
       authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
       SecurityContextHolder.getContext().setAuthentication(authentication);
 
       // Apply the filter
       filterChain.doFilter(request, response);
-    } catch (NullPointerException | IndexOutOfBoundsException | AuthenticationException e) {
+    } catch (NullPointerException | IndexOutOfBoundsException | AuthenticationException error) {
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
   }
@@ -58,8 +59,7 @@ public class AuthFilter extends OncePerRequestFilter {
   protected boolean shouldNotFilter(HttpServletRequest request) {
     String path = request.getRequestURI().substring(request.getContextPath().length());
     boolean requiresPhoneAuth;
-    requiresPhoneAuth = path.startsWith("/docs")
-        || path.startsWith("/spaces");
+    requiresPhoneAuth = path.startsWith("/docs") || path.startsWith("/spaces");
     return !requiresPhoneAuth;
   }
 }

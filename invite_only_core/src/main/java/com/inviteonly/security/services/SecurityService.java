@@ -27,9 +27,10 @@ public class SecurityService {
    */
   @PostConstruct
   public void initializeFirebase() throws IOException {
-    FirebaseOptions options = new FirebaseOptions.Builder()
-        .setCredentials(GoogleCredentials.getApplicationDefault())
-        .build();
+    FirebaseOptions options =
+        new FirebaseOptions.Builder()
+            .setCredentials(GoogleCredentials.getApplicationDefault())
+            .build();
     if (FirebaseApp.getApps().isEmpty()) {
       FirebaseApp.initializeApp(options);
     }
@@ -61,8 +62,8 @@ public class SecurityService {
       FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
       UserRecord userRecord = FirebaseAuth.getInstance().getUser(firebaseToken.getUid());
       return userRecord.getPhoneNumber();
-    } catch (FirebaseAuthException e) {
-      throw new AuthenticationException("Error verifying token with firebase.", e);
+    } catch (FirebaseAuthException exception) {
+      throw new AuthenticationException("Error verifying token with firebase.", exception);
     }
   }
 }

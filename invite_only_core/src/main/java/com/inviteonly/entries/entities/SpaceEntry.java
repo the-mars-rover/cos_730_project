@@ -49,11 +49,19 @@ public class SpaceEntry {
   @Override
   public String toString() {
     return "SpaceEntry{"
-        + "id=" + id
-        + ", spaceId=" + space.getId()
-        + ", entryDate=" + entryDate
-        + ", idDocument=" + idDocument
-        + ", guardPhone='" + guardPhone + '\''
-        + ", inviteId=" + invite + '}';
+        + "id="
+        + id
+        + ", spaceId="
+        + space.getId()
+        + ", entryDate="
+        + entryDate
+        + ", idDocument="
+        + idDocument
+        + ", guardPhone='"
+        + guardPhone
+        + '\''
+        + ", inviteId="
+        + invite
+        + '}';
   }
 }

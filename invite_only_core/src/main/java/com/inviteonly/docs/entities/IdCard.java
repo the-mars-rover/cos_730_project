@@ -1,6 +1,5 @@
 package com.inviteonly.docs.entities;
 
-
 import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;

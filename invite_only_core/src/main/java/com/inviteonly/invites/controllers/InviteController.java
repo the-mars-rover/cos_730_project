@@ -25,12 +25,12 @@ public class InviteController {
 
   private final InvitesServiceInterface invitesService;
 
-  @Operation(summary = "Create an invite for the space with the given ID",
+  @Operation(
+      summary = "Create an invite for the space with the given ID",
       description =
           "Only inviters of the space will be authorized to call this endpoint. A successful "
               + "response"
-              +
-              " includes an invite code that can be used to add an entry to the space.",
+              + " includes an invite code that can be used to add an entry to the space.",
       security = @SecurityRequirement(name = "Phone Number Auth"))
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -39,14 +39,14 @@ public class InviteController {
       String phoneNumber = securityService.authenticatedPhone();
 
       return invitesService.createInvite(phoneNumber, spaceId);
-    } catch (SpaceNotFoundException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-          String.format("Space with id %s could not be found.", spaceId));
-    } catch (SpaceAuthorizationException e) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "An unexpected error occurred.");
+    } catch (SpaceNotFoundException error) {
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND, String.format("Space with id %s could not be found.", spaceId));
+    } catch (SpaceAuthorizationException error) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, error.getMessage());
+    } catch (Exception error) {
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
   }
 }

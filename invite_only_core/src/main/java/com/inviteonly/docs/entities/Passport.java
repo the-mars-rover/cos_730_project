@@ -8,5 +8,5 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Data
 public class Passport extends IdDocument {
-  //TODO: Provide support for passports
+  // TODO: Provide support for passports
 }

@@ -37,8 +37,8 @@ public class EntryService implements EntryServiceInterface {
           String.format("%s is not authorized to grant entry to this space", phoneNumber));
     }
 
-    IdDocument storedDoc = docsRepository.findOne(Example.of(idDocument))
-        .orElseThrow(DocNotFoundException::new);
+    IdDocument storedDoc =
+        docsRepository.findOne(Example.of(idDocument)).orElseThrow(DocNotFoundException::new);
     if (!space.hasResident(storedDoc.getPhoneNumber())) {
       throw new SpaceAuthorizationException(
           String.format("%s is not authorized to enter this space", phoneNumber));
@@ -54,8 +54,8 @@ public class EntryService implements EntryServiceInterface {
   }
 
   @Override
-  public SpaceEntry addVisitorEntry(String phoneNumber, Long spaceId, IdDocument idDocument,
-                                    String inviteCode)
+  public SpaceEntry addVisitorEntry(
+      String phoneNumber, Long spaceId, IdDocument idDocument, String inviteCode)
       throws SpaceNotFoundException, SpaceAuthorizationException, InvalidInviteCode {
     Space space = spaceRepository.findById(spaceId).orElseThrow(SpaceNotFoundException::new);
     if (!space.hasGuard(phoneNumber)) {
@@ -64,8 +64,10 @@ public class EntryService implements EntryServiceInterface {
     }
 
     idDocument = docsRepository.findOne(Example.of(idDocument)).orElse(idDocument);
-    Invite invite = invitesRepository.findBySpaceIdAndInviteCode(
-        spaceId, inviteCode, LocalDateTime.now()).orElseThrow(InvalidInviteCode::new);
+    Invite invite =
+        invitesRepository
+            .findBySpaceIdAndInviteCode(spaceId, inviteCode, LocalDateTime.now())
+            .orElseThrow(InvalidInviteCode::new);
 
     SpaceEntry entry = new SpaceEntry();
     entry.setGuardPhone(phoneNumber);
@@ -78,22 +80,22 @@ public class EntryService implements EntryServiceInterface {
   }
 
   @Override
-  public Page<SpaceEntry> findEntries(String phoneNumber, Long spaceId, LocalDateTime from,
-                                      LocalDateTime to, Pageable pageable)
+  public Page<SpaceEntry> findEntries(
+      String phoneNumber, Long spaceId, LocalDateTime from, LocalDateTime to, Pageable pageable)
       throws SpaceNotFoundException {
     Space space = spaceRepository.findById(spaceId).orElseThrow(SpaceNotFoundException::new);
 
     if (from == null) {
       // would prefer to use LocalDateTime.MIN but causes problem in SQL query. See
-      //https://stackoverflow.com/questions/60884477/spring-boot-data-jpa-query-doesnt-work-with
-      //-localdatetime-max
+      // https://stackoverflow.com/questions/60884477/spring-boot-data-jpa-query-doesnt-work-with
+      // -localdatetime-max
       from = LocalDateTime.of(2000, 1, 1, 0, 0, 0);
     }
 
     if (to == null) {
       // would prefer to use LocalDateTime.MAX but causes problem in SQL query. See
-      //https://stackoverflow.com/questions/60884477/spring-boot-data-jpa-query-doesnt-work-with
-      //-localdatetime-max
+      // https://stackoverflow.com/questions/60884477/spring-boot-data-jpa-query-doesnt-work-with
+      // -localdatetime-max
       to = LocalDateTime.of(3000, 1, 1, 0, 0, 0);
     }
 

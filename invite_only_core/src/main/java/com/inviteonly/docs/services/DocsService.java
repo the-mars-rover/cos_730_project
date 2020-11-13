@@ -15,7 +15,6 @@ public class DocsService implements DocsServiceInterface {
 
   private final DocsRepository docsRepository;
 
-
   @Override
   public List<IdDocument> findUserDocuments(String phoneNumber) {
     return docsRepository.findAllByPhoneNumber(phoneNumber);
@@ -44,8 +43,8 @@ public class DocsService implements DocsServiceInterface {
   @Override
   public void deleteUserDocument(String phoneNumber, Long documentId)
       throws DocNotFoundException, DocOwnerException {
-    IdDocument storedDocument = docsRepository.findById(documentId)
-        .orElseThrow(DocNotFoundException::new);
+    IdDocument storedDocument =
+        docsRepository.findById(documentId).orElseThrow(DocNotFoundException::new);
 
     String currentOwner = storedDocument.getPhoneNumber();
     if (currentOwner == null || !currentOwner.equals(phoneNumber)) {

@@ -4,7 +4,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import com.google.firebase.ErrorCode;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.gson.Gson;
@@ -48,8 +47,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes =
-    InviteOnlyCore.class)
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = InviteOnlyCore.class)
 @TestPropertySource(locations = "classpath:application-test.properties")
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
@@ -84,10 +84,11 @@ public class InviteOnlyCoreIntegrationTest {
     MockitoAnnotations.initMocks(this);
     Mockito.when(securityService.phoneNumberForToken(VALID_TOKEN)).thenReturn(PHONE);
     Mockito.when(securityService.authenticatedPhone()).thenReturn(PHONE);
-    Mockito.when(securityService.phoneNumberForToken(INVALID_TOKEN)).thenThrow(
-        new AuthenticationException("Error verifying token with firebase.",
-            new FirebaseAuthException(ErrorCode.ABORTED, "Invalid Token", null, null, null))
-    );
+    Mockito.when(securityService.phoneNumberForToken(INVALID_TOKEN))
+        .thenThrow(
+            new AuthenticationException(
+                "Error verifying token with firebase.",
+                new FirebaseAuthException(ErrorCode.ABORTED, "Invalid Token", null, null, null)));
   }
 
   @After
@@ -98,7 +99,7 @@ public class InviteOnlyCoreIntegrationTest {
     spaceRepository.deleteAll();
   }
 
-  //region <Tests for Adding an ID Document>
+  // region <Tests for Adding an ID Document>
 
   @Test
   public void givenNoHeader_whenPostDoc_thenUnauthorizedResponse() throws Exception {
@@ -111,8 +112,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenPostDoc_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -120,8 +123,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenPostDoc_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -138,10 +143,12 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isBadRequest());
   }
@@ -164,10 +171,12 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
@@ -186,10 +195,12 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
@@ -219,10 +230,12 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
@@ -238,19 +251,21 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
         .andExpect(jsonPath("$.phoneNumber").value(PHONE));
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for Getting a user's linked ID Documents>
+  // region <Tests for Getting a user's linked ID Documents>
 
   @Test
   public void givenNoHeader_whenGetDocs_thenUnauthorizedResponse() throws Exception {
@@ -263,8 +278,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenGetDocs_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -272,8 +289,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenGetDocs_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -284,9 +303,11 @@ public class InviteOnlyCoreIntegrationTest {
     IdBook savedIdBook = docsRepository.save(getTestIdBook());
     IdCard savedIdCard = docsRepository.save(getTestIdCard());
 
-    //When
-    mvc.perform(MockMvcRequestBuilders.get("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    // When
+    mvc.perform(
+        MockMvcRequestBuilders.get("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[?(@.id == " + savedIdBook.getId().toString() + ")]").exists())
@@ -295,17 +316,19 @@ public class InviteOnlyCoreIntegrationTest {
 
   @Test
   public void givenNoDocs_whenGetDocs_thenEmpty() throws Exception {
-    //Given When
-    mvc.perform(MockMvcRequestBuilders.get("/docs").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    // Given When
+    mvc.perform(
+        MockMvcRequestBuilders.get("/docs")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[*]").isEmpty());
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for deleting an ID Document linked too a user >
+  // region <Tests for deleting an ID Document linked too a user >
 
   @Test
   public void givenNoHeader_whenDeleteDoc_thenUnauthorizedResponse() throws Exception {
@@ -318,8 +341,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenDeleteDoc_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.delete("/docs/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/docs/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -327,8 +352,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenDeleteDoc_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.delete("/docs/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/docs/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -336,8 +363,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenNonExistentDoc_whenDeleteDoc_thenNotFound() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.delete("/docs/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/docs/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isNotFound());
   }
@@ -351,8 +380,10 @@ public class InviteOnlyCoreIntegrationTest {
 
     // Given When
     String path = "/docs/" + savedDocument.getId();
-    mvc.perform(MockMvcRequestBuilders.delete(path).with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete(path)
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isForbidden());
   }
@@ -362,17 +393,19 @@ public class InviteOnlyCoreIntegrationTest {
     // Given
     IdBook savedDocument = docsRepository.save(getTestIdBook());
 
-    //When
+    // When
     String path = "/docs/" + savedDocument.getId();
-    mvc.perform(MockMvcRequestBuilders.delete(path).with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete(path)
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk());
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for adding a new space >
+  // region <Tests for adding a new space >
 
   @Test
   public void givenNoHeader_whenPostSpace_thenUnauthorizedResponse() throws Exception {
@@ -385,8 +418,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenPostSpace_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -394,8 +429,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenPostSpace_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -411,10 +448,12 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isBadRequest());
   }
@@ -430,19 +469,21 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
         .andExpect(jsonPath("$.title").value("The Wilds Estate"));
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for updating a space >
+  // region <Tests for updating a space >
 
   @Test
   public void givenNoHeader_whenPutSpace_thenUnauthorizedResponse() throws Exception {
@@ -455,8 +496,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenPutSpace_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.put("/spaces/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.put("/spaces/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -464,8 +507,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenPutSpace_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.put("/spaces/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.put("/spaces/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -477,10 +522,12 @@ public class InviteOnlyCoreIntegrationTest {
     String json = new Gson().toJson(testSpace);
 
     // Given When
-    mvc.perform(MockMvcRequestBuilders.put("/spaces/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(json))
+    mvc.perform(
+        MockMvcRequestBuilders.put("/spaces/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
         // Then
         .andExpect(status().isNotFound());
   }
@@ -495,10 +542,12 @@ public class InviteOnlyCoreIntegrationTest {
     String json = new Gson().toJson(savedSpace);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.put("/spaces/" + savedSpace.getId()).with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(json))
+    mvc.perform(
+        MockMvcRequestBuilders.put("/spaces/" + savedSpace.getId())
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
         // Then
         .andExpect(status().isForbidden());
   }
@@ -513,19 +562,21 @@ public class InviteOnlyCoreIntegrationTest {
     String json = new Gson().toJson(savedSpace);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.put("/spaces/" + savedSpace.getId()).with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(json))
+    mvc.perform(
+        MockMvcRequestBuilders.put("/spaces/" + savedSpace.getId())
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").exists())
         .andExpect(jsonPath("$.title").value("New Title"));
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for retrieving accessible spaces >
+  // region <Tests for retrieving accessible spaces >
 
   @Test
   public void givenNoHeader_whenGetSpaces_thenUnauthorizedResponse() throws Exception {
@@ -538,8 +589,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenGetSpaces_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -547,8 +600,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenGetSpaces_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -561,8 +616,10 @@ public class InviteOnlyCoreIntegrationTest {
     spaceRepository.save(testSpace);
 
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$").isEmpty());
@@ -583,8 +640,10 @@ public class InviteOnlyCoreIntegrationTest {
     Space savedSpaceD = spaceRepository.save(testSpaceD);
 
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[?(@.id == " + savedSpaceA.getId() + ")]").doesNotExist())
@@ -593,9 +652,9 @@ public class InviteOnlyCoreIntegrationTest {
         .andExpect(jsonPath("$.[?(@.id == " + savedSpaceD.getId() + ")]").exists());
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for deleting a space >
+  // region <Tests for deleting a space >
 
   @Test
   public void givenNoHeader_whenDeleteSpace_thenUnauthorizedResponse() throws Exception {
@@ -608,8 +667,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenDeleteSpace_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.delete("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -617,8 +678,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenDeleteSpace_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.delete("/spaces").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/spaces")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -626,8 +689,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidSpaceId_whenDeleteSpace_thenNotFound() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.delete("/spaces/1").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/spaces/1")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isNotFound());
   }
@@ -639,8 +704,10 @@ public class InviteOnlyCoreIntegrationTest {
     Space savedSpace = spaceRepository.save(testSpace);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.delete("/spaces/" + savedSpace.getId()).with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/spaces/" + savedSpace.getId())
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isForbidden());
   }
@@ -655,8 +722,10 @@ public class InviteOnlyCoreIntegrationTest {
     SpaceEntry testEntry = entryRepository.save(getTestEntry(testSpace));
 
     // When
-    mvc.perform(MockMvcRequestBuilders.delete("/spaces/" + savedSpace.getId()).with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.delete("/spaces/" + savedSpace.getId())
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk());
     assert spaceRepository.findById(savedSpace.getId()).orElse(null) == null;
@@ -664,9 +733,9 @@ public class InviteOnlyCoreIntegrationTest {
     assert entryRepository.findById(testEntry.getId()).orElse(null) == null;
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for invite generation >
+  // region <Tests for invite generation >
 
   @Test
   public void givenNoHeader_whenPostInvite_thenUnauthorizedResponse() throws Exception {
@@ -679,8 +748,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenPostInvite_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces/1/invites").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces/1/invites")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -688,8 +759,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenPostInvite_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces/1/invites").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces/1/invites")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -697,8 +770,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenNonExistingSpace_whenPostInvite_thenNotFound() throws Exception {
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces/1/invites").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces/1/invites")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isNotFound());
   }
@@ -711,7 +786,8 @@ public class InviteOnlyCoreIntegrationTest {
 
     // When
     mvc.perform(
-        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/invites").with(csrf())
+        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/invites")
+            .with(csrf())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isForbidden());
@@ -726,7 +802,8 @@ public class InviteOnlyCoreIntegrationTest {
 
     // When
     mvc.perform(
-        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/invites").with(csrf())
+        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/invites")
+            .with(csrf())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isCreated())
@@ -735,9 +812,9 @@ public class InviteOnlyCoreIntegrationTest {
         .andExpect(jsonPath("$.inviterPhone").value(PHONE));
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for adding an entry >
+  // region <Tests for adding an entry >
 
   @Test
   public void givenNoHeader_whenPostEntry_thenUnauthorizedResponse() throws Exception {
@@ -750,8 +827,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenPostEntry_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces/1/entries").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces/1/entries")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -759,8 +838,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenPostEntry_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces/1/entries").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces/1/entries")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -777,9 +858,12 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders.post("/spaces/1/entries").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON).content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post("/spaces/1/entries")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isNotFound());
   }
@@ -800,9 +884,11 @@ public class InviteOnlyCoreIntegrationTest {
 
     // When
     mvc.perform(
-        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/entries").with(csrf())
+        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/entries")
+            .with(csrf())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-            .contentType(MediaType.APPLICATION_JSON).content(requestObject.toString()))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isNotFound());
   }
@@ -822,9 +908,11 @@ public class InviteOnlyCoreIntegrationTest {
 
     // When
     mvc.perform(
-        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/entries").with(csrf())
+        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/entries")
+            .with(csrf())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-            .contentType(MediaType.APPLICATION_JSON).content(requestObject.toString()))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isForbidden());
   }
@@ -853,9 +941,11 @@ public class InviteOnlyCoreIntegrationTest {
 
     // When
     mvc.perform(
-        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/entries").with(csrf())
+        MockMvcRequestBuilders.post("/spaces/" + savedSpace.getId() + "/entries")
+            .with(csrf())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-            .contentType(MediaType.APPLICATION_JSON).content(requestObject.toString()))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
@@ -883,11 +973,16 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders
-        .post("/spaces/" + savedSpace.getId() + "/entries?inviteCode=" + savedInvite.getCode())
-        .with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON).content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post(
+            "/spaces/"
+                + savedSpace.getId()
+                + "/entries?inviteCode="
+                + savedInvite.getCode())
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").exists())
@@ -918,18 +1013,23 @@ public class InviteOnlyCoreIntegrationTest {
     JSONObject requestObject = new JSONObject(requestMap);
 
     // When
-    mvc.perform(MockMvcRequestBuilders
-        .post("/spaces/" + savedSpace.getId() + "/entries?inviteCode=" + savedInvite.getCode())
-        .with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
-        .contentType(MediaType.APPLICATION_JSON).content(requestObject.toString()))
+    mvc.perform(
+        MockMvcRequestBuilders.post(
+            "/spaces/"
+                + savedSpace.getId()
+                + "/entries?inviteCode="
+                + savedInvite.getCode())
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestObject.toString()))
         // Then
         .andExpect(status().isNotAcceptable());
   }
 
-  //endregion
+  // endregion
 
-  //region <Tests for getting entries >
+  // region <Tests for getting entries >
 
   @Test
   public void givenNoHeader_whenGetEntries_thenUnauthorizedResponse() throws Exception {
@@ -942,8 +1042,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenMalformedHeader_whenGetEntries_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/spaces/1/entries").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "oops"))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/spaces/1/entries")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "oops"))
         // then
         .andExpect(status().isUnauthorized());
   }
@@ -951,8 +1053,10 @@ public class InviteOnlyCoreIntegrationTest {
   @Test
   public void givenInvalidToken_whenGetEntries_thenUnauthorizedResponse() throws Exception {
     // Given When
-    mvc.perform(MockMvcRequestBuilders.get("/spaces/1/entries").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get("/spaces/1/entries")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + INVALID_TOKEN))
         // Then
         .andExpect(status().isUnauthorized());
   }
@@ -975,7 +1079,8 @@ public class InviteOnlyCoreIntegrationTest {
 
     // When
     mvc.perform(
-        MockMvcRequestBuilders.get("/spaces/" + savedSpace.getId() + "/entries").with(csrf())
+        MockMvcRequestBuilders.get("/spaces/" + savedSpace.getId() + "/entries")
+            .with(csrf())
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
@@ -1002,9 +1107,11 @@ public class InviteOnlyCoreIntegrationTest {
     SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
 
     // When
-    mvc.perform(MockMvcRequestBuilders
-        .get("/spaces/" + savedSpace.getId() + "/entries?from=2020-01-15T00:00:00").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get(
+            "/spaces/" + savedSpace.getId() + "/entries?from=2020-01-15T00:00:00")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.content.[?(@.id == " + savedEntryOne.getId() + ")]").doesNotExist())
@@ -1029,9 +1136,11 @@ public class InviteOnlyCoreIntegrationTest {
     SpaceEntry savedEntryThree = entryRepository.save(testEntryThree);
 
     // When
-    mvc.perform(MockMvcRequestBuilders
-        .get("/spaces/" + savedSpace.getId() + "/entries?to=2020-02-15T00:00:00").with(csrf())
-        .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
+    mvc.perform(
+        MockMvcRequestBuilders.get(
+            "/spaces/" + savedSpace.getId() + "/entries?to=2020-02-15T00:00:00")
+            .with(csrf())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_TOKEN))
         // Then
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.content.[?(@.id == " + savedEntryOne.getId() + ")]").exists())
@@ -1040,9 +1149,9 @@ public class InviteOnlyCoreIntegrationTest {
             jsonPath("$.content.[?(@.id == " + savedEntryThree.getId() + ")]").doesNotExist());
   }
 
-  //endregion
+  // endregion
 
-  //region < Helper Methods >
+  // region < Helper Methods >
 
   private DriversLicense getTestDrivers() {
     DriversLicense drivers = new DriversLicense();
@@ -1122,5 +1231,5 @@ public class InviteOnlyCoreIntegrationTest {
     return entry;
   }
 
-  //endregion
+  // endregion
 }

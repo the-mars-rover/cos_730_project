@@ -33,7 +33,8 @@ public class DocsController {
 
   private final DocsServiceInterface docsService;
 
-  @Operation(summary = "Add an ID document belonging to the authenticated phone number",
+  @Operation(
+      summary = "Add an ID document belonging to the authenticated phone number",
       security = @SecurityRequirement(name = "Phone Number Auth"))
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
@@ -42,17 +43,17 @@ public class DocsController {
       String phoneNumber = securityService.authenticatedPhone();
 
       return docsService.addUserDocument(phoneNumber, newDocument);
-    } catch (DocOwnerException e) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT,
-          "The document already belongs to someone else.");
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "An unexpected error occurred.");
+    } catch (DocOwnerException error) {
+      throw new ResponseStatusException(
+          HttpStatus.CONFLICT, "The document already belongs to someone else.");
+    } catch (Exception error) {
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
-
   }
 
-  @Operation(summary = "Get all ID documents belonging to the authenticated phone number",
+  @Operation(
+      summary = "Get all ID documents belonging to the authenticated phone number",
       security = @SecurityRequirement(name = "Phone Number Auth"))
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
@@ -61,13 +62,14 @@ public class DocsController {
       String phoneNumber = securityService.authenticatedPhone();
 
       return docsService.findUserDocuments(phoneNumber);
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "An unexpected error occurred.");
+    } catch (Exception error) {
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
   }
 
-  @Operation(summary = "Delete an ID document belonging to the authenticated phone number",
+  @Operation(
+      summary = "Delete an ID document belonging to the authenticated phone number",
       security = @SecurityRequirement(name = "Phone Number Auth"))
   @DeleteMapping("/{documentId}")
   @ResponseStatus(HttpStatus.OK)
@@ -76,15 +78,15 @@ public class DocsController {
       String phoneNumber = securityService.authenticatedPhone();
 
       docsService.deleteUserDocument(phoneNumber, documentId);
-    } catch (DocOwnerException e) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-          "Document does not belong to the authenticated user.");
-    } catch (DocNotFoundException e) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-          "No document with the given Id exists.");
-    } catch (Exception e) {
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-          "An unexpected error occurred.");
+    } catch (DocOwnerException error) {
+      throw new ResponseStatusException(
+          HttpStatus.FORBIDDEN, "Document does not belong to the authenticated user.");
+    } catch (DocNotFoundException error) {
+      throw new ResponseStatusException(
+          HttpStatus.NOT_FOUND, "No document with the given Id exists.");
+    } catch (Exception error) {
+      throw new ResponseStatusException(
+          HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
     }
   }
 }

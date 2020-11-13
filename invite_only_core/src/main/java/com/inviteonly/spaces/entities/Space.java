@@ -55,20 +55,45 @@ public class Space {
   @OneToMany(mappedBy = "space", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Invite> invites;
 
+  /**
+   * True/False based on whether the space has the given user as a manager.
+   *
+   * @param phoneNumber - the phone number of the user.
+   * @return true if the user is a manager of this space; otherwise, false.
+   */
   public boolean hasManager(String phoneNumber) {
     return managerPhones.contains(phoneNumber);
   }
 
+  /**
+   * True/False based on whether the space has the given user as an inviter.
+   *
+   * @param phoneNumber - the phone number of the user.
+   * @return true if the user is an inviter of this space; otherwise, false.
+   */
   public boolean hasInviter(String phoneNumber) {
     return inviterPhones.contains(phoneNumber);
   }
 
+  /**
+   * True/False based on whether the space has the given user as a guard.
+   *
+   * @param phoneNumber - the phone number of the user.
+   * @return true if the user is a guard of this space; otherwise, false.
+   */
   public boolean hasGuard(String phoneNumber) {
     return guardPhones.contains(phoneNumber);
   }
 
+  /**
+   * True/False based on whether the space has the given user as a manager/inviter/guard.
+   *
+   * @param phoneNumber - the phone number of the user.
+   * @return true if the user is a manager/inviter/guard of this space; otherwise, false.
+   */
   public boolean hasResident(String phoneNumber) {
-    return managerPhones.contains(phoneNumber) || inviterPhones.contains(phoneNumber) || guardPhones
-        .contains(phoneNumber);
+    return managerPhones.contains(phoneNumber)
+        || inviterPhones.contains(phoneNumber)
+        || guardPhones.contains(phoneNumber);
   }
 }

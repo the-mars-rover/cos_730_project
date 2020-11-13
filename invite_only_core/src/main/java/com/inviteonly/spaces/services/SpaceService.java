@@ -22,13 +22,13 @@ public class SpaceService implements SpaceServiceInterface {
   @Override
   public Space updateSpace(String phoneNumber, Space space)
       throws SpaceNotFoundException, SpaceAuthorizationException {
-    Space savedSpace = spaceRepository.findById(space.getId())
-        .orElseThrow(SpaceNotFoundException::new);
+    Space savedSpace =
+        spaceRepository.findById(space.getId()).orElseThrow(SpaceNotFoundException::new);
 
     if (!savedSpace.hasManager(phoneNumber)) {
       throw new SpaceAuthorizationException(
-          String
-              .format("%s does not have authorization to update the existing space", phoneNumber));
+          String.format(
+              "%s does not have authorization to update the existing space", phoneNumber));
     }
 
     return spaceRepository.save(space);
@@ -41,8 +41,8 @@ public class SpaceService implements SpaceServiceInterface {
 
     if (!savedSpace.hasManager(phoneNumber)) {
       throw new SpaceAuthorizationException(
-          String
-              .format("%s does not have authorization to delete the existing space", phoneNumber));
+          String.format(
+              "%s does not have authorization to delete the existing space", phoneNumber));
     }
 
     spaceRepository.deleteById(spaceId);

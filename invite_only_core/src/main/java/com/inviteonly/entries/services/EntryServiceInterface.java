@@ -24,7 +24,7 @@ public interface EntryServiceInterface {
    * @throws SpaceNotFoundException      if no space with the given ID could be found
    * @throws SpaceAuthorizationException if the given phone number is not allowed to grant entry or
    *                                     the person linked to the given document is not allowed
-   *                                     entry to the space with the given id.
+   *                                     entry to the space with the given id
    */
   SpaceEntry addResidentEntry(String phoneNumber, Long spaceId, IdDocument idDocument)
       throws DocNotFoundException, SpaceNotFoundException, SpaceAuthorizationException;
@@ -40,8 +40,8 @@ public interface EntryServiceInterface {
    * @throws SpaceAuthorizationException if the given phone number is not allowed to grant entry
    * @throws InvalidInviteCode           if the invite code is not valid
    */
-  SpaceEntry addVisitorEntry(String phoneNumber, Long spaceId, IdDocument idDocument,
-                             String inviteCode)
+  SpaceEntry addVisitorEntry(
+      String phoneNumber, Long spaceId, IdDocument idDocument, String inviteCode)
       throws SpaceNotFoundException, SpaceAuthorizationException, InvalidInviteCode;
 
   /**
@@ -53,6 +53,7 @@ public interface EntryServiceInterface {
    * @return a page of entries that have relevance to the given phone number, or an empty list.
    * @throws SpaceNotFoundException if the space with the given ID could not be found
    */
-  Page<SpaceEntry> findEntries(String phoneNumber, Long spaceId, LocalDateTime from,
-                               LocalDateTime to, Pageable pageable) throws SpaceNotFoundException;
+  Page<SpaceEntry> findEntries(
+      String phoneNumber, Long spaceId, LocalDateTime from, LocalDateTime to, Pageable pageable)
+      throws SpaceNotFoundException;
 }

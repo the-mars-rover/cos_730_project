@@ -27,8 +27,8 @@ public class InvitesService implements InvitesServiceInterface {
 
     if (!savedSpace.hasInviter(phoneNumber)) {
       throw new SpaceAuthorizationException(
-          String.format("%s does not have authorization to create invites for the space",
-              phoneNumber));
+          String.format(
+              "%s does not have authorization to create invites for the space", phoneNumber));
     }
 
     Invite invite = new Invite();
