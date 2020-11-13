@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class InviteOnlyCore {
-	public static void main(final String[] args) {
-		SpringApplication.run(InviteOnlyCore.class, args);
-	}
+
+  public static void main(final String[] args) {
+    SpringApplication.run(InviteOnlyCore.class, args);
+  }
 }

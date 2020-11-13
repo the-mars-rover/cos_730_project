@@ -3,51 +3,56 @@ package com.inviteonly.docs.services;
 import com.inviteonly.docs.entities.IdDocument;
 import com.inviteonly.docs.errors.DocNotFoundException;
 import com.inviteonly.docs.errors.DocOwnerException;
-import com.inviteonly.docs.repositories.IDocsRepository;
+import com.inviteonly.docs.repositories.DocsRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class DocsService implements IDocsService {
-	private final IDocsRepository docsRepository;
+public class DocsService implements DocsServiceInterface {
+
+  private final DocsRepository docsRepository;
 
 
-	@Override
-	public List<IdDocument> findUserDocuments(String phoneNumber) {
-		return docsRepository.findAllByPhoneNumber(phoneNumber);
-	}
+  @Override
+  public List<IdDocument> findUserDocuments(String phoneNumber) {
+    return docsRepository.findAllByPhoneNumber(phoneNumber);
+  }
 
-	@Override
-	public IdDocument addUserDocument(String phoneNumber, IdDocument idDocument) throws DocOwnerException {
-		idDocument.setPhoneNumber(null);
-		IdDocument storedDocument = docsRepository.findOne(Example.of(idDocument)).orElse(null);
+  @Override
+  public IdDocument addUserDocument(String phoneNumber, IdDocument idDocument)
+      throws DocOwnerException {
+    idDocument.setPhoneNumber(null);
+    IdDocument storedDocument = docsRepository.findOne(Example.of(idDocument)).orElse(null);
 
-		if (storedDocument == null) {
-			idDocument.setPhoneNumber(phoneNumber);
-			return docsRepository.save(idDocument);
-		}
+    if (storedDocument == null) {
+      idDocument.setPhoneNumber(phoneNumber);
+      return docsRepository.save(idDocument);
+    }
 
-		String currentOwner = storedDocument.getPhoneNumber();
-		if (currentOwner != null && !currentOwner.equals(phoneNumber)) {
-			throw new DocOwnerException();
-		}
+    String currentOwner = storedDocument.getPhoneNumber();
+    if (currentOwner != null && !currentOwner.equals(phoneNumber)) {
+      throw new DocOwnerException();
+    }
 
-		storedDocument.setPhoneNumber(phoneNumber);
-		return docsRepository.save(storedDocument);
-	}
+    storedDocument.setPhoneNumber(phoneNumber);
+    return docsRepository.save(storedDocument);
+  }
 
-	@Override
-	public void deleteUserDocument(String phoneNumber, Long documentId) throws DocNotFoundException, DocOwnerException {
-		IdDocument storedDocument = docsRepository.findById(documentId).orElseThrow(DocNotFoundException::new);
+  @Override
+  public void deleteUserDocument(String phoneNumber, Long documentId)
+      throws DocNotFoundException, DocOwnerException {
+    IdDocument storedDocument = docsRepository.findById(documentId)
+        .orElseThrow(DocNotFoundException::new);
 
-		String currentOwner = storedDocument.getPhoneNumber();
-		if (currentOwner == null || !currentOwner.equals(phoneNumber)) throw new DocOwnerException();
+    String currentOwner = storedDocument.getPhoneNumber();
+    if (currentOwner == null || !currentOwner.equals(phoneNumber)) {
+      throw new DocOwnerException();
+    }
 
-		storedDocument.setPhoneNumber(null);
-		docsRepository.save(storedDocument);
-	}
+    storedDocument.setPhoneNumber(null);
+    docsRepository.save(storedDocument);
+  }
 }

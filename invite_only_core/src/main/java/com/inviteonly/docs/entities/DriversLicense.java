@@ -1,66 +1,66 @@
 package com.inviteonly.docs.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.lang.Nullable;
-
+import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.List;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.lang.Nullable;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class DriversLicense extends IdDocument {
-	@NotNull
-	private String firstNames;
 
-	@NotNull
-	private String surname;
+  @NotNull
+  private String firstNames;
 
-	@NotNull
-	private String gender;
+  @NotNull
+  private String surname;
 
-	@NotNull
-	private LocalDate birthDate;
+  @NotNull
+  private String gender;
 
-	@NotNull
-	private String licenseNumber;
+  @NotNull
+  private LocalDate birthDate;
 
-	@NotNull
-	@ElementCollection
-	private List<String> vehicleCodes;
+  @NotNull
+  private String licenseNumber;
 
-	@Nullable
-	private String prdpCode;
+  @NotNull
+  @ElementCollection
+  private List<String> vehicleCodes;
 
-	@NotNull
-	private String idCountryOfIssue;
+  @Nullable
+  private String prdpCode;
 
-	@NotNull
-	private String licenseCountryOfIssue;
+  @NotNull
+  private String idCountryOfIssue;
 
-	@NotNull
-	@ElementCollection
-	private List<String> vehicleRestrictions;
+  @NotNull
+  private String licenseCountryOfIssue;
 
-	@NotNull
-	private String idNumberType;
+  @NotNull
+  @ElementCollection
+  private List<String> vehicleRestrictions;
 
-	@Nullable
-	private String driverRestrictions;
+  @NotNull
+  private String idNumberType;
 
-	@Nullable
-	private LocalDate prdpExpiry;
+  @Nullable
+  private String driverRestrictions;
 
-	@NotNull
-	private String licenseIssueNumber;
+  @Nullable
+  private LocalDate prdpExpiry;
 
-	@NotNull
-	private LocalDate validFrom;
+  @NotNull
+  private String licenseIssueNumber;
 
-	@NotNull
-	private LocalDate validTo;
+  @NotNull
+  private LocalDate validFrom;
+
+  @NotNull
+  private LocalDate validTo;
 }

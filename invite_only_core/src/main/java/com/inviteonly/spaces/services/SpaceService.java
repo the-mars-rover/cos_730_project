@@ -3,49 +3,54 @@ package com.inviteonly.spaces.services;
 import com.inviteonly.spaces.entities.Space;
 import com.inviteonly.spaces.errors.SpaceAuthorizationException;
 import com.inviteonly.spaces.errors.SpaceNotFoundException;
-import com.inviteonly.spaces.repositories.ISpaceRepository;
+import com.inviteonly.spaces.repositories.SpaceRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
-public class SpaceService implements ISpaceService {
-	private final ISpaceRepository spaceRepository;
+public class SpaceService implements SpaceServiceInterface {
 
-	@Override
-	public Space createSpace(Space space) {
-		return spaceRepository.save(space);
-	}
+  private final SpaceRepository spaceRepository;
 
-	@Override
-	public Space updateSpace(String phoneNumber, Space space) throws SpaceNotFoundException, SpaceAuthorizationException {
-		Space savedSpace = spaceRepository.findById(space.getId()).orElseThrow(SpaceNotFoundException::new);
+  @Override
+  public Space createSpace(Space space) {
+    return spaceRepository.save(space);
+  }
 
-		if (!savedSpace.hasManager(phoneNumber)) {
-			throw new SpaceAuthorizationException(
-					String.format("%s does not have authorization to update the existing space", phoneNumber));
-		}
+  @Override
+  public Space updateSpace(String phoneNumber, Space space)
+      throws SpaceNotFoundException, SpaceAuthorizationException {
+    Space savedSpace = spaceRepository.findById(space.getId())
+        .orElseThrow(SpaceNotFoundException::new);
 
-		return spaceRepository.save(space);
-	}
+    if (!savedSpace.hasManager(phoneNumber)) {
+      throw new SpaceAuthorizationException(
+          String
+              .format("%s does not have authorization to update the existing space", phoneNumber));
+    }
 
-	@Override
-	public void deleteSpace(String phoneNumber, Long spaceId) throws SpaceNotFoundException, SpaceAuthorizationException {
-		Space savedSpace = spaceRepository.findById(spaceId).orElseThrow(SpaceNotFoundException::new);
+    return spaceRepository.save(space);
+  }
 
-		if (!savedSpace.hasManager(phoneNumber)) {
-			throw new SpaceAuthorizationException(
-					String.format("%s does not have authorization to delete the existing space", phoneNumber));
-		}
+  @Override
+  public void deleteSpace(String phoneNumber, Long spaceId)
+      throws SpaceNotFoundException, SpaceAuthorizationException {
+    Space savedSpace = spaceRepository.findById(spaceId).orElseThrow(SpaceNotFoundException::new);
 
-		spaceRepository.deleteById(spaceId);
-	}
+    if (!savedSpace.hasManager(phoneNumber)) {
+      throw new SpaceAuthorizationException(
+          String
+              .format("%s does not have authorization to delete the existing space", phoneNumber));
+    }
 
-	@Override
-	public List<Space> findUserSpaces(String phoneNumber) {
-		return spaceRepository.findDistinctByManagerPhonesOrInviterPhonesOrGuardPhones(
-				phoneNumber, phoneNumber, phoneNumber);
-	}
+    spaceRepository.deleteById(spaceId);
+  }
+
+  @Override
+  public List<Space> findUserSpaces(String phoneNumber) {
+    return spaceRepository.findDistinctByManagerPhonesOrInviterPhonesOrGuardPhones(
+        phoneNumber, phoneNumber, phoneNumber);
+  }
 }

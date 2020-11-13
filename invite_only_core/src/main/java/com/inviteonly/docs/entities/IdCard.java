@@ -1,41 +1,41 @@
 package com.inviteonly.docs.entities;
 
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 public class IdCard extends IdDocument {
-	@NotNull
-	private String firstNames;
 
-	@NotNull
-	private String surname;
+  @NotNull
+  private String firstNames;
 
-	@NotNull
-	private String gender;
+  @NotNull
+  private String surname;
 
-	@NotNull
-	private LocalDate birthDate;
+  @NotNull
+  private String gender;
 
-	@NotNull
-	private LocalDate issueDate;
+  @NotNull
+  private LocalDate birthDate;
 
-	@NotNull
-	private String smartIdNumber;
+  @NotNull
+  private LocalDate issueDate;
 
-	@NotNull
-	private String nationality;
+  @NotNull
+  private String smartIdNumber;
 
-	@NotNull
-	private String countryOfBirth;
+  @NotNull
+  private String nationality;
 
-	@NotNull
-	private String citizenshipStatus;
+  @NotNull
+  private String countryOfBirth;
+
+  @NotNull
+  private String citizenshipStatus;
 }

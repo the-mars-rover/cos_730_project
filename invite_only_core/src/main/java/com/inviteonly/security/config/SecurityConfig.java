@@ -15,10 +15,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private final SecurityService securityService;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().addFilterBefore(new AuthFilter(securityService), UsernamePasswordAuthenticationFilter.class);
-	}
+  private final SecurityService securityService;
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.csrf().disable().addFilterBefore(new AuthFilter(securityService),
+        UsernamePasswordAuthenticationFilter.class);
+  }
 }
