@@ -15,7 +15,7 @@
 <a href="https://github.com/marcus-bornman/cos_700_project/network"><img src="https://img.shields.io/github/forks/marcus-bornman/cos_700_project" alt="forks"></a>
 <a href="https://github.com/marcus-bornman/cos_700_project/stargazers"><img src="https://img.shields.io/github/stars/marcus-bornman/cos_700_project" alt="stars"></a>
 <a href="https://google.github.io/styleguide/javaguide.html"><img src="https://img.shields.io/badge/style-google_java-40c4ff.svg" alt="style"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Marcus-bornman/cos_700_project" alt="license"></a>
+<a href="https://github.com/marcus-bornman/cos_700_project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/marcus-bornman/cos_700_project" alt="license"></a>
 </p>
 
 ---
@@ -97,7 +97,7 @@ Contributions are what make the open source community such an amazing place to b
 <!-- LICENSE -->
 ## License
 
-Distributed under the Academic Free License. See [LICENSE](LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](../LICENSE) for more information.
 
 
 
