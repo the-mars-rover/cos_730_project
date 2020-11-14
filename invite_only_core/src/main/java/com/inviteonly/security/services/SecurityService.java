@@ -27,8 +27,7 @@ public class SecurityService {
    */
   @PostConstruct
   public void initializeFirebase() throws IOException {
-    FirebaseOptions options =
-        new FirebaseOptions.Builder()
+    FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.getApplicationDefault())
             .build();
     if (FirebaseApp.getApps().isEmpty()) {
