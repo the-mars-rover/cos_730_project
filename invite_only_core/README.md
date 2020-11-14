@@ -10,7 +10,7 @@
 
 <!-- PROJECT SHIELDS -->
 <p align="center">
-<a href="https://github.com/marcus-bornman/cos_700_project/actions?query=workflow%3Abuild-io-core"><img src="https://img.shields.io/github/workflow/status/marcus-bornman/cos_700_project/build?label=build" alt="build"></a>
+<a href="https://github.com/marcus-bornman/cos_700_project/actions?query=workflow%3Abuild-io-core"><img src="https://img.shields.io/github/workflow/status/marcus-bornman/cos_700_project/build-io-core?label=build" alt="build"></a>
 <a href="https://github.com/marcus-bornman/cos_700_project/issues"><img src="https://img.shields.io/github/issues/marcus-bornman/cos_700_project" alt="issues"></a>
 <a href="https://github.com/marcus-bornman/cos_700_project/network"><img src="https://img.shields.io/github/forks/marcus-bornman/cos_700_project" alt="forks"></a>
 <a href="https://github.com/marcus-bornman/cos_700_project/stargazers"><img src="https://img.shields.io/github/stars/marcus-bornman/cos_700_project" alt="stars"></a>
