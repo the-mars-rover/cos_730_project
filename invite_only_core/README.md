@@ -57,7 +57,7 @@ You can ensure that the project compiles by running the following command from t
 mvn clean install
 ```
 
-Next - because this services makes use of [Firebase Authentication](https://firebase.google.com/docs/auth) through
+Next - because this service makes use of [Firebase Authentication](https://firebase.google.com/docs/auth) through
 the [Firebase Admin SDK](https://firebase.google.com/docs/reference/admin) - you will need to:
 1. [Set up a Firebase project and service account](https://firebase.google.com/docs/admin/setup#set-up-project-and-service-account)
 2. [Enable Phone Number sign-in for your Firebase project](https://firebase.google.com/docs/auth/web/phone-auth#enable-phone-number-sign-in-for-your-firebase-project)
