@@ -206,7 +206,7 @@ Distributed under the MIT License. See [LICENSE](../LICENSE) for more informatio
 <!-- CONTACT -->
 ## Contact
 
-BornIdeas - [marcusbornman.com](https://www.marcusbornman.com) - [marcus.bornman@gmail.com](mailto:marcus.bornman@gmail.com)
+Marcus Bornman - [marcusbornman.com](https://www.marcusbornman.com) - [marcus.bornman@gmail.com](mailto:marcus.bornman@gmail.com)
 
 Project Link: [https://github.com/marcus-bornman/invite_only_platform](https://github.com/marcus-bornman/invite_only_platform)
 
