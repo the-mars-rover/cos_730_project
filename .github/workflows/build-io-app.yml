@@ -1,0 +1,29 @@
+name: build-io-app
+
+on:
+  push:
+    branches: [ master ]
+    paths: 'invite_only_app/**'
+  pull_request:
+    branches: [ master ]
+    paths: 'invite_only_app/**'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+      - run: flutter pub get
+        working-directory: invite_only_app
+      - run: flutter test
+        working-directory: invite_only_app
+      - run: flutter build appbundle
+        working-directory: invite_only_app
+      - run: flutter build ios --release --no-codesign
+        working-directory: invite_only_app
