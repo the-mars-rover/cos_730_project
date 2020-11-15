@@ -39,7 +39,7 @@
 </p>
 
 This project was completed as part of the COS730 (Software Engineering) module at the University of Pretoria. The project
-entails the implementation of the Invite Only Platform which is access-control an access-control system allowing 
+entails the implementation of the Invite Only Platform which is an access-control system allowing 
 users to define access measures for a space and scan identification documents of persons wishing to enter the space 
 to determine if they should be allowed entry.
 
