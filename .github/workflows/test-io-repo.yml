@@ -1,0 +1,26 @@
+name: test-io-repo
+
+on:
+  push:
+    branches: [ master ]
+    paths: 'invite_only_repo/**'
+  pull_request:
+    branches: [ master ]
+    paths: 'invite_only_repo/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    container:
+      image:  google/dart:latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      working-directory: invite_only_repo
+      run: pub get
+    - name: Run tests
+      working-directory: invite_only_repo
+      run: pub run test
