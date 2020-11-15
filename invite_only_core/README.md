@@ -1,21 +1,21 @@
 <!-- PROJECT LOGO -->
 <p align="right">
 <a href="https://www.up.ac.za">
-<img src="https://raw.githubusercontent.com/marcus-bornman/cos_700_project/master/invite_only_core/assets/project_badge.png" height="100" alt="badge">
+<img src="https://raw.githubusercontent.com/marcus-bornman/cos_730_project/master/invite_only_core/assets/project_badge.png" height="100" alt="badge">
 </a>
 </p>
 <p align="center">
-<img src="https://raw.githubusercontent.com/marcus-bornman/cos_700_project/master/invite_only_core/assets/project_logo.png" height="100" alt="logo" />
+<img src="https://raw.githubusercontent.com/marcus-bornman/cos_730_project/master/invite_only_core/assets/project_logo.png" height="100" alt="logo" />
 </p>
 
 <!-- PROJECT SHIELDS -->
 <p align="center">
-<a href="https://github.com/marcus-bornman/cos_700_project/actions?query=workflow%3Abuild-io-core"><img src="https://img.shields.io/github/workflow/status/marcus-bornman/cos_700_project/build-io-core?label=build" alt="build"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/issues"><img src="https://img.shields.io/github/issues/marcus-bornman/cos_700_project" alt="issues"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/network"><img src="https://img.shields.io/github/forks/marcus-bornman/cos_700_project" alt="forks"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/stargazers"><img src="https://img.shields.io/github/stars/marcus-bornman/cos_700_project" alt="stars"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/actions?query=workflow%3Abuild-io-core"><img src="https://img.shields.io/github/workflow/status/marcus-bornman/cos_730_project/build-io-core?label=build" alt="build"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/issues"><img src="https://img.shields.io/github/issues/marcus-bornman/cos_730_project" alt="issues"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/network"><img src="https://img.shields.io/github/forks/marcus-bornman/cos_730_project" alt="forks"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/stargazers"><img src="https://img.shields.io/github/stars/marcus-bornman/cos_730_project" alt="stars"></a>
 <a href="https://google.github.io/styleguide/javaguide.html"><img src="https://img.shields.io/badge/style-google_java-40c4ff.svg" alt="style"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/marcus-bornman/cos_700_project" alt="license"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/marcus-bornman/cos_730_project" alt="license"></a>
 </p>
 
 ---
@@ -36,7 +36,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <p align="center">
-<img src="https://raw.githubusercontent.com/marcus-bornman/cos_700_project/master/invite_only_core/assets/screenshot_1.png" width="800" alt="Screenshot 1" />
+<img src="https://raw.githubusercontent.com/marcus-bornman/cos_730_project/master/invite_only_core/assets/screenshot_1.png" width="800" alt="Screenshot 1" />
 </p>
 
 The Invite Only Core API provides the means for client systems to access the core functionalities of the Invite Only project.
@@ -93,7 +93,7 @@ Bearer token retrieved by authenticating with [Firebase Authentication](https://
 
 <!-- ROADMAP -->
 ## Roadmap
-See the [open issues](https://github.com/marcus-bornman/cos_700_project/issues) for a list of other proposed features (and known issues).
+See the [open issues](https://github.com/marcus-bornman/cos_730_project/issues) for a list of other proposed features (and known issues).
 
 
 
@@ -122,7 +122,7 @@ Distributed under the MIT License. See [LICENSE](../LICENSE) for more informatio
 
 Marcus Bornman - [marcusbornman.com](https://www.marcusbornman.com) - [marcus.bornman@gmail.com](mailto:marcus.bornman@gmail.com)
 
-Project Link: [https://github.com/marcus-bornman/cos_700_project](https://github.com/marcus-bornman/cos_700_project)
+Project Link: [https://github.com/marcus-bornman/cos_730_project](https://github.com/marcus-bornman/cos_730_project)
 
 
 

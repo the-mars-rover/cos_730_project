@@ -10,12 +10,12 @@
 
 <!-- PROJECT SHIELDS -->
 <p align="center">
-<a href="https://github.com/marcus-bornman/cos_700_project/actions?query=workflow%3Abuild-io-app"><img src="https://img.shields.io/github/workflow/status/marcus-bornman/cos_700_project/build-io-app?label=build" alt="build"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/issues"><img src="https://img.shields.io/github/issues/marcus-bornman/cos_700_project" alt="issues"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/network"><img src="https://img.shields.io/github/forks/marcus-bornman/cos_700_project" alt="forks"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/stargazers"><img src="https://img.shields.io/github/stars/marcus-bornman/cos_700_project" alt="stars"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/actions?query=workflow%3Abuild-io-app"><img src="https://img.shields.io/github/workflow/status/marcus-bornman/cos_730_project/build-io-app?label=build" alt="build"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/issues"><img src="https://img.shields.io/github/issues/marcus-bornman/cos_730_project" alt="issues"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/network"><img src="https://img.shields.io/github/forks/marcus-bornman/cos_730_project" alt="forks"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/stargazers"><img src="https://img.shields.io/github/stars/marcus-bornman/cos_730_project" alt="stars"></a>
 <a href="https://dart.dev/guides/language/effective-dart/style"><img src="https://img.shields.io/badge/style-effective_dart-40c4ff.svg" alt="style"></a>
-<a href="https://github.com/marcus-bornman/cos_700_project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/marcus-bornman/cos_700_project" alt="license"></a>
+<a href="https://github.com/marcus-bornman/cos_730_project/blob/master/LICENSE"><img src="https://img.shields.io/github/license/marcus-bornman/cos_730_project" alt="license"></a>
 </p>
 
 ---
@@ -76,7 +76,7 @@ You should see either Android, iOS, or web output, depending on your device.
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/marcus-bornman/cos_700_project/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/marcus-bornman/cos_730_project/issues) for a list of proposed features (and known issues).
 
 
 
