@@ -73,6 +73,13 @@ Add `invite_only_repo` as a [dependency in your pubspec.yaml file](https://flutt
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+### Initialization
+Before using any other methods, ensure that you initialize `InviteOnlyRepo` with the URL of the Invite Only Core API as 
+soon as the app starts. This can usually be done at the start of the `main` method as follows:
+```dart
+InviteOnlyRepo.initialize(INVITE_ONLY_CORE_URL);
+```
+
 ### Authenticating a User
 All functionality is restricted to users who have been authenticated. Follow the steps in this section to 
 authenticate a user.
