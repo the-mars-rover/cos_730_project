@@ -1,4 +1,4 @@
-name: build-io-app
+name: test-io-app
 
 on:
   push:
@@ -22,8 +22,4 @@ jobs:
       - run: flutter pub get
         working-directory: invite_only_app
       - run: flutter test
-        working-directory: invite_only_app
-      - run: flutter build appbundle
-        working-directory: invite_only_app
-      - run: flutter build ios --release --no-codesign
         working-directory: invite_only_app
